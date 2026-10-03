@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { sql } from '@/lib/db';
+import { NextResponse } from "next/server";
+import { sql } from "@/lib/db";
 
 export const revalidate = 3600;
 
@@ -9,8 +9,21 @@ export const revalidate = 3600;
  * picker match "bergamot orange" or "oud" to the entry it means.
  */
 export async function GET() {
-  const notes = await sql<{ slug: string; name: string; family: string; kind: string; hue: string; aliases: string[] | null }>(
-    'select slug, name, family, kind, hue, aliases from public.notes order by name',
+  const notes = await sql<{
+    slug: string;
+    name: string;
+    family: string;
+    kind: string;
+    hue: string;
+    aliases: string[] | null;
+  }>(
+    "select slug, name, family, kind, hue, aliases from public.notes order by name",
   );
-  return NextResponse.json({ notes: notes.map((n) => ({ ...n, aliases: n.aliases ?? [], listed: false })) });
+  return NextResponse.json({
+    notes: notes.map((n) => ({
+      ...n,
+      aliases: n.aliases ?? [],
+      listed: false,
+    })),
+  });
 }

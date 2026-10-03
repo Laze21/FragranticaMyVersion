@@ -24,7 +24,7 @@
   letter-spacing: -0.005em;
   line-height: 1.02;
   text-wrap: balance;
-  font-variation-settings: 'opsz' 72;
+  font-variation-settings: "opsz" 72;
   overflow-wrap: anywhere;
 }
 .lede {
@@ -34,7 +34,7 @@
   line-height: 1.45;
   color: var(--fg-2);
   text-wrap: pretty;
-  font-variation-settings: 'opsz' 18;
+  font-variation-settings: "opsz" 18;
 }
 .kicker {
   font-family: var(--font-sans);
@@ -203,7 +203,7 @@
   line-height: 1.4;
   max-width: 44ch;
   text-wrap: pretty;
-  font-variation-settings: 'opsz' 18;
+  font-variation-settings: "opsz" 18;
 }
 .related {
   margin-top: var(--s-8);
@@ -234,7 +234,7 @@
 }
 /* the perfumer page: bio and work at the left, the signature at the right; phones read bio, signature, work */
 .bandWork {
-  grid-template-areas: 'identity' 'aside' 'works';
+  grid-template-areas: "identity" "aside" "works";
 }
 .bandWork .identity {
   grid-area: identity;
@@ -435,7 +435,7 @@
     column-gap: var(--s-10);
   }
   .bandWork {
-    grid-template-areas: 'identity aside' 'works aside';
+    grid-template-areas: "identity aside" "works aside";
     row-gap: var(--s-8);
   }
   .grid,
@@ -453,7 +453,10 @@
     margin-inline-start: 0;
   }
   .band {
-    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(0, 1fr);
+    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(
+        0,
+        1fr
+      );
     column-gap: var(--col-gap);
   }
   /* the signature stands level with the name, under the kicker's line */
@@ -461,8 +464,11 @@
     padding-top: 30px;
   }
   .bandWork {
-    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(0, 1fr);
-    grid-template-areas: 'identity aside' 'works aside';
+    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(
+        0,
+        1fr
+      );
+    grid-template-areas: "identity aside" "works aside";
     row-gap: var(--s-9);
   }
   .bandWork .aside {

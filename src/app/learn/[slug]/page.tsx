@@ -1,23 +1,29 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { GLOSSARY_BY_SLUG, glossaryTerms } from '@/lib/glossary';
-import { getNoteIndex } from '@/lib/data/catalog';
-import { Blotter } from '@/components/scent/Blotter';
-import styles from '../../editorial.module.css';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { GLOSSARY_BY_SLUG, glossaryTerms } from "@/lib/glossary";
+import { getNoteIndex } from "@/lib/data/catalog";
+import { Blotter } from "@/components/scent/Blotter";
+import styles from "../../editorial.module.css";
 
 export function generateStaticParams() {
   return glossaryTerms().map((t) => ({ slug: t.slug }));
 }
 
-export async function generateMetadata(props: PageProps<'/learn/[slug]'>): Promise<Metadata> {
+export async function generateMetadata(
+  props: PageProps<"/learn/[slug]">,
+): Promise<Metadata> {
   const { slug } = await props.params;
   const t = GLOSSARY_BY_SLUG[slug];
-  if (!t) return { title: 'Not found' };
-  return { title: `${t.term}: what it means`, description: t.short, alternates: { canonical: `/learn/${slug}` } };
+  if (!t) return { title: "Not found" };
+  return {
+    title: `${t.term}: what it means`,
+    description: t.short,
+    alternates: { canonical: `/learn/${slug}` },
+  };
 }
 
-export default async function TermPage(props: PageProps<'/learn/[slug]'>) {
+export default async function TermPage(props: PageProps<"/learn/[slug]">) {
   const { slug } = await props.params;
   const t = GLOSSARY_BY_SLUG[slug];
   if (!t) notFound();
@@ -44,7 +50,10 @@ export default async function TermPage(props: PageProps<'/learn/[slug]'>) {
           <ul role="list" className={styles.chips}>
             {seeNotes.map((s) => (
               <li key={s}>
-                <Link className={`chip ${styles.chipNote}`} href={`/notes/${s}`}>
+                <Link
+                  className={`chip ${styles.chipNote}`}
+                  href={`/notes/${s}`}
+                >
                   <Blotter hue={notes[s].hue} />
                   {notes[s].name}
                 </Link>
