@@ -41,17 +41,17 @@ export const getNote = cache(async (slug: string): Promise<NoteDetail | null> =>
 });
 
 /** Fragrances where the house lists the note. */
-export async function fragrancesListing(noteId: string): Promise<FragranceCard[]> {
+export const fragrancesListing = cache(async (noteId: string): Promise<FragranceCard[]> => {
   return getCards(
     `exists (select 1 from public.fragrance_notes fn where fn.fragrance_id = f.id and fn.note_id = $1)`,
     [noteId],
     's.popularity desc nulls last',
     48,
   );
-}
+});
 
 /** Fragrances where people strongly perceive the note, listed or not. */
-export async function fragrancesPerceived(slug: string, noteId: string): Promise<Array<{ card: FragranceCard; share: number; listed: boolean }>> {
+export const fragrancesPerceived = cache(async (slug: string, noteId: string): Promise<Array<{ card: FragranceCard; share: number; listed: boolean }>> => {
   const cards = await getCards(`coalesce((s.perceived ->> $1)::numeric, 0) >= 0.3`, [slug], '(s.perceived ->> $1)::numeric desc', 24);
   if (!cards.length) return [];
   const [shares, listed] = await Promise.all([
@@ -61,7 +61,7 @@ export async function fragrancesPerceived(slug: string, noteId: string): Promise
   const listedSet = new Set(listed.map((l) => l.fragrance_id));
   const shareMap = new Map(shares.map((s) => [s.id, Number(s.share)]));
   return cards.map((card) => ({ card, share: shareMap.get(card.id) ?? 0, listed: listedSet.has(card.id) }));
-}
+});
 
 /** Notes that most often share a pyramid with this one. */
 export async function pairedNotes(noteId: string, limit = 10) {
@@ -77,10 +77,54 @@ export async function pairedNotes(noteId: string, limit = 10) {
   );
 }
 
-export const getNotesIndex = cache(async () => {
-  return sql<{ slug: string; name: string; family: string; kind: string; hue: string; listed: string; smells_like: string | null }>(
+export interface NoteIndexEntry {
+  slug: string;
+  name: string;
+  family: string;
+  kind: 'material' | 'accord' | 'descriptor';
+  hue: string;
+  /** How many fragrances in the catalogue list it: the index's measure of how common a note is. */
+  listed: number;
+  smells_like: string | null;
+}
+
+export const getNotesIndex = cache(async (): Promise<NoteIndexEntry[]> => {
+  const rows = await sql<{ slug: string; name: string; family: string; kind: string; hue: string; listed: string; smells_like: string | null }>(
     `select n.slug, n.name, n.family, n.kind, n.hue, n.smells_like,
             (select count(*) from public.fragrance_notes fn where fn.note_id = n.id) listed
        from public.notes n order by n.name`,
   );
+  return rows.map((r) => ({ ...r, kind: r.kind as NoteIndexEntry['kind'], listed: Number(r.listed) }));
+});
+
+/**
+ * What the Term popover says about a note beyond its definition: the plain sentence, the three
+ * notes it most often shares a pyramid with, and the three fragrances where people smell it
+ * most (or, before anyone has voted, the three that list it). `share` is null for the listed
+ * fallback so the popover can say "listed in" rather than invent a percentage.
+ */
+export interface NoteSummary {
+  slug: string;
+  name: string;
+  smellsLike: string | null;
+  oftenWith: Array<{ slug: string; name: string; hue: string }>;
+  prominentIn: Array<{ slug: string; name: string; brandName: string; share: number | null }>;
+  href: string;
+}
+
+export const noteSummary = cache(async (slug: string): Promise<NoteSummary | null> => {
+  const n = await getNote(slug);
+  if (!n) return null;
+  const [paired, perceived] = await Promise.all([pairedNotes(n.id, 3), fragrancesPerceived(n.slug, n.id)]);
+  const prominentIn = perceived.length
+    ? perceived.slice(0, 3).map((p) => ({ slug: p.card.slug, name: p.card.name, brandName: p.card.brandName, share: p.share }))
+    : (await fragrancesListing(n.id)).slice(0, 3).map((c) => ({ slug: c.slug, name: c.name, brandName: c.brandName, share: null }));
+  return {
+    slug: n.slug,
+    name: n.name,
+    smellsLike: n.smellsLike,
+    oftenWith: paired.map((p) => ({ slug: p.slug, name: p.name, hue: p.hue })),
+    prominentIn,
+    href: `/notes/${n.slug}`,
+  };
 });

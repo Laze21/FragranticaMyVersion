@@ -1,0 +1,91 @@
+.page {
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-11);
+}
+/* Signed out: a reading-width introduction, the same shape as the shelf's. */
+.intro {
+  max-width: var(--measure-read);
+}
+.title {
+  font-size: var(--t-title-l);
+}
+.lede {
+  margin-top: var(--s-4);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.45;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+.actions {
+  margin-top: var(--s-6);
+  --cluster: var(--s-3);
+}
+
+/* Loading: the diary's own proportions (title line, two months beside the aside, five rows), so nothing jumps. */
+.skelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: 44px;
+}
+.skelLayout {
+  display: grid;
+  gap: var(--s-8);
+  margin-top: var(--s-6);
+}
+.skelMonths {
+  display: grid;
+  gap: var(--s-6);
+}
+.skelMonth {
+  display: grid;
+  gap: 8px;
+}
+.skelGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 44px);
+  gap: 3px;
+}
+.skelCell {
+  height: 44px;
+  border-radius: 0;
+}
+.skelRail {
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--ink);
+}
+.skelRows {
+  display: grid;
+  margin-top: var(--s-9);
+  border-top: 1px solid var(--line);
+}
+.skelRow {
+  display: grid;
+  grid-template-columns: 56px 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  height: 56px;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 719px) {
+  .skelMonths > :nth-child(2) {
+    display: none;
+  }
+}
+@media (min-width: 720px) {
+  .skelMonths {
+    grid-template-columns: repeat(2, max-content);
+    gap: var(--s-7);
+  }
+}
+@media (min-width: 1100px) {
+  .skelLayout {
+    grid-template-columns: minmax(0, 1fr) calc(3 * var(--col) + 2 * var(--col-gap));
+    column-gap: calc(var(--col) + 2 * var(--col-gap));
+  }
+}

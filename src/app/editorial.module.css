@@ -1,85 +1,110 @@
-/* Long-form and reference pages: glossary, about, data policy. */
+/*
+ * Reference and long-form pages: the glossary, a house, a perfumer, the data policy, about.
+ * Reading pages sit on columns 3 to 10 of the grid; the house and perfumer pages use the
+ * whole width and split it 5/7 and 7/5. Titles are the display roman; rules span the content
+ * or do not exist.
+ */
 .page {
   padding-top: var(--s-8);
-  max-width: 980px;
+  padding-bottom: var(--s-11);
+}
+/* Reading measure: every direct child of a reading page sits on columns 3-10 (the about pages
+   use this class as-is, so the run is applied to children rather than asked for by name). */
+.page > * {
+  width: 100%;
 }
 .head {
-  max-width: 62ch;
+  max-width: var(--measure-read);
   margin-bottom: var(--s-8);
 }
 .title {
+  font-family: var(--font-serif);
+  font-weight: 400;
   font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  letter-spacing: -0.005em;
+  line-height: 1.02;
+  text-wrap: balance;
+  font-variation-settings: 'opsz' 72;
+  overflow-wrap: anywhere;
 }
 .lede {
-  margin-top: 12px;
+  margin-top: var(--s-4);
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: var(--t-serif-l);
   line-height: 1.45;
   color: var(--fg-2);
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
 }
-.glossary {
-  margin: 0;
-}
-.letter {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  gap: var(--s-4);
-  padding: var(--s-5) 0;
-  border-top: 1px solid var(--line);
-}
-.letterMark {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 2.2rem;
-  line-height: 1;
-  color: var(--fg-3);
-}
-.term {
-  padding: 6px 0 12px;
-}
-.term dt {
+.kicker {
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
   font-weight: 650;
-  font-size: var(--t-sub);
-}
-.term dd {
-  margin: 2px 0 0;
+  font-stretch: 112%;
+  letter-spacing: 0.04em;
   color: var(--fg-2);
+  line-height: 1.3;
+}
+.kicker + .title {
+  margin-top: 8px;
+}
+.facts {
+  margin-top: 12px;
   font-size: var(--t-small);
-  max-width: 64ch;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+}
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  font-weight: 600;
 }
 .crumbs {
   font-size: var(--t-small);
+  color: var(--fg-3);
   margin-bottom: var(--s-3);
 }
-.termTitle {
-  font-size: var(--t-title-xl);
-}
-.short {
-  margin: var(--s-4) 0 var(--s-6);
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  line-height: 1.35;
-  max-width: 40ch;
-}
-.related {
-  margin-top: var(--s-8);
+.crumbs a {
+  color: var(--fg-2);
 }
 .h2 {
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-title-m);
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  text-wrap: balance;
   margin-bottom: var(--s-3);
 }
-.prose h2 {
+.h3 {
   font-family: var(--font-sans);
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
-  margin: var(--s-7) 0 var(--s-3);
+  font-size: var(--t-h3);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: var(--s-2);
+}
+.prose h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-title-m);
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  margin: var(--s-8) 0 var(--s-3);
+}
+.prose h3 {
+  font-family: var(--font-sans);
+  font-size: var(--t-h3);
+  font-weight: 600;
+  margin: var(--s-6) 0 var(--s-2);
 }
 .prose ul {
   padding-left: 1.2em;
@@ -103,8 +128,361 @@
   font-size: var(--t-micro);
   color: var(--fg-3);
 }
-
 .tableWrap {
   overflow-x: auto;
   max-width: 100%;
+}
+.null {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-serif);
+  color: var(--fg-3);
+}
+
+/* ---------- glossary ---------- */
+.glossary {
+  margin: 0;
+}
+.letter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-2) var(--s-4);
+  padding: var(--s-4) 0 var(--s-5);
+  border-top: 1px solid var(--line);
+}
+.letterMark {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--fg-3);
+}
+.entries {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+/* The whole entry is the link; the name underlines on hover, nothing else moves. */
+.entry {
+  display: grid;
+  gap: 3px;
+  padding: 8px 0;
+  text-decoration: none;
+  color: inherit;
+  max-width: 60ch;
+}
+.entryName {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--t-h3);
+  line-height: 1.2;
+}
+.entry:hover .entryName,
+.entry:focus-visible .entryName {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+.entryDef {
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+/* kept for older callers of the glossary list */
+.term {
+  padding: 6px 0 12px;
+}
+.termTitle {
+  font-size: var(--t-title-l);
+}
+.short {
+  margin: var(--s-4) 0 var(--s-6);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.4;
+  max-width: 44ch;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
+}
+.related {
+  margin-top: var(--s-8);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+}
+.chipNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- house and perfumer ---------- */
+.wide {
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-11);
+}
+.band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-7) var(--col-gap);
+  align-items: start;
+}
+/* the perfumer page: bio and work at the left, the signature at the right; phones read bio, signature, work */
+.bandWork {
+  grid-template-areas: 'identity' 'aside' 'works';
+}
+.bandWork .identity {
+  grid-area: identity;
+}
+.bandWork .aside {
+  grid-area: aside;
+}
+.bandWork .workSection {
+  grid-area: works;
+  margin-top: 0;
+}
+.identity {
+  min-width: 0;
+}
+.identity .lede {
+  max-width: 66ch;
+  color: var(--fg);
+}
+.sig {
+  min-width: 0;
+}
+.trail {
+  margin: 0 0 var(--s-5);
+  display: grid;
+  gap: 6px;
+  max-width: 100%;
+}
+.trail svg {
+  max-width: 100%;
+  height: auto;
+}
+.trailCap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.trailMark {
+  width: 18px;
+  height: 7px;
+  color: var(--ink);
+}
+.sigNote {
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+/* The catalogue band: one 2px ink rule across the content, the title at the left, text toggles at the right. */
+.catalogue {
+  margin-top: var(--s-10);
+}
+.catHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-5);
+  padding-top: var(--s-3);
+  border-top: 2px solid var(--ink);
+}
+.catHead .h2 {
+  margin-bottom: 0;
+}
+.toggles {
+  display: flex;
+  gap: var(--s-4);
+  font-size: var(--t-small);
+}
+.toggles a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  color: var(--fg-2);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+}
+.toggles a:hover {
+  color: var(--ink);
+}
+.toggles a[aria-current] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-7) var(--s-4);
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.grid li {
+  position: relative;
+  min-width: 0;
+}
+/* "1 · 7.5": shelf rank and score, standing at the left end of the floor like a shelf label */
+.rank {
+  position: absolute;
+  left: 0;
+  top: 216px;
+  z-index: 2;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: 88%;
+  font-weight: 560;
+  font-size: var(--t-label);
+  color: var(--fg-2);
+  line-height: 1;
+}
+.catNote {
+  margin-top: var(--s-2);
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.rows {
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.rows li + li {
+  border-top: 1px solid var(--line);
+}
+.houseList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.houseList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--t-small);
+}
+.houseList li a {
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+}
+.houseList li span {
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.years {
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+/* The perfumer's work as 180px floor cards: a shorter floor than the grids, so the page stays short. */
+.works {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6) var(--s-4);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.works li {
+  min-width: 0;
+}
+.works li > article > div:first-child {
+  height: 180px;
+}
+.aside {
+  min-width: 0;
+}
+.asideBlock + .asideBlock {
+  margin-top: var(--s-7);
+}
+
+@media (min-width: 720px) {
+  .page > * {
+    max-width: 640px;
+  }
+  .wide > * {
+    max-width: none;
+  }
+  .letter {
+    grid-template-columns: 56px minmax(0, 1fr);
+    padding: var(--s-5) 0;
+  }
+  .letterMark {
+    font-size: var(--t-figure-xl);
+    padding-top: 6px;
+  }
+  .entries {
+    padding-top: 2px;
+  }
+  .band {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--s-10);
+  }
+  .bandWork {
+    grid-template-areas: 'identity aside' 'works aside';
+    row-gap: var(--s-8);
+  }
+  .grid,
+  .works {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1100px) {
+  .page > * {
+    max-width: calc(8 * var(--col) + 7 * var(--col-gap));
+    margin-inline-start: calc(2 * (var(--col) + var(--col-gap)));
+  }
+  .wide > * {
+    max-width: none;
+    margin-inline-start: 0;
+  }
+  .band {
+    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(0, 1fr);
+    column-gap: var(--col-gap);
+  }
+  /* the signature stands level with the name, under the kicker's line */
+  .sig {
+    padding-top: 30px;
+  }
+  .bandWork {
+    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(0, 1fr);
+    grid-template-areas: 'identity aside' 'works aside';
+    row-gap: var(--s-9);
+  }
+  .bandWork .aside {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+    padding-top: 30px;
+  }
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .works {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (pointer: coarse) {
+  .links a,
+  .toggles a {
+    min-height: 44px;
+  }
+  .entry {
+    min-height: 44px;
+  }
 }

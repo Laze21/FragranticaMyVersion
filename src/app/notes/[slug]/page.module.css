@@ -1,13 +1,26 @@
+/*
+ * A note page. The hero is a 306px band in the note's wash: the name at the left, the
+ * ten-second sentence beside it, and one blotter dipped in the note standing past the
+ * band's bottom edge. The body answers where it comes from and what it does at 7/5, then
+ * puts the fragrances on planks.
+ */
 .hero {
   background: var(--scent-wash);
-  padding: var(--s-8) 0 var(--s-9);
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 .heroGrid {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--s-6);
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5) var(--col-gap);
+  min-height: 306px;
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-7);
+  align-content: end;
+}
+.identity {
+  min-width: 0;
 }
 .crumbs {
   font-size: var(--t-small);
@@ -19,6 +32,7 @@
 }
 .name {
   font-size: var(--t-title-xl);
+  overflow-wrap: anywhere;
 }
 .kind {
   margin-top: var(--s-3);
@@ -30,154 +44,310 @@
   font-size: var(--t-small);
   color: var(--fg-3);
 }
-/* A dipped blotter strip: the note's colour climbs the paper. */
-.blotter {
-  width: 46px;
-  height: 220px;
-  background: var(--paper);
-  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
-  position: relative;
-  transform: rotate(6deg);
-  box-shadow: 0 0 0 1px var(--line);
+.smellsBlock {
+  max-width: 34ch;
+  min-width: 0;
 }
-.blotter span {
+.kicker {
+  margin-bottom: 6px;
+}
+.smells {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.35;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
+}
+/* The blotter: paper, with the note climbing the bottom 40%; its tip is clipped like a cut strip. */
+.blotter {
+  position: absolute;
+  right: calc(-1 * var(--gutter) - 12px);
+  bottom: -40px;
+  width: 36px;
+  height: 160px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px rgb(28 26 23 / 0.2), 0 1px 0 rgb(28 26 23 / 0.06);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px));
+  pointer-events: none;
+}
+.blotterTip {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 46%;
-  background: linear-gradient(to top, color-mix(in oklab, var(--scent) 85%, transparent), color-mix(in oklab, var(--scent) 30%, transparent) 70%, transparent);
+  height: 40%;
+  background: linear-gradient(to top, var(--scent) 0 70%, color-mix(in oklab, var(--scent) 55%, var(--paper)) 92%, transparent);
 }
+
 .body {
-  padding-top: var(--s-8);
-}
-.lead {
-  max-width: 46ch;
-}
-.kicker {
-  font-size: var(--t-label);
-  font-weight: 650;
-  color: var(--fg-3);
-}
-.smells {
-  margin-top: 8px;
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
-  line-height: 1.25;
+  padding-top: var(--s-9);
+  padding-bottom: var(--s-11);
 }
 .two {
   display: grid;
-  gap: var(--s-8);
-  margin-top: var(--s-9);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-8) var(--col-gap);
+}
+.origin,
+.does {
+  min-width: 0;
 }
 .h2 {
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-title-m);
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  text-wrap: balance;
   margin-bottom: var(--s-3);
 }
+.null {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-serif);
+  color: var(--fg-3);
+}
+/* "Adds fresh" bars: the one bar treatment, filling their column. */
 .dims {
   display: grid;
-  gap: 8px;
-  margin: var(--s-4) 0 0;
+  gap: 0;
+  margin: var(--s-5) 0 0;
   padding: 0;
-  max-width: 420px;
 }
-.dims li {
+.dim {
   display: grid;
-  grid-template-columns: auto 1fr 120px;
-  align-items: center;
+  gap: 3px;
+  height: 24px;
+  align-content: center;
+}
+.dimLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   gap: 8px;
-  font-size: var(--t-small);
+  font-size: var(--t-label);
+  line-height: 1;
 }
-.dims i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.dimName {
+  font-weight: 600;
 }
-.dimBar {
+.dimValue {
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.dimTrack {
+  display: block;
   height: 6px;
-  background: var(--bg-sunk);
+  background: var(--linen);
   position: relative;
+  overflow: hidden;
 }
-.dimBar span {
+.dimFill {
   position: absolute;
   inset: 0 auto 0 0;
-  background: var(--ink);
+  background: var(--bar-hue, var(--scent-ink));
 }
+.dimFill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: color-mix(in oklab, var(--bar-hue, var(--scent-ink)) 60%, var(--ink));
+}
+
 .section {
   margin-top: var(--s-10);
 }
 .sectionHead {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 12px;
 }
 .paired {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 4px var(--s-5);
   margin: 0;
   padding: 0;
 }
-.paired li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.paired a {
+.pairedLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   min-height: 40px;
   font-weight: 560;
+  text-decoration: none;
+  color: inherit;
 }
-.paired i {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
+.pairedLink:hover span:nth-child(2),
+.pairedLink:focus-visible span:nth-child(2) {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
 }
-.perceived {
-  display: grid;
-  gap: 0 var(--s-7);
-  margin: 0;
-  padding: 0;
+.pairedN {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  font-weight: 500;
 }
 .callout {
-  margin-top: var(--s-4);
-  font-size: var(--t-small);
+  margin-top: var(--s-5);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.45;
   color: var(--fg-2);
   max-width: 60ch;
 }
-.grid {
+
+/* ---------- planks ---------- */
+.planks {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s-7) var(--s-4);
-  margin: 0;
-  padding: 0;
+  gap: var(--s-8);
+  margin-top: var(--s-4);
+}
+.plankScroll {
+  min-width: 0;
+}
+/* a short last row keeps the slot width of the full rows and ends after its last bottle */
+.ledge,
+.captions {
+  width: calc(var(--fill, 1) * 100%);
+}
+.slot {
+  position: relative;
+  display: block;
+  height: 170px;
+  min-width: 0;
+}
+.bottle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.bottleImg {
+  object-fit: contain;
+  object-position: center bottom;
+}
+.captions {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  margin: 12px 0 0;
+  padding: 0 6px;
+  list-style: none;
+}
+.captions li {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.capName {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-name-s);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  color: inherit;
+}
+.capName:hover,
+.capName:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+.capHouse {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+.capShare {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
 }
 .more {
-  margin-top: var(--s-5);
+  margin-top: var(--s-6);
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 20px;
+  gap: 4px var(--s-6);
+  font-size: var(--t-small);
+  font-weight: 600;
 }
+.more a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
 @media (min-width: 720px) {
-  .grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* tablet: the name takes the width, the sentence sits beneath it, the blotter stands at the right */
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) 140px;
+    grid-template-areas: 'identity blotter' 'smells blotter';
+    align-items: end;
   }
-  .perceived {
-    grid-template-columns: 1fr 1fr;
+  .identity {
+    grid-area: identity;
+    align-self: end;
+  }
+  .smellsBlock {
+    grid-area: smells;
+  }
+  .blotter {
+    grid-area: blotter;
+    position: static;
+    justify-self: end;
+    width: 120px;
+    height: 340px;
+    margin-bottom: calc(-1 * var(--s-7) - 64px);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .body {
+    padding-top: calc(64px + var(--s-9));
   }
   .two {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-10);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   }
 }
-@media (max-width: 480px) {
-  .blotter {
-    width: 30px;
+@media (min-width: 1100px) {
+  .heroGrid {
+    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(0, 34ch) minmax(0, 1fr);
+    grid-template-areas: 'identity smells blotter';
+  }
+  .two {
+    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(0, 1fr);
+  }
+}
+@media (max-width: 719px) {
+  .plankScroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .ledge,
+  .captions {
+    min-width: calc(var(--slots) * 112px);
+  }
+  .ledge > div:first-child > * {
+    scroll-snap-align: start;
+  }
+  .slot {
+    height: 130px;
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .slot {
     height: 150px;
+  }
+}
+@media (pointer: coarse) {
+  .more a,
+  .pairedLink {
+    min-height: 44px;
   }
 }

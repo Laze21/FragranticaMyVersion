@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { averageCharacter, getPerfumer } from '@/lib/data/people';
+import { averageCharacter, getPerfumer, housesWorkedWith, signatureTrail, yearsActive } from '@/lib/data/people';
 import { perfumerSlugs } from '@/lib/data/static-params';
 import { FragranceCard } from '@/components/cards/FragranceCard';
 import { CharacterBars } from '@/components/scent/CharacterBars';
+import { TrailThumb } from '@/components/scent/TrailThumb';
+import { TrailMark } from '@/components/shell/TrailMark';
 import { Icon } from '@/components/Icon';
 import { Term } from '@/components/ui/Term';
-import styles from '../../profile.module.css';
+import styles from '../../editorial.module.css';
 
 export const revalidate = 600;
 export async function generateStaticParams() {
@@ -28,60 +30,82 @@ export default async function PerfumerPage(props: PageProps<'/perfumer/[slug]'>)
   const d = await getPerfumer(slug);
   if (!d) notFound();
   const p = d.perfumer;
-  const houses = Array.from(new Map(d.cards.map((c) => [c.brandSlug, c.brandName])).entries());
+  const name = String(p.name);
+  const n = d.cards.length;
+  const houses = housesWorkedWith(d.cards);
+  const years = yearsActive(d.cards);
+  const trail = signatureTrail(d.cards);
+
   return (
-    <article className={`page ${styles.page}`}>
-      <header className={styles.head}>
+    <article className={`page ${styles.wide}`}>
+      <div className={`${styles.band} ${styles.bandWork}`}>
+        <header className={styles.identity}>
         <p className={styles.kicker}>
-          <Term slug="perfumer">Perfumer</Term>
-        </p>
-        <h1 className={styles.title}>{String(p.name)}</h1>
-        <p className={styles.facts}>
-          {p.country ? COUNTRY.of(String(p.country)) : null}
-          {p.born_year ? ` · born ${p.born_year}` : ''}
-          {houses.length ? (
-            <>
-              {' '}
-              · worked with{' '}
-              {houses.map(([s, n], i) => (
-                <span key={s}>
-                  {i > 0 && ', '}
-                  <Link href={`/house/${s}`}>{n}</Link>
-                </span>
-              ))}
-            </>
-          ) : null}
-        </p>
-        {p.bio ? <p className={styles.lede}>{String(p.bio)}</p> : null}
-        {p.source_url ? (
-          <p className={styles.links}>
-            <a href={String(p.source_url)} target="_blank" rel="noopener nofollow">
-              Source <Icon name="external" size={14} />
-            </a>
+            <Term slug="perfumer">Perfumer</Term>
           </p>
-        ) : null}
-      </header>
-      <section aria-labelledby="sig" className={styles.section}>
-        <h2 id="sig" className={styles.h2}>
-          Their work, in character
-        </h2>
-        <p className="t-meta">Average across {d.cards.length} fragrances in our catalogue. A small sample, not a verdict.</p>
-        <div style={{ marginTop: 12, maxWidth: 560 }}>
-          <CharacterBars vec={averageCharacter(d.cards)} label={`${p.name}'s character`} />
-        </div>
-      </section>
-      <section aria-labelledby="works" className={styles.section}>
-        <h2 id="works" className={styles.h2}>
-          Fragrances
-        </h2>
-        <ul role="list" className={styles.grid}>
-          {d.cards.map((c) => (
-            <li key={c.id}>
-              <FragranceCard card={c} />
-            </li>
-          ))}
-        </ul>
-      </section>
+          <h1 className={styles.title}>{name}</h1>
+          <p className={styles.facts}>
+            {[p.country ? COUNTRY.of(String(p.country)) : null, p.born_year ? `born ${p.born_year}` : null].filter(Boolean).join(' · ') || 'Where and when: not known yet'}
+          </p>
+          {p.bio ? <p className={styles.lede}>{String(p.bio)}</p> : <p className={`${styles.lede} ${styles.null}`}>No biography yet.</p>}
+          {p.source_url ? (
+            <p className={styles.links}>
+              <a href={String(p.source_url)} target="_blank" rel="noopener nofollow">
+                Source <Icon name="external" size={14} />
+              </a>
+            </p>
+          ) : null}
+        </header>
+        <section className={`${styles.catalogue} ${styles.workSection}`} aria-labelledby="works">
+            <div className={styles.catHead}>
+              <h2 id="works" className={styles.h2}>
+                {n === 1 ? 'One fragrance here' : `${n} fragrances here`}
+              </h2>
+            </div>
+            <ul role="list" className={styles.works}>
+              {d.cards.map((c) => (
+                <li key={c.id}>
+                  <FragranceCard card={c} showYear sizes="(max-width: 719px) 46vw, (max-width: 1100px) 30vw, 200px" />
+                </li>
+              ))}
+            </ul>
+        </section>
+
+        <aside className={styles.aside} aria-label={`${name} at a glance`}>
+          <div className={styles.asideBlock}>
+            {trail ? (
+              <figure className={styles.trail}>
+                <TrailThumb input={trail} size="feature" width={320} height={56} />
+                <figcaption className={styles.trailCap}>
+                  <TrailMark className={styles.trailMark} />
+                  Signature · averaged over {n}
+                </figcaption>
+              </figure>
+            ) : null}
+            <CharacterBars vec={averageCharacter(d.cards)} limit={5} label={`${name}'s character`} />
+            <p className={styles.sigNote}>{n === 1 ? 'One fragrance here, so this is its character, not a style.' : `Across ${n} fragrances here. A small sample, not a verdict.`}</p>
+          </div>
+          {houses.length > 0 && (
+            <div className={styles.asideBlock}>
+              <h2 className={styles.h3}>Worked with</h2>
+              <ul role="list" className={styles.houseList}>
+                {houses.map((h) => (
+                  <li key={h.slug}>
+                    <Link href={`/house/${h.slug}`}>{h.name}</Link>
+                    <span className="tnum">{h.count === 1 ? '1 fragrance' : `${h.count} fragrances`}</span>
+                  </li>
+                ))}
+              </ul>
+              {years && (
+                <p className={styles.years}>
+                  {years.from === years.to ? `Work here dates from ${years.from}.` : `Work here runs from ${years.from} to ${years.to}.`}
+                  {p.born_year ? '' : ' Earlier work may exist outside this catalogue.'}
+                </p>
+              )}
+            </div>
+          )}
+        </aside>
+      </div>
     </article>
   );
 }

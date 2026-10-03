@@ -1,98 +1,415 @@
+/*
+ * The notes index. One sticky strip of families with dipped swatches; each family opens with
+ * its three most-listed notes set larger, then the rest as 40px rows in four columns. On
+ * phones the families fold as <details> and the strip becomes a select.
+ */
+.browser {
+  min-width: 0;
+}
+.find {
+  margin-bottom: var(--s-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-6);
+}
+.find input {
+  max-width: 520px;
+  flex: 1 1 280px;
+}
+
+/* ---------- the strip ---------- */
 .bar {
   position: sticky;
   top: var(--header-h);
   z-index: 20;
   background: var(--porcelain);
-  padding: 12px 0;
   display: grid;
-  gap: 10px;
-}
-.bar input {
-  max-width: 520px;
-}
-.jump {
-  display: flex;
-  gap: 4px 14px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  font-size: var(--t-small);
-}
-.jump a {
-  white-space: nowrap;
-  min-height: 32px;
-  display: inline-flex;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
-  color: var(--fg-2);
-}
-.family {
-  margin-top: var(--s-8);
-  scroll-margin-top: calc(var(--header-h) + 110px);
-}
-.h2 {
-  font-size: var(--t-title-m);
-  font-weight: 650;
-  font-stretch: 115%;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--s-4);
-}
-.list {
-  display: grid;
-  gap: 2px var(--s-6);
-  margin: 0;
-  padding: 0;
-}
-.note {
-  display: flex;
-  gap: 14px;
-  padding: 12px 0;
+  padding: 4px 0;
   border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  min-height: 60px;
 }
-.note:hover .name {
-  text-decoration: underline;
+.bar[data-hidden] {
+  position: static;
+  border-bottom-color: transparent;
+}
+.bar[data-hidden] .strip,
+.bar[data-hidden] .select,
+.bar[data-hidden] .seg {
+  display: none;
 }
 .strip {
-  flex: none;
-  width: 12px;
-  height: 44px;
-  background: linear-gradient(to top, var(--hue) 0 40%, var(--paper) 40%);
-  clip-path: polygon(0 0, 100% 0, 100% 90%, 50% 100%, 0 90%);
-  box-shadow: inset 0 0 0 1px var(--line);
+  display: flex;
+  gap: 0 var(--s-3);
+  overflow-x: auto;
+  scrollbar-width: none;
+  min-width: 0;
 }
-.text {
+.strip::-webkit-scrollbar {
+  display: none;
+}
+.stripLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  min-height: 56px;
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--fg-2);
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+}
+.stripLink span {
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.stripLink:hover span,
+.stripLink:focus-visible span {
+  border-bottom-color: var(--line-strong);
+}
+.stripLink[aria-current] {
+  color: var(--ink);
+}
+.stripLink[aria-current] span {
+  border-bottom-color: var(--ink);
+}
+.letterLink {
+  min-width: 24px;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.select {
+  display: none;
+}
+.select select {
+  min-height: 44px;
+  width: 100%;
+}
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  white-space: nowrap;
+}
+/* Text toggles: the on state is the same ink underline the strip uses, so one idiom carries the page. */
+.seg {
+  display: inline-flex;
+  gap: var(--s-3);
+}
+.seg button,
+.descToggle {
+  all: unset;
+  cursor: pointer;
+  font-size: var(--t-small);
+  font-weight: 500;
+  color: var(--fg-2);
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+}
+.seg button[aria-pressed='true'] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.descToggle {
+  border-bottom: 1px dotted color-mix(in oklab, currentColor 50%, transparent);
+}
+.descToggle[aria-pressed='true'] {
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+.seg button:hover,
+.descToggle:hover {
+  color: var(--ink);
+}
+.seg button:focus-visible,
+.descToggle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.live {
+  min-height: 1lh;
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.live:empty {
+  display: none;
+}
+
+/* ---------- a family ---------- */
+.family {
+  margin-top: var(--s-6);
+  scroll-margin-top: calc(var(--header-h) + 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'head' 'leads' 'rows';
+  column-gap: var(--col-gap);
+}
+.family + .family {
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+.head {
+  grid-area: head;
+  list-style: none;
+  cursor: default;
+}
+.head::-webkit-details-marker {
+  display: none;
+}
+.headText {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-title-m);
+  letter-spacing: -0.005em;
+  line-height: 1.05;
+  text-wrap: balance;
+  font-variation-settings: 'opsz' 72;
+}
+.famCount {
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+.leads {
+  grid-area: leads;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3) var(--col-gap);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+}
+.lead {
+  display: flex;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+.lead:hover .leadName,
+.lead:focus-visible .leadName {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+.leadStrip {
+  flex: none;
+}
+.leadText {
   display: grid;
   gap: 2px;
   min-width: 0;
 }
-.name {
-  font-weight: 650;
+.leadName {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--t-h3);
+  line-height: 1.15;
 }
-.name em {
-  font-style: normal;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--fg-3);
-  margin-left: 4px;
-}
-.desc {
+.leadDesc {
   font-size: var(--t-small);
   color: var(--fg-2);
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-wrap: pretty;
 }
-.none {
-  padding: var(--s-7) 0;
+
+/* ---------- compact rows ---------- */
+.rows {
+  grid-area: rows;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--col-gap);
+  margin: var(--s-3) 0 0;
+  padding: 0;
 }
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 40px;
+  padding: 10px 0;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid var(--line);
+}
+.row:hover .name,
+.row:focus-visible .name {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+.glyph {
+  margin-top: 2px;
+}
+.rowText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.rowLine {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+.name {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--t-serif);
+  line-height: 1.1;
+  min-width: 0;
+}
+.listed {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+/* "descriptor": a word people use for what they smell, not a material. */
+.flag {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.02em;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.desc {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  line-height: 1.4;
+  padding-bottom: 2px;
+}
+
+/* ---------- A to Z ---------- */
+.letter {
+  margin-top: var(--s-6);
+  scroll-margin-top: calc(var(--header-h) + 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--col-gap);
+}
+.letterMark {
+  font-family: var(--font-serif);
+  font-size: var(--t-title-m);
+  line-height: 1;
+  color: var(--fg-3);
+  padding-top: var(--s-4);
+}
+
 @media (min-width: 720px) {
-  .list {
-    grid-template-columns: 1fr 1fr;
+  .rows {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .letter {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+  .letter .rows {
+    margin-top: 0;
   }
 }
 @media (min-width: 1100px) {
-  .list {
-    grid-template-columns: 1fr 1fr 1fr;
+  .family {
+    grid-template-columns: calc(3 * var(--col) + 2 * var(--col-gap)) minmax(0, 1fr);
+    grid-template-areas: 'head leads' 'rows rows';
+  }
+  .leads {
+    margin-top: 0;
+  }
+  .head {
+    padding-top: 2px;
+  }
+  .rows {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .letter {
+    grid-template-columns: calc(3 * var(--col) + 2 * var(--col-gap)) minmax(0, 1fr);
+  }
+}
+@media (max-width: 719px) {
+  .strip {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+  }
+  .tools {
+    justify-content: space-between;
+  }
+  .head {
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+  /* the fold mark: a chevron drawn in CSS, turned when the family is open */
+  .head::after {
+    content: '';
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid var(--fg-2);
+    border-bottom: 1.5px solid var(--fg-2);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform var(--d-quick) var(--ease-standard);
+  }
+  .family[open] > .head::after {
+    transform: rotate(-135deg) translate(-2px, -2px);
+  }
+  .family {
+    margin-top: var(--s-5);
+  }
+  .family + .family {
+    padding-top: var(--s-3);
+  }
+  .leads {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+  .leadDesc {
+    -webkit-line-clamp: 1;
+  }
+  /* two columns at 390 leave no room beside the name, so the count drops under it */
+  .rowLine {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .listed,
+  .flag {
+    white-space: normal;
+  }
+}
+@media (max-width: 480px) {
+  .strip {
+    display: none;
+  }
+  .select {
+    display: block;
+  }
+  .bar[data-hidden] .select {
+    display: none;
+  }
+}
+@media (pointer: coarse) {
+  .seg button,
+  .descToggle {
+    min-height: 44px;
+  }
+  .row {
+    min-height: 44px;
   }
 }

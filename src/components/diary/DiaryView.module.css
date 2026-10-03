@@ -1,3 +1,9 @@
+/*
+ * The diary is a database page, not a landing page: the title sits on the controls line, the
+ * calendars take the main columns with "This month" as a ruled aside beside them, and the wears
+ * run beneath at the full width grouped by week. Phones get one month at a time with the stat
+ * strip directly under the button.
+ */
 .wrap {
   display: grid;
   gap: var(--s-6);
@@ -6,200 +12,91 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--s-4);
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  min-height: 44px;
+}
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--s-4);
+  min-width: 0;
 }
 .title {
-  font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  margin: 0;
 }
 .sub {
-  margin-top: 8px;
+  margin: 0;
   font-size: var(--t-small);
-  color: var(--fg-2);
+  color: var(--fg-3);
 }
+
+/* Phone: strip, calendar, the rest. Desktop: calendar left, strip over the rest on the right. */
 .layout {
-  display: grid;
-  gap: var(--s-8);
+  grid-template-areas: 'strip' 'cal' 'rest';
+  row-gap: var(--s-7);
 }
-.main {
-  min-width: 0;
-}
-.h2 {
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
-  margin-bottom: var(--s-3);
+.strip {
+  grid-area: strip;
 }
 .cal {
-  margin-bottom: var(--s-8);
+  grid-area: cal;
 }
-.months {
+.rest {
+  grid-area: rest;
+}
+
+/* ---------- This month ---------- */
+.strip,
+.rest {
   display: grid;
-  gap: var(--s-6);
+  gap: var(--s-4);
+  align-content: start;
 }
-.monthName {
-  font-size: var(--t-small);
-  font-weight: 650;
-  margin-bottom: 8px;
+.strip {
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--ink);
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 3px;
+.asideTitle {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-serif-l);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
   margin: 0;
 }
-.day {
-  aspect-ratio: 1;
-  background: var(--paper);
-  position: relative;
-  min-width: 0;
-}
-.day > a,
-.day > span {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  text-decoration: none;
-}
-.day[data-worn] {
-  background: color-mix(in oklab, var(--ink) 8%, var(--paper));
-}
-.day[data-future] {
-  background: transparent;
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.day[data-today] {
-  box-shadow: inset 0 0 0 2px var(--ink);
-}
-.num {
-  font-size: 10px;
-  color: var(--fg-3);
-  font-variant-numeric: tabular-nums;
-  position: absolute;
-  top: 3px;
-  left: 4px;
-}
-.day > span.num {
-  position: absolute;
-  inset: auto;
-  top: 3px;
-  left: 4px;
-  display: block;
-}
-.dots {
+.stats {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-6);
+  margin: 0;
+}
+.stats div {
+  display: grid;
   gap: 2px;
 }
-.dots i {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6);
-}
-.entries {
-  margin-top: var(--s-4);
-}
-.list {
+.stats dd {
   margin: 0;
+  font-size: var(--t-figure-l);
 }
-.entry {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
-  gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  scroll-margin-top: calc(var(--header-h) + 20px);
-}
-.date {
-  display: grid;
-  line-height: 1.1;
-}
-.date b {
-  font-size: 1.6rem;
-  font-weight: 560;
-  font-stretch: 82%;
-}
-.date span {
-  font-size: 11px;
+.stats dt {
+  font-size: var(--t-label);
   color: var(--fg-3);
 }
-.items {
+.restSection {
   display: grid;
-  gap: 6px;
-  min-width: 0;
-}
-.item {
-  display: flex;
-  align-items: center;
   gap: 10px;
-  text-decoration: none;
-  min-width: 0;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
 }
-.thumb {
-  position: relative;
-  width: 30px;
-  height: 40px;
-  flex: none;
-  background: var(--scent-wash);
-}
-.thumb img {
-  object-fit: contain;
-}
-.itemName {
-  display: block;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.05rem;
-}
-.item:hover .itemName {
-  text-decoration: underline;
-}
-.itemMeta {
-  display: block;
-  font-size: 11px;
-  color: var(--fg-3);
-}
-.layered {
-  justify-self: start;
-  font-size: 10.5px;
+.eyebrow {
+  font-size: var(--t-label);
   font-weight: 650;
-  padding: 2px 8px;
-  border-radius: var(--r-pill);
-  background: color-mix(in oklab, var(--bergamot) 26%, var(--paper));
-}
-.ctx {
-  font-size: var(--t-micro);
-  color: var(--fg-2);
-}
-.note {
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  color: var(--fg-2);
-}
-.del {
-  align-self: start;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border: 0;
-  background: none;
+  font-stretch: 88%;
+  letter-spacing: 0.02em;
   color: var(--fg-3);
-  border-radius: var(--r-1);
-}
-.del:hover {
-  color: var(--oxblood);
-  background: color-mix(in oklab, var(--oxblood) 8%, transparent);
-}
-.side {
-  background: var(--paper);
-  padding: var(--s-5);
-  align-self: start;
+  margin: 0;
 }
 .top {
   display: grid;
@@ -208,21 +105,29 @@
 }
 .top li {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 80px 2ch;
+  grid-template-columns: minmax(0, 1fr) 72px 2.5ch;
   align-items: center;
   gap: 10px;
-  font-size: var(--t-small);
 }
-.top a {
+.topName {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: var(--t-serif-s);
+  text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.topName:hover {
+  text-decoration: underline;
+}
+.topN {
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-align: right;
+}
 .bar {
-  height: 6px;
+  height: 4px;
   background: var(--bg-sunk);
   position: relative;
 }
@@ -230,19 +135,413 @@
   position: absolute;
   inset: 0 auto 0 0;
   background: var(--ink);
+  transition: width var(--d-slow) var(--ease-evaporate);
 }
 .obs {
-  margin-top: var(--s-4);
+  display: grid;
+  gap: 8px;
+  margin: 0;
   font-size: var(--t-small);
+  line-height: 1.45;
+  color: var(--fg-2);
 }
-.empty {
-  padding: var(--s-6);
-  background: var(--paper);
-}
-.emptyTitle {
+.obsName {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-style: italic;
+  font-size: var(--t-serif-s);
+  color: var(--ink);
+  text-decoration: none;
 }
+.obsName:hover {
+  text-decoration: underline;
+}
+.quiet {
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+
+/* ---------- Calendar ---------- */
+.months {
+  display: grid;
+  gap: var(--s-6);
+}
+.month {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.monthHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  min-height: 36px;
+}
+.monthName {
+  font-size: var(--t-small);
+  font-weight: 650;
+  margin: 0;
+}
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.navBtn {
+  width: 44px;
+  height: 44px;
+  margin-block: -4px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1;
+  border-radius: var(--r-1);
+}
+.navBtn:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+.navBtn:disabled {
+  color: var(--stone);
+  cursor: default;
+}
+.navLink {
+  border: 0;
+  background: none;
+  min-height: 44px;
+  margin-block: -4px;
+  padding: 0 6px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  color: var(--ink);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 44px);
+  gap: 3px;
+  margin: 0;
+}
+/* Empty day: flat porcelain with a line. Wear day: a sheet of paper with a stronger edge, the bottle on it. */
+.day {
+  position: relative;
+  height: 44px;
+  min-width: 0;
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+.day > a,
+.day > span {
+  position: absolute;
+  inset: 0;
+  text-decoration: none;
+}
+.day[data-worn] {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.day[data-future] {
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 10%, transparent);
+}
+.day[data-future] .num {
+  color: var(--stone);
+}
+.day[data-today] {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.day[data-dim] {
+  opacity: 0.3;
+}
+.day > a:hover {
+  background: color-mix(in oklab, var(--ink) 5%, var(--paper));
+}
+.num {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-size: var(--t-micro);
+  line-height: 1;
+  color: var(--fg-3);
+}
+.day[data-worn] .num,
+.day[data-today] .num {
+  color: var(--ink);
+}
+.cellThumbs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  display: flex;
+  justify-content: center;
+  gap: 1px;
+}
+.cellThumb {
+  position: relative;
+  width: 18px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+.cellThumb img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+/* A single 14px bottle mark sits behind every thumb so a slow image never leaves the slot blank. */
+.ghost {
+  color: var(--stone-2);
+}
+.cellThumb .ghost {
+  width: 10px;
+  height: 10px;
+}
+/* Three or more wears in one day: dots, each ringed so the pale accents stay visible. */
+.dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+.dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ink) 25%, transparent);
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--s-3);
+  margin: var(--s-3) 0 0;
+}
+.legendBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 6px 0 2px;
+  border: 0;
+  background: none;
+  border-radius: var(--r-1);
+  color: var(--ink);
+}
+.legendBtn:hover,
+.legendBtn[aria-pressed='true'] {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+.legendBtn[aria-pressed='true'] .legendName {
+  text-decoration: underline;
+}
+.legendThumb {
+  position: relative;
+  width: 16px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+}
+.legendThumb img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+.legendThumb .ghost {
+  width: 10px;
+  height: 10px;
+}
+.legendName {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-serif-s);
+  line-height: 1.1;
+}
+.legendMore {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* ---------- Recent wears ---------- */
+.entries {
+  display: grid;
+  gap: 0;
+  margin-top: var(--s-4);
+}
+.h2 {
+  margin-bottom: var(--s-4);
+}
+.weekHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 4px;
+  min-height: 36px;
+  margin: 0;
+  padding: var(--s-5) 0 6px;
+  border-bottom: 2px solid var(--ink);
+  font-size: var(--t-small);
+  font-weight: 650;
+}
+.weekMeta {
+  font-weight: 400;
+  color: var(--fg-3);
+}
+.list {
+  margin: 0;
+}
+.row {
+  display: grid;
+  grid-template-columns: 56px auto minmax(0, 1fr) 44px;
+  align-items: center;
+  column-gap: 14px;
+  min-height: 56px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 20px);
+}
+.date {
+  display: grid;
+  gap: 2px;
+  line-height: 1;
+}
+.date b {
+  font-size: var(--t-figure-l);
+  font-weight: 560;
+}
+.date span {
+  font-size: var(--t-micro);
+  font-stretch: 88%;
+  color: var(--fg-3);
+}
+.thumbs {
+  display: flex;
+  gap: 2px;
+}
+.thumb {
+  position: relative;
+  width: 30px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+}
+.thumb img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+.body {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+.names {
+  line-height: 1.2;
+}
+.name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-name-s);
+  text-decoration: none;
+}
+.name:hover {
+  text-decoration: underline;
+}
+.plus {
+  color: var(--fg-3);
+}
+.meta {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note {
+  margin-top: 3px;
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-s);
+  line-height: 1.4;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+/* Delete is there on hover and focus for a mouse; a touch opens the row's sheet instead. */
+.del,
+.rowMore {
+  width: 36px;
+  height: 36px;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: var(--fg-3);
+  border-radius: var(--r-1);
+}
+.del {
+  opacity: 0;
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+.row:hover .del,
+.row:focus-within .del,
+.del:focus-visible {
+  opacity: 1;
+}
+.del:hover {
+  color: var(--oxblood);
+  background: color-mix(in oklab, var(--oxblood) 8%, transparent);
+}
+.rowMore {
+  display: none;
+  font-size: var(--t-sub);
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: var(--ink);
+}
+@media (pointer: coarse) {
+  .del {
+    display: none;
+  }
+  .rowMore {
+    display: grid;
+  }
+}
+.more {
+  padding-top: var(--s-5);
+}
+.moreCount {
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--fg-3);
+}
+.sheetItems {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+.sheetItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  text-decoration: none;
+}
+.sheetItem:hover .name {
+  text-decoration: underline;
+}
+.sheetBrand {
+  display: block;
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* ---------- Log a wear ---------- */
 .sheet {
   display: grid;
   gap: var(--s-4);
@@ -271,33 +570,40 @@
   min-height: 52px;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-1);
-  background: var(--paper);
+  background: transparent;
   text-align: left;
+}
+.opt:hover {
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
 }
 .opt[aria-pressed='true'] {
   border-color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--ink);
-  background: var(--white);
+  background: var(--scent-wash);
 }
 .optThumb {
   position: relative;
   width: 28px;
   height: 38px;
   flex: none;
+  display: grid;
+  place-items: center;
 }
 .optThumb img {
   object-fit: contain;
+  object-position: center bottom;
 }
 .optName {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: var(--t-serif-s);
   line-height: 1.15;
 }
 .found {
   margin: 4px 0 0;
   border: 1px solid var(--line);
   background: var(--paper);
+  box-shadow: var(--shadow-raised);
 }
 .found button {
   width: 100%;
@@ -323,33 +629,79 @@
   gap: 10px;
 }
 .stepper button {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-1);
-  background: var(--paper);
-  font-size: 1.1rem;
+  background: transparent;
+  color: var(--ink);
+}
+.stepper button:hover {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
 .stepper output {
   min-width: 2ch;
   text-align: center;
   font-weight: 650;
 }
-.logBtn[data-pressed] :global(svg) {
-  animation: press 300ms var(--ease-standard);
-}
-@keyframes press {
-  50% {
-    transform: translateY(2px) scaleY(0.94);
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 719px) {
+  .month[data-prev] {
+    display: none;
+  }
+  .grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    width: 100%;
+  }
+  .day {
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .row {
+    grid-template-columns: 48px auto minmax(0, 1fr) 36px;
+    column-gap: 10px;
+  }
+  .meta {
+    white-space: normal;
   }
 }
 @media (min-width: 720px) {
   .months {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, max-content);
+    gap: var(--s-7);
+  }
+  .month {
+    align-content: start;
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .stats {
+    gap: var(--s-3) var(--s-8);
+  }
+  .rest {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--s-8);
   }
 }
 @media (min-width: 1100px) {
   .layout {
-    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-areas: 'cal strip' 'cal rest';
+    grid-template-rows: auto 1fr;
+    row-gap: var(--s-5);
+  }
+  .rest {
+    gap: var(--s-5);
+  }
+  .restSection:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .del {
+    transition: none;
   }
 }
