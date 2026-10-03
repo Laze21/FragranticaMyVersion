@@ -37,6 +37,11 @@ for (const w of widths) {
         .map((el) => `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 40)}`);
       return { over, culprits };
     });
+    // SHOTS=<dir> also keeps a capture per route and width (FULL=1 for the whole page) for a visual pass.
+    if (process.env.SHOTS) {
+      const name = `${w}-${r.replace(/^\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home'}.png`;
+      await page.screenshot({ path: `${process.env.SHOTS}/${name}`, fullPage: process.env.FULL === '1' }).catch(() => {});
+    }
     results.push({ w, r, status, errors: [...new Set(errors)], overflow });
     await page.close();
   }
