@@ -154,7 +154,14 @@ export default async function FragrancePage(props: PageProps<'/fragrance/[slug]'
                 </Link>
               </SectionHead>
               <SectionBoundary label="Reviews">
-                <ReviewList slug={f.slug} initial={reviews.reviews} counts={reviews.counts} initialHasMore={reviews.hasMore} />
+                <ReviewList
+                  slug={f.slug}
+                  name={f.name}
+                  includesBaseline={st.includesBaseline}
+                  initial={reviews.reviews}
+                  counts={reviews.counts}
+                  initialHasMore={reviews.hasMore}
+                />
               </SectionBoundary>
             </section>
             <section className={`${s.section} ${styles.similar}`} aria-labelledby="similar">
@@ -164,7 +171,7 @@ export default async function FragrancePage(props: PageProps<'/fragrance/[slug]'
                 </Link>
               </SectionHead>
               <SectionBoundary label="If you like this">
-                <Similar groups={similar} name={f.name} />
+                <Similar groups={similar} name={f.name} status={f.status} />
               </SectionBoundary>
             </section>
             <Details f={f} />
