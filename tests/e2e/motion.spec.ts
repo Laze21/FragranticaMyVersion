@@ -7,7 +7,7 @@ test.describe('bottle stage and motion', () => {
     await expect(poster).toBeVisible();
     await expect(poster).toHaveAttribute('alt', /Sauvage|bottle/i);
     // The stage never blocks the ten-second read.
-    await expect(page.getByText(/what it smells like/i).first()).toBeVisible();
+    await expect(page.getByText(/smells like/i).locator('visible=true').first()).toBeVisible();
   });
 
   test('explore the scent scrolls to the journey with reduced motion', async ({ page }) => {

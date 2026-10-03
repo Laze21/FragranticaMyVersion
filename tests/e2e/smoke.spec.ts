@@ -38,14 +38,16 @@ test.describe('fragrance page', () => {
   test('answers the ten-second questions above the fold and shows provenance', async ({ page }) => {
     await page.goto('/fragrance/dior-sauvage');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Sauvage/);
-    await expect(page.getByText(/what it smells like/i).first()).toBeVisible();
-    await expect(page.getByText(/lasts/i).first()).toBeVisible();
-    await expect(page.getByText(/projection/i).first()).toBeVisible();
+    // The hero carries a long and a short kicker; one is hidden per breakpoint.
+    await expect(page.getByText(/smells like/i).locator('visible=true').first()).toBeVisible();
+    await expect(page.getByText(/lasts/i).locator('visible=true').first()).toBeVisible();
+    await expect(page.getByText(/projection/i).locator('visible=true').first()).toBeVisible();
     // Listed vs smelled is the differentiator; both columns are present.
-    await expect(page.getByRole('heading', { name: /^listed (by |\(per )/i }).first()).toBeVisible();
+    // Desktop: the column heading; phones: the fold's summary line ("Listed by Dior · 12 notes").
+    await expect(page.getByText(/^listed (by |\(per )/i).locator('visible=true').first()).toBeVisible();
     await expect(page.getByText(/what people smell/i).first()).toBeVisible();
     // Sources section names where facts come from.
-    await expect(page.getByText(/where this page.s facts come from/i).first()).toBeVisible();
+    await expect(page.getByText(/where (this page.s|the) facts come from/i).locator('visible=true').first()).toBeVisible();
     // Image provenance is stated: the stage carries an "Illustration" or "Photo" tag that opens the credit.
     await expect(page.getByRole('button', { name: /^(illustration|photo)$/i }).first()).toBeVisible();
   });

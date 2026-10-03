@@ -39,7 +39,8 @@ test.describe('account flows', () => {
     await dialog.getByRole('radio', { name: /^8 out of 10$/ }).first().click();
     await dialog.getByRole('button', { name: /save|done/i }).click();
     await expect(dialog).toBeHidden();
-    await expect(page.getByRole('button', { name: /your rating/i }).first()).toContainText('8/10');
+    // Desktop: the aside row reads "Your rating 8/10"; narrow screens: the section link flips to "Change your rating".
+    await expect(page.getByRole('button', { name: /your rating/i }).first()).toContainText(/8\/10|change your rating/i);
   });
 
   test('writes a quick take with an ownership and gifted disclosure, then deletes it', async ({ page }) => {
