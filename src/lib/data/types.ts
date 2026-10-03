@@ -39,6 +39,10 @@ export interface FragranceCard {
   posterSource: string | null;
   /** Where the nozzle is and, for layered illustrations, the separate shadow / body / cap renders. */
   posterLayers: StageLayers | null;
+  /** Real height, cap on, in millimetres: a shelf scales bottles against each other with it. */
+  bottleHeightMm: number | null;
+  /** 16px data URL of the poster for `placeholder="blur"`, generated at build. */
+  blurData: string | null;
   ratingAvg: number | null;
   ratingCount: number;
   reviewCount: number;

@@ -17,8 +17,20 @@ import { BOTTLE_PHOTOS } from '../src/seed/images';
 
 const brandNameOf = Object.fromEntries(CATALOG.brands.map((b) => [b.slug, b.name]));
 
+/**
+ * Per-bottle height, blur placeholder and stage layers, written by scripts/bottles/manifest.ts.
+ * Every catalogue slug must be in it (checked below), so a bottle rendered after the manifest was
+ * last built fails the seed instead of shipping without a height.
+ */
+type ManifestEntry = { heightMm: number; blur: string | null; poster: string | null; layers: Record<string, unknown> | null };
+const MANIFEST_PATH = path.join(process.cwd(), 'public', 'bottles', 'manifest.json');
+const MANIFEST: Record<string, ManifestEntry> = existsSync(MANIFEST_PATH) ? JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) : {};
+const manifestFor = (slug: string): ManifestEntry => MANIFEST[slug];
+
 /** Stage layers written by scripts/bottles/render.ts next to the poster, when they exist. */
 function layersFor(slug: string): string {
+  const fromManifest = manifestFor(slug)?.layers;
+  if (fromManifest) return json(fromManifest);
   const p = path.join(process.cwd(), 'public', 'bottles', `${slug}.layers.json`);
   return existsSync(p) ? json(JSON.parse(readFileSync(p, 'utf8'))) : 'null';
 }
@@ -80,7 +92,14 @@ const noteSlugs = new Set(NOTES.map((n) => n.slug));
 for (const slug of Object.keys(NOTE_VOCABULARY)) if (!noteSlugs.has(slug)) errors.push(`note missing: ${slug}`);
 for (const f of FRAGRANCES) if (!f.sources?.some((x) => x.field === 'identity')) errors.push(`${f.slug}: no identity source`);
 if (fragranceSlugs.size !== FRAGRANCES.length) errors.push('duplicate fragrance slug');
+if (!existsSync(MANIFEST_PATH)) errors.push('public/bottles/manifest.json missing: run npm run bottles:manifest');
 for (const f of FRAGRANCES) {
+  const m = manifestFor(f.slug);
+  if (!m) errors.push(`${f.slug}: not in public/bottles/manifest.json (run npm run bottles:manifest)`);
+  else {
+    if (!(m.heightMm > 0)) errors.push(`${f.slug}: manifest has no height`);
+    if (!f.noImage && !m.blur) errors.push(`${f.slug}: manifest has no blur placeholder`);
+  }
   if (!brandSlugs.has(f.brand)) errors.push(`${f.slug}: unknown brand ${f.brand}`);
   for (const p of f.perfumers) if (!perfumerSlugs.has(p)) errors.push(`${f.slug}: unknown perfumer ${p}`);
   if (f.flankerOf && !fragranceSlugs.has(f.flankerOf)) errors.push(`${f.slug}: unknown parent ${f.flankerOf}`);
@@ -260,6 +279,7 @@ insert(
     typical_size_ml: q(f.sizeMl),
     accent_hex: q(f.accent),
     bottle_spec: json(f.bottle),
+    bottle_height_mm: q(manifestFor(f.slug).heightMm),
     phase_heart_min: q(f.phases?.heartAtMin ?? 25),
     phase_drydown_min: q(f.phases?.drydownAtMin ?? 180),
     is_demo: 'false',
@@ -356,6 +376,7 @@ for (const f of FRAGRANCES) {
       data_source_id: q(id.source('renders')),
       status: q('approved'),
       layers: layersFor(f.slug),
+      blur_data: q(manifestFor(f.slug).blur),
       poster_url: 'null',
       model_version: 'null',
       animation_idle: 'null',
@@ -381,6 +402,8 @@ for (const f of FRAGRANCES) {
       data_source_id: q(id.source('photos')),
       status: q('approved'),
       layers: json({ nozzle: photo.nozzle ?? { x: 0.5, y: 0.03 } }),
+      // The cutout replaces the illustration at the same path, so the manifest's blur is the photo's.
+      blur_data: q(manifestFor(f.slug).blur),
       poster_url: 'null',
       model_version: 'null',
       animation_idle: 'null',
@@ -419,6 +442,7 @@ for (const f of FRAGRANCES) {
       data_source_id: q(id.source('renders')),
       status: q('approved'),
       layers: 'null',
+      blur_data: 'null',
       poster_url: q(`/bottles/${f.slug}.webp`),
       model_version: q('1'),
       animation_idle: q('Idle'),

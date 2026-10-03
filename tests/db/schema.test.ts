@@ -25,6 +25,15 @@ describe('migrations and seed', () => {
     for (const k of kinds) expect(['photo', 'poster']).toContain(k.kind);
   });
 
+  it('knows every bottle height and ships a blur placeholder with every primary image', async () => {
+    const missing = await one<{ n: string }>(
+      `select count(*) n from public.fragrances f
+        left join public.fragrance_primary_image p on p.fragrance_id = f.id
+        where f.bottle_height_mm is null or f.bottle_height_mm <= 0 or p.blur_data is null or p.blur_data not like 'data:image/%'`,
+    );
+    expect(Number(missing.n)).toBe(0);
+  });
+
   it('keeps official notes separate from perceived votes', async () => {
     const official = await one<{ n: string }>(`select count(*) n from public.fragrance_notes`);
     expect(Number(official.n)).toBeGreaterThan(200);

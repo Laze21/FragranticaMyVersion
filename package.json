@@ -12,6 +12,7 @@
     "test": "vitest run",
     "seed:generate": "tsx scripts/generate-seed.ts",
     "bottles": "tsx scripts/bottles/render.ts",
+    "bottles:manifest": "tsx scripts/bottles/manifest.ts",
     "images": "tsx scripts/images/ingest.ts",
     "db:reset": "rm -rf .data/pglite",
     "test:e2e": "playwright test"

@@ -4,14 +4,16 @@
  * Colour roles
  *  - The neutral interface is stable and recognisably ours: porcelain paper, ink text.
  *    Porcelain is pulled toward grey (not cream) on purpose: cream + terracotta is now the
- *    default "tasteful AI" look, and fragrance sites drift there by gravity.
+ *    default "tasteful AI" look, and fragrance sites drift there by gravity. The neutrals are
+ *    nudged a hair warm at equal lightness so the untinted pages stop reading cool.
  *  - Ink is the primary action colour. No coloured CTA buttons.
  *  - Oxblood, Bergamot and Juniper are signals, used in small doses with meaning:
  *      oxblood  = focus, favourite, destructive/attention
  *      bergamot = selection marks, "you" markers in charts
  *      juniper  = owned / positive confirmation
  *  - Each fragrance contributes ONE accent (--scent) that tints its stage and data marks.
- *    It is mixed into the neutrals at low strength so the UI never becomes the fragrance's brand.
+ *    Only its hue survives: the washes are derived at fixed lightness and clamped chroma,
+ *    so every page is tinted and none is loud.
  */
 :root {
   /* Neutrals */
@@ -20,9 +22,9 @@
   --ink-3: #6a645b;        /* meta text: 5.3:1 on porcelain, 4.9:1 on linen */
   --stone: #a79f93;        /* decorative only, never text */
   --stone-2: #c9c2b6;
-  --linen: #e6e2da;        /* wells, tracks, skeletons */
-  --porcelain: #f2f0eb;    /* page */
-  --paper: #fbfaf7;        /* raised: sheets, popovers, inputs */
+  --linen: #e5e0d6;        /* sunk: wells, tracks, skeletons, the demo banner, full-bleed data bands */
+  --porcelain: #f3f0ea;    /* page */
+  --paper: #fcfaf6;        /* raised: sheets, popovers, menus, inputs. Always with a --line border. */
   --white: #ffffff;
 
   /* Signals */
@@ -33,11 +35,17 @@
   --juniper: #607165;
   --juniper-ink: #445249;  /* 7.7:1 */
 
-  /* Per-fragrance accent. Overridden inline on fragrance pages. */
-  --scent: #8a8f8c;
-  --scent-wash: color-mix(in oklab, var(--scent) 14%, var(--porcelain));
-  --scent-wash-2: color-mix(in oklab, var(--scent) 26%, var(--porcelain));
-  --scent-ink: color-mix(in oklab, var(--scent) 55%, var(--ink));
+  /* The shelf plank: two faces, lit from above. */
+  --ledge-top: #cdbfa6;
+  --ledge-front: #8f8168;
+
+  /*
+   * Per-fragrance accent. Overridden inline wherever a fragrance (or a note) owns the element:
+   * fragrance page root, cards, shelf bottles, diary rows, the home feature, the note page.
+   * The fallback is warm stone (hue ~70deg) so untinted pages land warm, not cool grey.
+   * The derived washes are declared on the universal rule below, not here.
+   */
+  --scent: #9a8f80;
 
   /* Semantic */
   --bg: var(--porcelain);
@@ -46,8 +54,8 @@
   --fg: var(--ink);
   --fg-2: var(--ink-2);
   --fg-3: var(--ink-3);
-  --line: color-mix(in oklab, var(--ink) 14%, transparent);
-  --line-strong: color-mix(in oklab, var(--ink) 28%, transparent);
+  --line: color-mix(in oklab, var(--ink) 20%, transparent);        /* 1.60:1 on porcelain: visible as structure, quiet as a rule */
+  --line-strong: color-mix(in oklab, var(--ink) 36%, transparent); /* 2.44:1: input borders, popover edges, the stronger separators */
   --focus: var(--oxblood);
   --danger: var(--oxblood);
   --positive: var(--juniper-ink);
@@ -57,23 +65,31 @@
   --font-serif: var(--font-newsreader), Georgia, 'Times New Roman', serif;
 
   /*
-   * Type scale (fixed steps; components may not invent sizes).
-   * Fragrance names: Newsreader italic, like titles of works.
-   * Section heads & UI: Archivo, widened for headings, narrowed for dense labels.
-   * Prose (reviews, editorial, note pages): Newsreader roman.
+   * Type scale (fixed steps; components may not invent sizes; stylelint warns on literals).
+   * Newsreader roman is the display and reading voice (titles, section heads, ledes, prose).
+   * Newsreader italic means exactly one thing: a fragrance name.
+   * Archivo is the instrument: labels, data, buttons, nav, numbers.
+   * 12px is the floor. Nothing renders below it; smaller-than-neighbour is done with weight or colour.
    */
-  --t-title-xl: clamp(2.5rem, 1.6rem + 3.6vw, 5.25rem);
-  --t-title-l: clamp(2rem, 1.5rem + 2vw, 3.25rem);
-  --t-title-m: clamp(1.5rem, 1.25rem + 1vw, 2rem);
-  --t-head: clamp(1.25rem, 1.12rem + 0.5vw, 1.5rem);
-  --t-sub: 1.0625rem;
+  --t-title-xl: clamp(2.75rem, 1.9rem + 3.4vw, 4.5rem);    /* 44-72: object names (fragrance, note) */
+  --t-title-l: clamp(2.25rem, 1.8rem + 1.6vw, 3.25rem);    /* 36-52: page titles, home statement */
+  --t-title-m: clamp(1.625rem, 1.4rem + 0.8vw, 1.875rem);  /* 26-30: section h2 */
+  --t-h3: 1.25rem;          /* 20: in-section heads, utility-page titles, data-module heads */
+  --t-sub: 1.0625rem;       /* 17 */
   --t-body: 1rem;
-  --t-prose: 1.125rem;
-  --t-small: 0.875rem;
-  --t-label: 0.8125rem;
-  --t-micro: 0.75rem;
-  --t-figure-xl: clamp(2.25rem, 1.8rem + 1.8vw, 3.25rem);
-  --t-figure-l: 1.75rem;
+  --t-prose: 1.125rem;      /* 18: review bodies, note/learn/about prose */
+  --t-serif-l: 1.3125rem;   /* 21: ledes, pull quotes, feature summary */
+  --t-serif: 1.125rem;      /* 18 */
+  --t-serif-s: 1rem;
+  --t-name: 1.25rem;        /* 20: card names */
+  --t-name-s: 1.0625rem;    /* 17: row/inline names */
+  --t-small: 0.875rem;      /* 14 */
+  --t-label: 0.8125rem;     /* 13 */
+  --t-micro: 0.75rem;       /* 12: the floor */
+  --t-figure-xl: clamp(2.5rem, 2rem + 1.6vw, 3.5rem);      /* 40-56: hero score, "7-10 h" */
+  --t-figure-l: 1.75rem;    /* 28: diary dates, stat strips */
+  /* Retired step, kept as an alias until every module has moved to --t-h3. Do not use in new code. */
+  --t-head: var(--t-h3);
 
   /* Spacing: 4px base. Section rhythm deliberately varies (see layouts), no single padding. */
   --s-1: 4px;
@@ -89,9 +105,20 @@
   --s-11: 88px;
   --s-12: 120px;
 
+  /*
+   * Grid. Content is 1280 wide from 1100px up and never wider: twelve 85px columns with 24px
+   * gutters (12 x 85 + 11 x 24 = 1284). Every page measure is a run of these columns
+   * (globals.css .cols-* and .layout-*), so the left edge of the type lands on the same lines
+   * from page to page. Above 1600 the extra width goes to full-bleed bands, not to the columns.
+   */
+  --col: 85px;
+  --col-gap: 24px;
+  --content-max: 1280px;
+  --measure-read: 62ch;     /* prose */
+  --measure-form: 440px;
+
   --gutter: 16px;
-  --page-max: 1360px;
-  --measure: 66ch;
+  --page-max: calc(var(--content-max) + 2 * var(--gutter));
 
   /*
    * Radii have hierarchy. Most surfaces are square; softness is reserved.
@@ -107,50 +134,102 @@
   --r-3: 12px;
   --r-pill: 999px;
 
-  /* Elevation: only floating layers cast shadows; shadows are warm and low. Bottles get contact shadows in the render, not CSS. */
-  --shadow-pop: 0 1px 2px rgb(28 26 23 / 0.08), 0 8px 24px -6px rgb(28 26 23 / 0.18);
+  /*
+   * Elevation: only floating layers cast shadows; shadows are warm and low. Raised surfaces that
+   * do not float (inputs, the review empty state) get --shadow-raised, a single contact line.
+   * Bottles get contact shadows in the render, not CSS.
+   */
+  --shadow-raised: 0 1px 0 rgb(28 26 23 / 0.06);
+  --shadow-pop: 0 1px 2px rgb(28 26 23 / 0.1), 0 10px 28px -8px rgb(28 26 23 / 0.26);
   --shadow-sheet: 0 -12px 40px -12px rgb(28 26 23 / 0.28);
 
   /*
-   * Motion. Quiet by default so the few fragrance-specific moments (atomizer press, mist,
-   * notes rising) read as special. "evaporate" eases out like something lifting off skin;
-   * "settle" has a hair of overshoot for objects placed on a shelf.
+   * Motion. Quiet by default so the four signatures (atomizer press, cap lift and spray, the
+   * Trail drawing on, the shelf placement) read as special. "evaporate" eases out like something
+   * lifting off skin; "settle" has a hair of overshoot for objects placed on a shelf; "exit" is
+   * the ease-in every overlay and cap leaves with. JS reads these through src/lib/motion.ts.
    */
   --ease-evaporate: cubic-bezier(0.2, 0.7, 0.1, 1);
   --ease-settle: cubic-bezier(0.34, 1.32, 0.5, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --d-instant: 90ms;
   --d-quick: 160ms;
+  --d-exit: 160ms;
   --d-standard: 240ms;
   --d-slow: 420ms;
   --d-signature: 900ms;
 
-  --header-h: 60px;
+  /* Chrome. The header hides on scroll under 1100px (see the breakpoints below), so it is short there. */
+  --header-h: 48px;
   --tabbar-h: 0px;
 }
 
-@media (min-width: 720px) {
-  :root {
-    --gutter: 24px;
-    --header-h: 68px;
+/*
+ * Scent washes, recomputed per element. A custom property resolves var() where it is declared,
+ * so these cannot live on :root: they would be computed once from the fallback and every page
+ * would inherit the same grey. On the universal rule each element derives them from the --scent
+ * it inherits. Only the hue is taken from the accent; lightness is fixed (0.94 / 0.90 / 0.36) so
+ * ink stays >= 12:1 on every wash and --scent-ink stays >= 9:1 on porcelain. The chroma caps are
+ * low on purpose: at L 0.94 a chroma of 0.045 blue reads as sky, 0.030 reads as slate.
+ */
+* {
+  --scent-wash: oklch(from var(--scent) 0.94 clamp(0.012, calc(c * 0.6), 0.03) h);
+  --scent-wash-2: oklch(from var(--scent) 0.9 clamp(0.018, calc(c * 0.8), 0.045) h);
+  --scent-ink: oklch(from var(--scent) 0.36 clamp(0.04, c, 0.1) h);
+}
+@supports not (color: oklch(from red l c h)) {
+  * {
+    --scent-wash: color-mix(in oklab, var(--scent) 14%, var(--porcelain));
+    --scent-wash-2: color-mix(in oklab, var(--scent) 26%, var(--porcelain));
+    --scent-ink: color-mix(in oklab, var(--scent) 55%, var(--ink));
   }
 }
-@media (min-width: 1100px) {
-  :root {
-    --gutter: 40px;
-  }
-}
+
+/*
+ * Four breakpoints, and only these: 720 (tablet), 1100 (desktop), 1600 (large). 840 is allowed
+ * inside a module for a two-column fold that needs it. No module adds another.
+ */
 @media (max-width: 719px) {
   :root {
     --tabbar-h: 60px;
   }
 }
+@media (min-width: 720px) {
+  :root {
+    --gutter: 32px;
+    --content-max: 960px;
+    --header-h: 56px;
+  }
+}
+@media (min-width: 1100px) {
+  :root {
+    --gutter: 40px;
+    --content-max: 1280px;
+    --header-h: 64px;
+  }
+}
 
+/*
+ * Reduced motion: every duration goes to zero and the safety net below catches any animation or
+ * transition that forgot to reference a token. Final states render; nothing moves. The two
+ * things that must not even jump (card hover, the 3D auto-load) keep their own overrides.
+ */
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --d-instant: 0ms;
     --d-quick: 0ms;
+    --d-exit: 0ms;
     --d-standard: 0ms;
     --d-slow: 0ms;
     --d-signature: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,0 +1,1002 @@
+{
+  "acqua-di-gio": {
+    "heightMm": 117.3,
+    "blur": "data:image/webp;base64,UklGRuwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFIAAAARV6AgAAg05kE3X0REgPg19q8gGNW2reR8YU4FGmgAK8CUBhIEbgGsAEmdBBH9nwDenNuzYwAgXHoDMEodUEiSh2bf9z24U/zDfxFPZxDVueE5VlA4IHQAAADwAwCdASoQABUAPtFUo0uoJKMhsAgBABoJaQAD4dvIBN/x7WRrXmMAAP3PIhvTM8adKf+8WoiBgBRr2wMaGThihT8I0zhtTtAM5gvkbQSSHMIsOUkyUWxSP65f418nCfzgXHgmG3zxMjx4O7a2cK90MT3AAA==",
+    "poster": "/bottles/acqua-di-gio.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48543801254429886,
+        "y": 0.16939216379838884
+      },
+      "cap": {
+        "x": 0.37292595116949245,
+        "y": 0.09667031916204372,
+        "w": 0.2541480976610151,
+        "h": 0.12441298044514065
+      },
+      "shadow": "/bottles/acqua-di-gio.shadow.webp",
+      "body": "/bottles/acqua-di-gio.body.webp",
+      "capUrl": "/bottles/acqua-di-gio.cap.webp"
+    }
+  },
+  "angel": {
+    "heightMm": 75.4,
+    "blur": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSF4AAAARX6CgbSQUvwVmiIgAZL/BDyw3sKmtvUmKgQQMVAFggZW9zxwcgAcc4KCtHex1FHyJ6P8EkD+a2tkYAACMKWMERtkAKJjbn/If7QeAQffa/cBQ69LPK4SOJEIqpfAhVlA4IG4AAAAQBACdASoQABUAPtFUo0uoJKMhsAgBABoJZAC2yCHhQ3n9cJroYcIRIAD+boyuMexu/oAYHZ3dBg801sBXUplBLPYwF6A3RLOxgwcE9qF/OJK8ZZlMB3dGCIb6Pbwwyjkox5wQi3jjeUYx/1QAAA==",
+    "poster": "/bottles/angel.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4829356130188869,
+        "y": 0.2614353735807341
+      },
+      "cap": {
+        "x": 0.3710408736761639,
+        "y": 0.230373928175788,
+        "w": 0.2579182526476722,
+        "h": 0.08435226913237648
+      },
+      "shadow": "/bottles/angel.shadow.webp",
+      "body": "/bottles/angel.body.webp",
+      "capUrl": "/bottles/angel.cap.webp"
+    }
+  },
+  "aventus": {
+    "heightMm": 156.8,
+    "blur": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEEAAAART6A0khQ2imZQOUpaIiICOA5/lQIKAYBpVgRDCCOEAmkKA+gCZPwfQET/JwB2et2rthdMB4lEo5hlp5TPoOPObgBWUDggWgAAADADAJ0BKhAAFQA+0VSkS6gko6GwCAEAGglpAAPiWXcfMAAA/rnpUStJnWwb2ttGUJOZ18i+ZcvFYw1IDkMfLH9B5e+V99p9s2FfxXt0WXzu192T9/6FmAAAAA==",
+    "poster": "/bottles/aventus.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4891391263317179,
+        "y": 0.1720916198887833
+      },
+      "cap": {
+        "x": 0.3862670110556268,
+        "y": 0.09735100173312883,
+        "w": 0.22746597788874645,
+        "h": 0.11398611658301266
+      },
+      "shadow": "/bottles/aventus.shadow.webp",
+      "body": "/bottles/aventus.body.webp",
+      "capUrl": "/bottles/aventus.cap.webp"
+    }
+  },
+  "baccarat-rouge-540": {
+    "heightMm": 99,
+    "blur": "data:image/webp;base64,UklGRhQBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGoAAAARX6CgbSM3dgj2vvuPiIDG+nunPAs3sW2rzvkgAXoyQAqwRgdkgO7v+UdBnoS8OMi3F1YQ0f8JwBeTx11+cp7v6dn1sEQg8AzDV4CSmmbQgIkRbX+yj8+I3mtvnDENKBnnFxWwi3qIBXwOVlA4IIQAAAAwBACdASoQABUAPtFWpEwoJKOiMAgBABoJZQCsIL/goQ4E2bzH4f+wrQAA9vw9y9n8VY0RhBsQwpqDyr7YfMmdrqwM5jTQNDoXZxpwmb2jZs/+BaGzCMGxS+SEkLkOg2Hxg87KFF9ln+uKgSd63pwC7dVyqD/Q3iQLP0dtNuUrGJzmSAA=",
+    "poster": "/bottles/baccarat-rouge-540.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4808129260846459,
+        "y": 0.20953079380825235
+      },
+      "cap": {
+        "x": 0.3346352467725887,
+        "y": 0.0947166810335926,
+        "w": 0.3307295064548226,
+        "h": 0.17363641462214724
+      },
+      "shadow": "/bottles/baccarat-rouge-540.shadow.webp",
+      "body": "/bottles/baccarat-rouge-540.body.webp",
+      "capUrl": "/bottles/baccarat-rouge-540.cap.webp"
+    }
+  },
+  "black-opium": {
+    "heightMm": 95.7,
+    "blur": "data:image/webp;base64,UklGRvYAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGgAAAARX6C4bSQ1tn84ZsaICNCqfVwhmZLgtta2J3nI0KUKOlunyH1OnSMwgq191gl4nUDXI28Q0f8JoMvfp+r/bbF4XpzS9fU6AmEhyYSRJLmQlwI4l7KaYR95KYNTKSCcFJJSYDDdzBOD1lZQOCBoAAAAkAMAnQEqEAAVAD7RVqNLqCSjIbAIAQAaCWldgFlBE5Pf+EKByAD+7ocHvT//dQWNVvOcL1dDwzYUYe+dbHT3d+1wsXP623I9ln7F1yrspU9ykIJT7LrVyTpOfcTEEkf0kJlc4OpufAA=",
+    "poster": "/bottles/black-opium.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4811123953052126,
+        "y": 0.17641715883566955
+      },
+      "cap": {
+        "x": 0.3358367373839165,
+        "y": 0.09477798558802336,
+        "w": 0.328326525232167,
+        "h": 0.14410910049975534
+      },
+      "shadow": "/bottles/black-opium.shadow.webp",
+      "body": "/bottles/black-opium.body.webp",
+      "capUrl": "/bottles/black-opium.cap.webp"
+    }
+  },
+  "bleu-de-chanel-edp": {
+    "heightMm": 121.9,
+    "blur": "data:image/webp;base64,UklGRuQAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSF4AAAARX6CgbSM3dwz2BnD3HxEBvDYY8g0TTCNJtrL11EOewqKRWDJAU+Tz3EmQRwC/RaMuPP5EENH/CcBtOdndy4v6VjGRTQCSqmoEhtHMDiSZPYp/6B8l0rccgFRtJ3gOVlA4IGAAAADQAwCdASoQABUAPtFWpEuoJKOhsAgBABoJZQC7AB4aNhY1UTYIygAA/uNNSArsyWBgA2K9gFqMiAH4TMo0OIFRgU2vuW+oSPXJ2+S+vGZ6dFkrpvVDCwktXsIx20+eEAA=",
+    "poster": "/bottles/bleu-de-chanel-edp.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48447073646714145,
+        "y": 0.22322528736889535
+      },
+      "cap": {
+        "x": 0.26649379336575996,
+        "y": 0.09124001833838125,
+        "w": 0.4670124132684801,
+        "h": 0.1798712150908316
+      },
+      "shadow": "/bottles/bleu-de-chanel-edp.shadow.webp",
+      "body": "/bottles/bleu-de-chanel-edp.body.webp",
+      "capUrl": "/bottles/bleu-de-chanel-edp.cap.webp"
+    }
+  },
+  "bombshell": {
+    "heightMm": 139.6,
+    "blur": "data:image/webp;base64,UklGRtgAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEgAAAART6A0kiQ1efIk48sPgSIioEL+JjwLimpbiRxK6I5DAocqHiNABNdGMDM4NYjo/wSYlzNoK2q1KoDoRCLyCn8bfMP0CVpXXgNWUDggagAAAJADAJ0BKhAAFQA+0VakS6gko6GwCAEAGglnAAPi6MzmXLpOpwAA2XtQr/y80HxapqpQ48caPxKiEKCd4Fh8EmddsvkVF2lIb0NM1H/el5wH7XI3MPSWYsFA8lu3eHYQ/ALmbOBk5vQMAAA=",
+    "poster": "/bottles/bombshell.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.487775541466713,
+        "y": 0.14776571900011565
+      },
+      "cap": {
+        "x": 0.4077036792575775,
+        "y": 0.09844472808886995,
+        "w": 0.18459264148484505,
+        "h": 0.09369808188409096
+      },
+      "shadow": "/bottles/bombshell.shadow.webp",
+      "body": "/bottles/bombshell.body.webp",
+      "capUrl": "/bottles/bombshell.cap.webp"
+    }
+  },
+  "bvlgari-black": {
+    "heightMm": 71.4,
+    "blur": "data:image/webp;base64,UklGRugAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFwAAAARV6C2kaQ2+RV4B0SEPiICaEz6qasQrGrbinJRAzyggdM3NHAZwgBTBipQARpwczoniOj/BOCH7Tq2AHwsOVq4eFpP6bS5cmf1DwpJZusTSSar5yOEpdcQrbXGh1ZQOCBmAAAAsAMAnQEqEAAVAD7RVKRLqCSjobAIAQAaCWcAAFvqiSNyLdYsLQAA/tjbJBgrKzBXx9h3lso21L84ksL1R4EjfdY9cNLXpquw6w9uejvrPFpusGIp0jF5Mro3ZqKFI7uFZ/Q+mqAA",
+    "poster": "/bottles/bvlgari-black.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4829137123683968,
+        "y": 0.20999161817837425
+      },
+      "cap": {
+        "x": 0.11622201666303211,
+        "y": 0.22907980591575383,
+        "w": 0.7675559666739358,
+        "h": 0.035990763692001604
+      },
+      "shadow": "/bottles/bvlgari-black.shadow.webp",
+      "body": "/bottles/bvlgari-black.body.webp",
+      "capUrl": "/bottles/bvlgari-black.cap.webp"
+    }
+  },
+  "chanel-no-5": {
+    "heightMm": 86.4,
+    "blur": "data:image/webp;base64,UklGRhoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGsAAAARX6CokSQ1tgYYj18XEQHjUD/9jrfAqratKNfxezYAywAuGjgE0AimeIsG0ECMAA0wHqBGiOj/BODH3ZjSm5zNvcrZBMA8bhvrPMZ4B5yCiIZfbiUD7rEfTEQQfdBayR446NKiB1DzbavxHQBWUDggiAAAANADAJ0BKhAAFQA+0VSjS6gkoyGwCAEAGgliALsBRgA2GkUN2RlfvAD8VKLytJqwwOqX6svat06vuJVSJJn6SKPqitDNc3QNqRxv2h0wQ4KSTKdDZmuDhcYqJUSNkxT4SaL0YUnjKNZuaMmXjDXKq/RM+PCV8zq2AsOhd7Fz06RIqAiQQMa+YAA=",
+    "poster": "/bottles/chanel-no-5.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4779342953411697,
+        "y": 0.1754283452295508
+      },
+      "cap": {
+        "x": 0.26116606408596915,
+        "y": 0.09169670620218245,
+        "w": 0.47766787182806164,
+        "h": 0.15291601833999646
+      },
+      "shadow": "/bottles/chanel-no-5.shadow.webp",
+      "body": "/bottles/chanel-no-5.body.webp",
+      "capUrl": "/bottles/chanel-no-5.cap.webp"
+    }
+  },
+  "cheirosa-62": {
+    "heightMm": 171.6,
+    "blur": "data:image/webp;base64,UklGRsoAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSDwAAAARP6CmbSM4160YXjI3XkQE/hJOUBPJVkMFBpACArIE6tzjv/7RQUT/J8BITgt9ByUPlQC9oda1rliOkDBWUDggaAAAALADAJ0BKhAAFQA+0VakS6gko6GwCAEAGgllAMKAFxPINYezbf6AAPb2mqHS/8bCMaoYrYX7jJ+wSEx5VxzFBztph5OK0hEbhdiLNeTWfhtioiPoQoMyjp6u+yeF3Yekotm/2FqwvNQA",
+    "poster": "/bottles/cheirosa-62.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.49007698876962436,
+        "y": 0.15721472270495618
+      },
+      "cap": {
+        "x": 0.41573869601575103,
+        "y": 0.09885468107480355,
+        "w": 0.168522607968498,
+        "h": 0.09454675408266555
+      },
+      "shadow": "/bottles/cheirosa-62.shadow.webp",
+      "body": "/bottles/cheirosa-62.body.webp",
+      "capUrl": "/bottles/cheirosa-62.cap.webp"
+    }
+  },
+  "chergui": {
+    "heightMm": 145.2,
+    "blur": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEsAAAARV6C2kaQ2+ZkNLR6KICIC9LZub+EfYBQAICMa6KCBFwH2nwQzgQIrwUW4qGaDiP5PALj5sdlvZpXOMJkgy+GkpFdjlWclvfJuchsAVlA4IHAAAACQAwCdASoQABUAPtFapEwoJSOiMAgBABoJQApgAK0Va9+914EAAP4WWUqtd0z4CmcQfEZFWq4t2DIPB+fElmTOaiWpbUkI4QRjeFnSyGQ7xhwxLZSMp7K39yE1yOhOmIMAn9vn9TPyxUwJ1Vx4+AAA",
+    "poster": "/bottles/chergui.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4882650929199543,
+        "y": 0.17552873575896688
+      },
+      "cap": {
+        "x": 0.4102239004216489,
+        "y": 0.09857330781573975,
+        "w": 0.17955219915670217,
+        "h": 0.11860693444367337
+      },
+      "shadow": "/bottles/chergui.shadow.webp",
+      "body": "/bottles/chergui.body.webp",
+      "capUrl": "/bottles/chergui.cap.webp"
+    }
+  },
+  "club-de-nuit-intense-man": {
+    "heightMm": 158.8,
+    "blur": "data:image/webp;base64,UklGRsQAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEMAAAARP0AkAGGB5P8cK5zggBsRETjlNVAV20rEEIEEuEQwgVKBCA4N7P+xLwEi+j8BsDPHHrleST1rHVbFjsgnYMBWO7sBAFZQOCBaAAAAcAMAnQEqEAAVAD7RVKNLqCSjIbAIAQAaCWkNsAACF9/0unWAAP7jS7ToIbt81fRkUMYiaTJ+8ZSLrTbKXb9s1YbBVRceTxZuEczMTXUeZlV6Bp4z98IUAAAA",
+    "poster": "/bottles/club-de-nuit-intense-man.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4892810155606164,
+        "y": 0.18083078343155007
+      },
+      "cap": {
+        "x": 0.408750240876459,
+        "y": 0.09849812557756132,
+        "w": 0.18249951824708194,
+        "h": 0.12044313410326657
+      },
+      "shadow": "/bottles/club-de-nuit-intense-man.shadow.webp",
+      "body": "/bottles/club-de-nuit-intense-man.body.webp",
+      "capUrl": "/bottles/club-de-nuit-intense-man.cap.webp"
+    }
+  },
+  "coco-mademoiselle": {
+    "heightMm": 114.4,
+    "blur": "data:image/webp;base64,UklGRgIBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFsAAAARV6CokSQ1uAp49/h+HBEBmoP+ioETDCLZavMAA0ioAtIENA1YQAIfCT8SsIDN9CiI6P8E4EVdd3HS2j3jYxwk0AXnVgXMlFI+FCL6Rfce88mcuRYFQA/bJPAcAFZQOCCAAAAAEAQAnQEqEAAVAD7RVqRLqCSjobAIAQAaCWcAvzmLLKz0XI/N4jiMqVwA/dGH/QTRFZv2tuDhBn3WuSYucMwXhzAdZV/N7fPC82aGtuagYmordIX9RLCb834Ok8xTV4rZVSqi5Adj6f5RuFtaXW3d5+Q9LPdzewmhz2eVtDssAAA=",
+    "poster": "/bottles/coco-mademoiselle.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48341862093253685,
+        "y": 0.20415327115423537
+      },
+      "cap": {
+        "x": 0.35966773228823673,
+        "y": 0.09599387648507207,
+        "w": 0.2806645354235266,
+        "h": 0.15937230388625495
+      },
+      "shadow": "/bottles/coco-mademoiselle.shadow.webp",
+      "body": "/bottles/coco-mademoiselle.body.webp",
+      "capUrl": "/bottles/coco-mademoiselle.cap.webp"
+    }
+  },
+  "cool-water": {
+    "heightMm": 145.2,
+    "blur": "data:image/webp;base64,UklGRtoAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEsAAAARR6AmkhQ2SJ1zyeCPiAjAnXc9B9MAANLgXCCZBJEXeIKuyy55r7s8ENH/CQBP9uZosweuBryLTSN23bKof7TLwt/x8yp3AGh4dB0AVlA4IGgAAABQBACdASoQABUAPtFUo0uoJKMhsAgBABoJQBdkAPQRm6AFDLca+qQ/Q90QAP0hAgsIzhQG0wtyIPLvU2lJ7Yiu/y4iTNY3Q3o39QemnX/TrH6N0mfGrk7Y76VZycoE/6xmlRrK8z+AAA==",
+    "poster": "/bottles/cool-water.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4882505304361596,
+        "y": 0.146032294910373
+      },
+      "cap": {
+        "x": 0.39993210670515733,
+        "y": 0.09804821290915294,
+        "w": 0.20013578658968534,
+        "h": 0.09101375006161733
+      },
+      "shadow": "/bottles/cool-water.shadow.webp",
+      "body": "/bottles/cool-water.body.webp",
+      "capUrl": "/bottles/cool-water.cap.webp"
+    }
+  },
+  "daisy": {
+    "heightMm": 92.4,
+    "blur": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSHMAAAARX6CojSQ0dA7wxxQRAfocaMVkBgatrS35P0YAK8D+BFgAb6AFNMEHCRgJNAF/A/a3wyFBRP8FJIlBY8iLnKEVDxvny07je8INPbApNQPQ8yQOowT0qUfsKtDHHzRvxxhjNejDustAC3JEVIFIskwVco0AAFZQOCB+AAAAsAMAnQEqEAAVAD7RVqNLqCSjIbAIAQAaCWMAA+NI+BVR7zH3T4AA/Kxx6wGxHxgRlCn167yRPIUEGaB2XFAFvh4kOEIlBG9FzBRXnHT1EoFNrZNQvaK+VyqsXyZXU56bReoHUka2/o3FB7XSdfy4ProSdVK5uyxv15xYBAAA",
+    "poster": "/bottles/daisy.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.47942961011277696,
+        "y": 0.22053372014940198
+      },
+      "cap": {
+        "x": 0.11278943993413171,
+        "y": 0.08339784312758436,
+        "w": 0.7744211201317366,
+        "h": 0.2020095070020682
+      },
+      "shadow": "/bottles/daisy.shadow.webp",
+      "body": "/bottles/daisy.body.webp",
+      "capUrl": "/bottles/daisy.cap.webp"
+    }
+  },
+  "dior-homme-intense": {
+    "heightMm": 142.3,
+    "blur": "data:image/webp;base64,UklGRtQAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFAAAAART6CkkSQ2ePQr60oefUQEdujiPQJMAgBowwtABRREQCIhwuz33/8F2BLzSRDR/wkAKU/t+ivXZxxqHYg1bhu3jveVxYiwPVn9vNwClEFHJFZQOCBeAAAA0AMAnQEqEAAVAD7RWKRMKCUjojAIAQAaCWcAFF/BJozCpziELr5gAP7Y7w6S+Ce//NZTeJoQjhp7+HL/KVkmJfu6llkz+uwB/+VU5W53lFx6O3uhHjA+55JshYqAAA==",
+    "poster": "/bottles/dior-homme-intense.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48803172169203374,
+        "y": 0.19149850367072768
+      },
+      "cap": {
+        "x": 0.39782667284498835,
+        "y": 0.09794078877651108,
+        "w": 0.20434665431002325,
+        "h": 0.13548984219624877
+      },
+      "shadow": "/bottles/dior-homme-intense.shadow.webp",
+      "body": "/bottles/dior-homme-intense.body.webp",
+      "capUrl": "/bottles/dior-homme-intense.cap.webp"
+    }
+  },
+  "dior-sauvage": {
+    "heightMm": 132.1,
+    "blur": "data:image/webp;base64,UklGRtoAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFMAAAARX6AkABA0SCKRPDkREUCTwY8vEWAT2baT88klJuj/oCCZQQblo6NLDrgS+AKJAiL6PwHcOJ4hA5hDKG7xy7YNMTSTmcXQSNIv+EPaI6Cs+8pxHQBWUDggYAAAANADAJ0BKhAAFQA+0VymTKglI6IwCAEAGglnAABUYuLxm+VrIsH5gAD+2Vydx95cTqrvae8kFBogU5tCxn5YskB8idRjWZkfH9MtTj3YAiVEskcXqy+JS+3Z/L56+y8AAA==",
+    "poster": "/bottles/dior-sauvage.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48570672247469665,
+        "y": 0.2527563339159916
+      },
+      "cap": {
+        "x": 0.3101872541585221,
+        "y": 0.09346931553706284,
+        "w": 0.3796254916829558,
+        "h": 0.20449098152824274
+      },
+      "shadow": "/bottles/dior-sauvage.shadow.webp",
+      "body": "/bottles/dior-sauvage.body.webp",
+      "capUrl": "/bottles/dior-sauvage.cap.webp"
+    }
+  },
+  "eau-sauvage": {
+    "heightMm": 117.3,
+    "blur": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSG8AAAARX6CokSQ1tw4YX7sHERGA49n6NVvgptq2JXvQ2Zk/GngCDrvDChMJrAFUeGkgDSCe/NIgov8TgB+y8+BvznUJN0bE3/IgCgGwuix7HkimcZwloLnJf1lepp8REclQ2m3fV4tT7GLoYg2AqqocPgQAVlA4IHQAAADQAwCdASoQABUAPtFWpEuoJKOhsAgBABoJZQAD4fk/YOqBLr/u/kAA73BxQP9wsUBZWwiHQKOlnyyrZSw7zLqfrPQiCWEQf38UfZi/xLe8bEfxJPox1/MGkWmorfLEOk+M7g9JqMKn7m22MN3BGuhcQwgAAA==",
+    "poster": "/bottles/eau-sauvage.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4830006066304636,
+        "y": 0.16266741796210865
+      },
+      "cap": {
+        "x": 0.30665498385896617,
+        "y": 0.09328909351314918,
+        "w": 0.38669003228206766,
+        "h": 0.12856284969948933
+      },
+      "shadow": "/bottles/eau-sauvage.shadow.webp",
+      "body": "/bottles/eau-sauvage.body.webp",
+      "capUrl": "/bottles/eau-sauvage.cap.webp"
+    }
+  },
+  "flowerbomb": {
+    "heightMm": 102.4,
+    "blur": "data:image/webp;base64,UklGRggBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGEAAAARV6CobSM2WQC3F4LT/S8iAtP75HYzcFBt24s9Gng0WBUUUGGLQAICON4CxivAenPiHwki+j8B+OZU3+3tOzcViR1gEBGpgEVVtf9aA8x/ZLY14GRmVpPJqNpFBOl7JJ4BAFZQOCCAAAAA8AMAnQEqEAAVAD7RVKRLqCSjobAIAQAaCWUAwoGL6n50nJ3TlbpAMAD9zwqZ3kgSA1/S/WUnCYjafPPMn8w2e0MqCRn5/DD484JxaAWjcseXd+cG2ux994yH+uJhjh7LYFiZK/8l+ggfz8PPKihOZe9ikcf/vPsd7Dkt3S2rgAA=",
+    "poster": "/bottles/flowerbomb.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4814355101982849,
+        "y": 0.1790027668531063
+      },
+      "cap": {
+        "x": 0.3624519691659379,
+        "y": 0.09613592310959967,
+        "w": 0.27509606166812417,
+        "h": 0.1412244939725522
+      },
+      "shadow": "/bottles/flowerbomb.shadow.webp",
+      "body": "/bottles/flowerbomb.body.webp",
+      "capUrl": "/bottles/flowerbomb.cap.webp"
+    }
+  },
+  "good-girl": {
+    "heightMm": 150.4,
+    "blur": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSG0AAAARV6CmbSQ2dgBuK9PXiAio9i/NNZzItvY0Hx0cFt8dFotjA82lF8cSIpmonpm7gwzb7EuI6P8EyJobc6y11rrZI2nXaYMNmIMWrMEDnMETvMELksEbssEHisEXmsEPriLi/vv+roi4+bH0FVkOAFZQOCBoAAAAcAMAnQEqEAAVAD7RWqZLqCWjobAIAQAaCWcAxvQybehte/GAAP7sNq/8bE1KnI0LUJMUZcEZRI7RlX1vC0H693O8kb3rBS0b0v2UC25eP3P/HnVKUUwGaSUooylb9Ta7xz/8A8c0AAA=",
+    "poster": "/bottles/good-girl.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48810246891675485,
+        "y": 0.2872399083964554
+      },
+      "cap": {
+        "x": 0.4390199826800048,
+        "y": 0.10004252120197898,
+        "w": 0.12196003463999044,
+        "h": 0.22597127168913644
+      },
+      "shadow": "/bottles/good-girl.shadow.webp",
+      "body": "/bottles/good-girl.body.webp",
+      "capUrl": "/bottles/good-girl.cap.webp"
+    }
+  },
+  "grey-vetiver": {
+    "heightMm": 99,
+    "blur": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGQAAAARX6AokqQ2eA5yPuBFRARkt33ksmdwVGvbEr3Y3lKwdWkAawIQwSUJzATQ92/AF2+8QUT/JwA/bA5lPrUi1kfBQCYesJ3P53MJXEmy+ouIerp8VgAXkl+IesVDlA/YQT2vLr4HVlA4IIQAAACwAwCdASoQABUAPtFUpEuoJKOhsAgBABoJZwAD4x5NKM2GdUkAAADHbWOKqDinaXVK6MfywTQ+5S/QC6XzDPmV9Qwv5VYKk3WoRnx6ytD5qLRpTbdrui0HsvK/yBMu90Ogwji/gguxErMg96kytxPrFYnzPY+T2s4lJhdagaVYKwH1AAA=",
+    "poster": "/bottles/grey-vetiver.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4808129260846459,
+        "y": 0.20953079380825235
+      },
+      "cap": {
+        "x": 0.32601835467050644,
+        "y": 0.09427703668084975,
+        "w": 0.3479632906589871,
+        "h": 0.17408733145936306
+      },
+      "shadow": "/bottles/grey-vetiver.shadow.webp",
+      "body": "/bottles/grey-vetiver.body.webp",
+      "capUrl": "/bottles/grey-vetiver.cap.webp"
+    }
+  },
+  "gypsy-water": {
+    "heightMm": 122.2,
+    "blur": "data:image/webp;base64,UklGRgABAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGkAAAARX6AmkiQ1dwIYMvzwIyIgrT8e5ZMCo9i2m3zaPh5w0PZ93y2kGEhQAFFAc4AE5stLKBIi+j8B8GOG6BsNYvCuHMfESOO4NxSl6p2klBl6Wiw34k9SKRullllrDgBkvU7hAJBoqEMHvgMAVlA4IHAAAADQAwCdASoQABUAPtFcpkyoJSOiMAgBABoJZQAD4ok+VyHV77PpTQAA74WaFQnFjpFHbRZPX4Vch8Njw8TXQvxp53z40yPtK9T47wdC1+3B4iB8Dx60Z2cxLv0Sb3nK5cOc+XtjkmOmdFD9PFs/DKgA",
+    "poster": "/bottles/gypsy-water.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4852595122579533,
+        "y": 0.19174575897463375
+      },
+      "cap": {
+        "x": 0.28544051359081984,
+        "y": 0.09220671109638306,
+        "w": 0.42911897281836037,
+        "h": 0.14876134049514889
+      },
+      "shadow": "/bottles/gypsy-water.shadow.webp",
+      "body": "/bottles/gypsy-water.body.webp",
+      "capUrl": "/bottles/gypsy-water.cap.webp"
+    }
+  },
+  "hawas": {
+    "heightMm": 76.4,
+    "blur": "data:image/webp;base64,UklGRggBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGsAAAARX6CobSQ3twh6f+3eRURA1Obwn8CC02rbluzGOoyg3RYgE0lktqDDb9El+8sGMJ6zQUT/J4A1M3/AbBull3Sd3gvaRutVu10OJCIiBhx7Kbx6B3j3nvAZUCa8R869A2ZxF5FSAew4di0WBwBWUDggdgAAAPADAJ0BKhAAFQA+0VSjS6gkoyGwCAEAGglAGFADwtyDUkyv2vBnYN4A/nGZzCSAB4oH6pUF7z7VBhtK7OVjyQdLbOySmzzO/dQLPZ2iSpVzaxRGKgUy1iQDRn+w4eHrLWOEIO6AEwfB/nEqSDkMVdJgHnuAAAA=",
+    "poster": "/bottles/hawas.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.47996876018654766,
+        "y": 0.2511029586917422
+      },
+      "cap": {
+        "x": 0.29531414997419814,
+        "y": 0.1576381454077045,
+        "w": 0.4093717000516037,
+        "h": 0.1602389041290348
+      },
+      "shadow": "/bottles/hawas.shadow.webp",
+      "body": "/bottles/hawas.body.webp",
+      "capUrl": "/bottles/hawas.cap.webp"
+    }
+  },
+  "jadore": {
+    "heightMm": 157.3,
+    "blur": "data:image/webp;base64,UklGRuwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGEAAAARX6C2kaQ2+h4PkYeUiAhor/XT9ccxwCQAICfPHgqFXg12AAoQ4WmwCmDPIe8cngbUu18RIvo/AcLlnaqezObNVdesqIbFZytgxCRgzHbAxEwCxgrSgBWRYvu/khVd6zFbAFZQOCBkAAAAsAMAnQEqEAAVAC6ZaLRaIqgoKAgAmEoAVH7b0fwAYwauWjMBPyQA7MhnLLX0RPLpAGTlaoPeuk29jw3bcPd2c5dx5piTpyKCsod6lShqWnEzkcajvX3Pk1V4jTIxDvEd2oAAAA==",
+    "poster": "/bottles/jadore.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4874172105459658,
+        "y": 0.2579519687722662
+      },
+      "cap": {
+        "x": 0.4415410621330353,
+        "y": 0.10017115437236435,
+        "w": 0.11691787573392948,
+        "h": 0.19950480684017335
+      },
+      "shadow": "/bottles/jadore.shadow.webp",
+      "body": "/bottles/jadore.body.webp",
+      "capUrl": "/bottles/jadore.cap.webp"
+    }
+  },
+  "jazz-club": {
+    "heightMm": 106.7,
+    "blur": "data:image/webp;base64,UklGRhwBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGoAAAARX6CgjSQ1dwL47pk/IgLSbcN+YB8FbGprb/LlxEDigBMLWGBi7jCDBH4kYKDunb0jr0uI6P8E4M/GvJvDG5H77KIrpTNAs23b4IBGRPRPP03pZT3PD2U93RARvUuy9MaK4pgDgJBKXj4CVlA4IIwAAABQBACdASoQABUAPtFUo0uoJKMhsAgBABoJZgBTAFu+oe/Kr1hjjSMAqg1sAMZ6LtTzTU4f2E2UXGvHln580HmBm7L5A9Cu9seQEx0ExEY47aNZcWc82D/rw/As4dU2bS0HQ+P54gH9Kkek8/nhG66DO3DzngYXSyJdKH72N+wwIbPUibX/N+n8W6ioAA==",
+    "poster": "/bottles/jazz-club.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4839678137632641,
+        "y": 0.16166163522744886
+      },
+      "cap": {
+        "x": 0.37814477928493284,
+        "y": 0.0969365976163834,
+        "w": 0.24371044143013432,
+        "h": 0.12153900013954355
+      },
+      "shadow": "/bottles/jazz-club.shadow.webp",
+      "body": "/bottles/jazz-club.body.webp",
+      "capUrl": "/bottles/jazz-club.cap.webp"
+    }
+  },
+  "khamrah": {
+    "heightMm": 99.4,
+    "blur": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSF4AAAARX6C4bSQ1tn/eY4aICKgbv7Rv5UYwim27yR0wwEQBRQFLLLDuCMEDDhIMpDlI5NFRENH/CeDFPPj0kMWYHAgeoKzMXgqQSik1g3HOueU3Lej3gj9zIfoG6m6Vm+A5VlA4IHgAAADQAwCdASoQABUAPtFUpEuoJKOhsAgBABoJQBOkBsg4WFqbByzVNZgA/hH+0nM3KARmuWxBm/dwRSILLAw0CO8U/RfL/J0RIrijRcCqlWhfiUQkGrqb2hkQMTSriOMQLqDL4Iga9GXWXEjRaPev/ZayVdp7MRTEAAA=",
+    "poster": "/bottles/khamrah.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48089344024822256,
+        "y": 0.2121807297638117
+      },
+      "cap": {
+        "x": 0.28934992621874583,
+        "y": 0.09304871071214788,
+        "w": 0.4213001475625084,
+        "h": 0.17785677527983074
+      },
+      "shadow": "/bottles/khamrah.shadow.webp",
+      "body": "/bottles/khamrah.body.webp",
+      "capUrl": "/bottles/khamrah.cap.webp"
+    }
+  },
+  "la-vie-est-belle": {
+    "heightMm": 96.3,
+    "blur": "data:image/webp;base64,UklGRhoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSHEAAAARX6CgbRs2VgbdfwQWEQGrjfOnXcNRbdtO8+jTbuCDAnBQHHQEtGHn/SFDMJAiIS8OYq/HQUT/JwB+2BOpTxuR9uJx1wD0IKxzLwA9dhljCegnjojtm+4vx/6KI3+DX9D1ulegL5cbUSmA7kdZ4wjwNQBWUDggggAAADAEAJ0BKhAAFQA+0VajS6gkoyGwCAEAGgllAMKBiyyM2mzYYCQa7reJAAD+VGo9Xl0BckNUyLQ2iE4H5uwD65ggDVqs4bA+147WOxwth1mEzP6H637c60D0ZPvR/H2FPK673uvWOXxH6o/DHojC0BSMlB8A3zl+eDi1zMBZqb+sAAA=",
+    "poster": "/bottles/la-vie-est-belle.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4802511871106217,
+        "y": 0.19104246531078117
+      },
+      "cap": {
+        "x": 0.31416794310521723,
+        "y": 0.09367242247482804,
+        "w": 0.37166411378956554,
+        "h": 0.1586378250994222
+      },
+      "shadow": "/bottles/la-vie-est-belle.shadow.webp",
+      "body": "/bottles/la-vie-est-belle.body.webp",
+      "capUrl": "/bottles/la-vie-est-belle.cap.webp"
+    }
+  },
+  "layton": {
+    "heightMm": 105.2,
+    "blur": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSHIAAAARX6CobSM2VgT99faIiEBHGuOlFBzVtu00l4WBDuOmAAyAhyKgGuiQWU8c8OIg/zvIt0eTENH/CcCJEePyihD7lPjPdQkIfNcNDCCv07SygOtnGF72KZzNK0JcDhBNK59hWCGixQKa5ce+FuCESZ1JOA5WUDggjAAAAFAEAJ0BKhAAFQA+0VSjS6gkoyGwCAEAGgljAMKBi9bGRizY6RAULf+OqAAA73BCkyNXF5HlVWcTtVfVziI2jBsSa2XJhPcl5HnAdC8k/S+U1CBcxHNplfgbqB0AyDNTW1r+DiB/s77HPZSDx3SgrtQf5qoIhLBKMpoRxG08Mt7J7adNb3yZFATgMgAA",
+    "poster": "/bottles/layton.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4819700034111823,
+        "y": 0.2228382774577743
+      },
+      "cap": {
+        "x": 0.34033302372029406,
+        "y": 0.09500739255178964,
+        "w": 0.3193339525594119,
+        "h": 0.18343455348891918
+      },
+      "shadow": "/bottles/layton.shadow.webp",
+      "body": "/bottles/layton.body.webp",
+      "capUrl": "/bottles/layton.cap.webp"
+    }
+  },
+  "lazy-sunday-morning": {
+    "heightMm": 106.7,
+    "blur": "data:image/webp;base64,UklGRg4BAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGcAAAARX6A0ANA0SCY5zDUiAmxHoY9bWoBNbe1N/hwMJA44sYCFztxh5o8EHOCg7p29I69LiOj/BMCfjX03xzc0D8lF4VwhALLmuqoEIAtE/KefJnFZzvNDVtc3iIgfUnHjJOkFgDLOLh8BAFZQOCCAAAAAMAQAnQEqEAAVAD7RVKNLqCSjIbAIAQAaCWMAvzmLaJy3PdbiHLq5PEVQAMZ6LtYyhQmITq186YZyLh0SaOeCbfSk4hKrLuif99qyMjhfjyvIAHThHtj1kgD3eqIFNP5Ann88I3tzJPUTviNcgkbpxk1lElg8L9i581FSIvaCAAA=",
+    "poster": "/bottles/lazy-sunday-morning.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4839678137632641,
+        "y": 0.16166163522744886
+      },
+      "cap": {
+        "x": 0.37814477928493284,
+        "y": 0.0969365976163834,
+        "w": 0.24371044143013432,
+        "h": 0.12153900013954355
+      },
+      "shadow": "/bottles/lazy-sunday-morning.shadow.webp",
+      "body": "/bottles/lazy-sunday-morning.body.webp",
+      "capUrl": "/bottles/lazy-sunday-morning.cap.webp"
+    }
+  },
+  "le-male": {
+    "heightMm": 99.4,
+    "blur": "data:image/webp;base64,UklGRgABAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGcAAAARX6CobSM2VgjtvfaIiADfy5TuK7itte1JHnKoMrSMAJbWDEBtRW+cwxEss74DuCBxhIj+TwBrvnZj//1I/b1ag7u0HXylG1BJkgXdwIN+4MNlECwKFwXQT3QDn6j5SSqBeNO2icFiAFZQOCByAAAA0AMAnQEqEAAVAD7RVqRLqCSjobAIAQAaCWcAA+Q5aIgKT8WRNtGAAPxUF2Zo3e9dSnHqKOO5z6cyhQvPPMv2TIxXOVX8/1ghpDLkNhZ/nlfpfLjgc+0O9ljuRpSyEcL3/vVcV/xlR4oht+u8lCwv/gAA",
+    "poster": "/bottles/le-male.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48179387621407,
+        "y": 0.13497289332465978
+      },
+      "cap": {
+        "x": 0.37122812573357544,
+        "y": 0.09658370100706642,
+        "w": 0.2575437485328491,
+        "h": 0.10074733458931673
+      },
+      "shadow": "/bottles/le-male.shadow.webp",
+      "body": "/bottles/le-male.body.webp",
+      "capUrl": "/bottles/le-male.cap.webp"
+    }
+  },
+  "love-dont-be-shy": {
+    "heightMm": 95.5,
+    "blur": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGQAAAARV6CokSQ1tw4Yjul7ERFg9WPf9irCUW3bTvOoAnDQwQLjjgtIH/ZEQr6CZN3n4D+bVAkR/Z8A2rDX7IyuIu4i/6458Yi+SinVEv0BYK5b8psTYeSbAFiheQoQzoj84vi5eLQeVlA4IIAAAADwAwCdASoQABUAPtFUo0uoJKMhsAgBABoJZwAAXGntAQmxQBwnvGUIAP6L0DbfSqtQu7k7Gbme9BfgFtwBGLs8RgBxTgcqLTmIBwH6uJY3t3K6Fe+qy2aG+eeT7+4mms/HjYrvyuLxuos2ea4kmdwoJbIbsIUr9upGnk/HmTHwAA==",
+    "poster": "/bottles/love-dont-be-shy.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4801019500988129,
+        "y": 0.21347258767342847
+      },
+      "cap": {
+        "x": 0.3181520953292119,
+        "y": 0.09387569036073329,
+        "w": 0.36369580934157625,
+        "h": 0.18084572672349702
+      },
+      "shadow": "/bottles/love-dont-be-shy.shadow.webp",
+      "body": "/bottles/love-dont-be-shy.body.webp",
+      "capUrl": "/bottles/love-dont-be-shy.cap.webp"
+    }
+  },
+  "mitsouko": {
+    "heightMm": 104.9,
+    "blur": "data:image/webp;base64,UklGRjoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSIcAAAARX6CgjSQ1dAqYHyMiID7mPc1fw+DEtm03uUkAXQfxJTKWXjzoXgbQkb1I3I+mI3EwvNQh3BfR/wlAhLn92HJd39JwPX6flWuiWQWZbJaEBtgeDWWWANeLOQ8K3LhsHwV+3yIn1588B7po8qTA9WLOg0u/HCokN6+3OLaRzA/mbGUNJFMiwoAAVlA4IIwAAAAQBACdASoQABUAPtFWo0uoJKMhsAgBABoJYgC7AYvWTsXD8uhxol1PJADVh2/KcIsYeyXDfu0hhjTOWinPEd5Ni9hPK64V9V99IVclOP/4/rzLQAoWcdkYpKMcUsdqvSpy88o1gQpfnHjCHEZrfeC7BP5FSwsfF1gdVrZn9DEf4Rr9D353t5XdUMAAAA==",
+    "poster": "/bottles/mitsouko.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48099470186913185,
+        "y": 0.204905547697614
+      },
+      "cap": {
+        "x": 0.1699496519276022,
+        "y": 0.08631422563591196,
+        "w": 0.6601006961447955,
+        "h": 0.18156456042135405
+      },
+      "shadow": "/bottles/mitsouko.shadow.webp",
+      "body": "/bottles/mitsouko.body.webp",
+      "capUrl": "/bottles/mitsouko.cap.webp"
+    }
+  },
+  "molecule-01": {
+    "heightMm": 132.4,
+    "blur": "data:image/webp;base64,UklGRuoAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFcAAAARV6CgjSQ1dgoYn0V8RARU5XiG/yjY1NbeJH3OFAHBAQqQ0NsGU9vJbyEGsIDRdAcR/Z8AlPPbfP/jke+CnUZr5rTTxJ39NKIQQMppcgF4DmuVI+sKO6kAVlA4IGwAAACwAwCdASoQABUAPtFapkuoJaOhsAgBABoJZwAD4rnkSIVW+oYEAAD3HjwKbuxUScmK4spG2LUSxGpPU7UIviS5MyPselY/9xJkafQvakrBezgplWJsG8ez5wc1HebjDLvxwvfLXw9ZmrAAAAA=",
+    "poster": "/bottles/molecule-01.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48639577911623405,
+        "y": 0.16172203504941302
+      },
+      "cap": {
+        "x": 0.3655739504531931,
+        "y": 0.09629521166304922,
+        "w": 0.26885209909361385,
+        "h": 0.11219022280448998
+      },
+      "shadow": "/bottles/molecule-01.shadow.webp",
+      "body": "/bottles/molecule-01.body.webp",
+      "capUrl": "/bottles/molecule-01.cap.webp"
+    }
+  },
+  "nautica-voyage": {
+    "heightMm": 98.4,
+    "blur": "data:image/webp;base64,UklGRjQBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSIMAAAARX6CgbSQUvwJmiIiAKcxvzc6C20iSXWX//yjznYmnEpAZ8APAo0hA+tLD3DPR7xJAZvBfeOgMIvo/AfhjJXvET40QkqeK1/jJdbrRU284zD+tyRIAdzabRsBGSV8GTiS5grMnH1X0Rez8k0Y4mplNIIcshMdAqjN6ZV9EWmlalwhfAwBWUDggigAAADAEAJ0BKhAAFQA+0VajS6gkoyGwCAEAGglnAMb1iyKR7NlzUskA/3+SAAD+ca8n1K03wDJN6eyIbY9erIRb3tSlrmfnRTMql8Z/niKejlcNFhzUgiS1Cd/HlzMgU3fpXhM7JmhvwW3vzDPXEW4LtTCtGPC4l0pQ5CIJMO/L9ll8hz6P4BTqMP2AAA==",
+    "poster": "/bottles/nautica-voyage.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48286105675553437,
+        "y": 0.21129922738275625
+      },
+      "cap": {
+        "x": 0.30614823726259566,
+        "y": 0.1405844451321816,
+        "w": 0.3877035254748087,
+        "h": 0.13032126969874502
+      },
+      "shadow": "/bottles/nautica-voyage.shadow.webp",
+      "body": "/bottles/nautica-voyage.body.webp",
+      "capUrl": "/bottles/nautica-voyage.cap.webp"
+    }
+  },
+  "naxos": {
+    "heightMm": 106.2,
+    "blur": "data:image/webp;base64,UklGRhoBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSHQAAAARX6CgjSQ1dQ6YniEiAjQ+xtiNaMFVbdtRcxgEjArAwPwPDqD1EBzwcEDjIKmEWHjyOkqI6P8E8GXWNxEwq6qmkB0iewRtU9d9Au1uzPFyilx/mZ/WPRJYVfU/rQ/hzSlyfee8twksLgRbQX43ZsoB8pxvAVZQOCCAAAAAEAQAnQEqEAAVAD7RVqNLqCSjIbAIAQAaCWQArCCIwrxoW7a0Ah/9/kgAzEy57OAYzJ/tM6sZYwVUzRPjylvjnnyMVQzUdj8+YMSa+vKmFMmZWqvPTf3CDLUe5Q/KvV8OQ9kJDCcH6oQiqNy51qmqfF5zqsHhpE3pMxg8qEyAAAA=",
+    "poster": "/bottles/naxos.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48293451985552754,
+        "y": 0.08933546692431088
+      },
+      "cap": {
+        "x": 0.10148989016575016,
+        "y": 0.08282132630231664,
+        "w": 0.7970202196684997,
+        "h": 0.07516888772738112
+      },
+      "shadow": "/bottles/naxos.shadow.webp",
+      "body": "/bottles/naxos.body.webp",
+      "capUrl": "/bottles/naxos.cap.webp"
+    }
+  },
+  "not-a-perfume": {
+    "heightMm": 101.4,
+    "blur": "data:image/webp;base64,UklGRgwBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGcAAAARX6CgjSQ1dA6YHyMiAH/s6eIaAtva2pr8pj5OwAiGAQidVazs4wAcNgA3kAWcQCcE1BEi+j8B8Oe1257JdjeW2IYrhEgIgEfGhhCgFfPMo0/hL4ovFjHPH04lpCG1PnKAuKBDncB3AFZQOCB+AAAAMAQAnQEqEAAVAD7RVqVMKCSjojAIAQAaCWUAA+IKYAJ4sMzTqoc04Rx4APxbGioxuk1z58uZlKu9DMk0b+cgcsZIzqSKLhCB+VIfVUyHfA5Ore+lzvUabF4c1cbxPDN8HM5zmMwpmvCZ3eDEwND7Dl6TSvzloJscFa8sMIAA",
+    "poster": "/bottles/not-a-perfume.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4812860835805013,
+        "y": 0.22510366950129668
+      },
+      "cap": {
+        "x": 0.3540218583934768,
+        "y": 0.09615108891062596,
+        "w": 0.29195628321304645,
+        "h": 0.18665272837458247
+      },
+      "shadow": "/bottles/not-a-perfume.shadow.webp",
+      "body": "/bottles/not-a-perfume.body.webp",
+      "capUrl": "/bottles/not-a-perfume.cap.webp"
+    }
+  },
+  "one-million": {
+    "heightMm": 99.8,
+    "blur": "data:image/webp;base64,UklGRhIBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSF0AAAARX6CobSM2Vga35/cuIgI08bl2LAVWsW0rObcBrwH+/YYsdKCBFniSACkAp8KthzaI6P8E4KnJBIBV1f1Gn6SDX4LvxPpLsSdJbg/Sv/CHkoxID1J1FiRN27va4DUAVlA4II4AAAAwBACdASoQABUAPtFUo0uoJKMhsAgBABoJbACdAYsExV4jkN+M/dd+UQAA9l+Rri5yFqBWmUCsat98y44JTEU/ORn32BAJepjHPmbSCEsqLSaw1LeoJ7KZoe21kO3czxUNeUF9oB3ivfNcm/BESMU3No5glXmMXztsx677ReuOvsDrd60oAOmpC6/FkxgA",
+    "poster": "/bottles/one-million.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48095172606683634,
+        "y": 0.18792483812074035
+      },
+      "cap": {
+        "x": 0.21002880601896362,
+        "y": 0.08835911671350011,
+        "w": 0.5799423879620726,
+        "h": 0.15948010697109666
+      },
+      "shadow": "/bottles/one-million.shadow.webp",
+      "body": "/bottles/one-million.body.webp",
+      "capUrl": "/bottles/one-million.cap.webp"
+    }
+  },
+  "oud-wood": {
+    "heightMm": 99,
+    "blur": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGIAAAARX6CgbSQUvwVmiIiAxNpA7RcCm9bWnjyKg44E1rYTNjY8ELTggOT7d9r7HfDJo0qI6P8E4MdGjHfpSf/mtJdiOEwdALOISA6sfCL5j6p9t7wgmQELH069o6pNgHacpHPwHVZQOCB0AAAA8AMAnQEqEAAVAD7RVKNLqCSjIbAIAQAaCWMAuwAhvqgvjZSz7/u/kAD+2O9lny/LQtaBOWvB/BWCe2hk5efrul/LXO9bpJuvXWapKnjnW0QoEDkTeAw0rHW0LQUpUBlPZXPFMOv7Zu+XfukhDaYa2IaTAAA=",
+    "poster": "/bottles/oud-wood.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4808129260846459,
+        "y": 0.20953079380825235
+      },
+      "cap": {
+        "x": 0.3346352467725887,
+        "y": 0.0947166810335926,
+        "w": 0.3307295064548226,
+        "h": 0.17363641462214724
+      },
+      "shadow": "/bottles/oud-wood.shadow.webp",
+      "body": "/bottles/oud-wood.body.webp",
+      "capUrl": "/bottles/oud-wood.cap.webp"
+    }
+  },
+  "paradigme": {
+    "heightMm": 99,
+    "blur": "data:image/webp;base64,UklGRhABAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGkAAAARX6CojSQ0dAaYvxARAeb5Z4NlC0a1bSu56yfA5xaA9SMgBayAz50G8BvwaSANoJ43iOj/BOBD+9jJxXk+0+nMDAI4lmFQBQjKOM5VoGJ9P2r/DBcJm276N5zzWQWCcd0WFRCoG/ki3gMAVlA4IIAAAADQAwCdASoQABUAPtFUo0uoJKMhsAgBABoJZQAD4onSm6sht0ssjgAA+epU9NvRxXf594ImBjlZjk2k8fkVz7VizrFN/ioySC0DrwxoY8PwBnwW+eN88/J4gWvbbZBkv74d4NFTd9W8TE2cJn0/It0iHyFNYoGQQ7mWrCYFuEAAAA==",
+    "poster": "/bottles/paradigme.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4808129260846459,
+        "y": 0.20953079380825235
+      },
+      "cap": {
+        "x": 0.3524267590861853,
+        "y": 0.09562442570797847,
+        "w": 0.2951464818276293,
+        "h": 0.17270539401866414
+      },
+      "shadow": "/bottles/paradigme.shadow.webp",
+      "body": "/bottles/paradigme.body.webp",
+      "capUrl": "/bottles/paradigme.cap.webp"
+    }
+  },
+  "philosykos": {
+    "heightMm": 111,
+    "blur": "data:image/webp;base64,UklGRgIBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGcAAAARX6C4bSQ1tm84ZsaICJA7Nu8+nmLAprb2Ji8OEgvBARZ6WZsCUNAMNAV1Z4KVDXtVQkT/J4A/t/DujACQrS8ATK0NgDhPHQFUTZP9Mx773XV96NY1A6ia5qZ8Gm6klRSpAJBKCb4DAFZQOCB0AAAAUAQAnQEqEAAVAD7RWqRMKCUjojAIAQAaCWcAA+DTysan5NS4iVJ8Zdp3AAD+Uw656z27P5ihPAHpCqE/G0rNMEOtePNh3W9Zd88P1En+v/uF1YdjT0GBj7jKG2aA5QtW+m7oHSf8VXwDcajm0ZifoLr4AAA=",
+    "poster": "/bottles/philosykos.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48459496391214507,
+        "y": 0.15937291433942008
+      },
+      "cap": {
+        "x": 0.3830404491995683,
+        "y": 0.09718638055784384,
+        "w": 0.23391910160086343,
+        "h": 0.1169951914566898
+      },
+      "shadow": "/bottles/philosykos.shadow.webp",
+      "body": "/bottles/philosykos.body.webp",
+      "capUrl": "/bottles/philosykos.cap.webp"
+    }
+  },
+  "portrait-of-a-lady": {
+    "heightMm": 156.2,
+    "blur": "data:image/webp;base64,UklGRuoAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSEoAAAARX2A0AuG0AYgkp338iAjwpV7oDIxi22oDDtCABViBBHTUZI+hVAHd328SIvo/AUpyCdCVkAhZCxjvNDCq1Nmhf+acEzSqVIakAVZQOCB6AAAAcAMAnQEqEAAVAD7RVqRLqCSjobAIAQAaCWMAvkgeGyG+A9YAAP5xry9LyFE1EDrzvGpEjpXZsomciWg4DeIMC81x82ZRT3XLnicRi7QQ/TNwTwIxT+cH8q7tN/34j/fewH8vT/3K8io8c6pf7G/z/+0fkeHsHzwAAAA=",
+    "poster": "/bottles/portrait-of-a-lady.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48910836777231953,
+        "y": 0.1967744811170516
+      },
+      "cap": {
+        "x": 0.41195692454538385,
+        "y": 0.09866172646517773,
+        "w": 0.17608615090923235,
+        "h": 0.13617606050937692
+      },
+      "shadow": "/bottles/portrait-of-a-lady.shadow.webp",
+      "body": "/bottles/portrait-of-a-lady.body.webp",
+      "capUrl": "/bottles/portrait-of-a-lady.cap.webp"
+    }
+  },
+  "prada-l-homme": {
+    "heightMm": 119.2,
+    "blur": "data:image/webp;base64,UklGRvYAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGMAAAARX6CgbSM3dwz2vnsOHxEB9Ao/U+pTMIhku8lLvgEkVAFVQNPwJfBxkKIALMQCSIg8uoOI/k8APuz3Q1/ESI/ShjnXQFXmeUNAvzDPJydifjI3clG925y1pzUETwCSfOoU3gMAVlA4IGwAAADwAwCdASoQABUAPtFUo0uoJKMhsAgBABoJYwDCgYsYzUWeLjNKSsDEAO9ABqgPz7Ix7/ElsqPHcP01k6IfYAjMXQRT271LqL0420pN9DR3/0/u821vfmwpNpSY+Ok1qkv0a9QfveN2SDFoAAA=",
+    "poster": "/bottles/prada-l-homme.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4841048034680524,
+        "y": 0.2086673132730132
+      },
+      "cap": {
+        "x": 0.34375983558442885,
+        "y": 0.09518223273552678,
+        "w": 0.31248032883114224,
+        "h": 0.16249006265807547
+      },
+      "shadow": "/bottles/prada-l-homme.shadow.webp",
+      "body": "/bottles/prada-l-homme.body.webp",
+      "capUrl": "/bottles/prada-l-homme.cap.webp"
+    }
+  },
+  "santal-33": {
+    "heightMm": 122.9,
+    "blur": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGQAAAARX6CokSQ1thaYfnQXEQHYTMXfHB2MYttu8kEBgwKIBtq+G4gCREQA3UHbdlh35KWAhIj+TwD8eXesZ2NodSVTLkIGFWNsUQkhzj9D0zD2d/vQcxJCvpQlpaRLG0kAoHueCj8CVlA4IHIAAADwAwCdASoQABUAPtFipk0oJiOiMAgBABoJZwAD46k9zbEg9nUPWFYAANmv3xa4KHaiuHrK+hTk+Zpb+mm5X0wszcRtNM/U8JRFIASsLT+78DlQ+pDcL4eYZabXlU/YLncI0lz8HMioWhvqqR8sfgyvGAA=",
+    "poster": "/bottles/santal-33.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48533481001052114,
+        "y": 0.16628966827064545
+      },
+      "cap": {
+        "x": 0.33559478664505626,
+        "y": 0.09476563780059527,
+        "w": 0.32881042670988747,
+        "h": 0.12173275965748065
+      },
+      "shadow": "/bottles/santal-33.shadow.webp",
+      "body": "/bottles/santal-33.body.webp",
+      "capUrl": "/bottles/santal-33.cap.webp"
+    }
+  },
+  "shalimar": {
+    "heightMm": 83.3,
+    "blur": "data:image/webp;base64,UklGRioBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSH0AAAARX6CgjSQ1dgLomRkiIsAuaSp9wm8MjmrbVpuXxABnTBVADsgBd8Z1EFDQfAWBedlB7bGEeyP6PwHy/7BH0hac7s8Hl4J+UuPQEqymo/HOF7PKUhyV1mYKoDL+F6jiRQ9U+qGowUrv3O4kGycsb3c2uW11x7vpyLEEJIk/AgBWUDgghgAAAFAEAJ0BKhAAFQA+0VSjS6gkoyGwCAEAGglmALsBjBLJXxsvrBsKQ/XXH+AA/n1nqfeu3w4I11B2MBBkxXziXjDGL7UnwFb2Vmguk6dHGarBG23D4Wxz+6rJgGJg2gMrIwiPzJ87fh2Rdea627wuq/RDpNqbeVlaIq9hzRqd2hfk2R9zxQAA",
+    "poster": "/bottles/shalimar.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48091288437620683,
+        "y": 0.1922198480005694
+      },
+      "cap": {
+        "x": -0.011932052950506256,
+        "y": 0.17214193626993074,
+        "w": 1.0238641059010125,
+        "h": 0.08423101133622046
+      },
+      "shadow": "/bottles/shalimar.shadow.webp",
+      "body": "/bottles/shalimar.body.webp",
+      "capUrl": "/bottles/shalimar.cap.webp"
+    }
+  },
+  "terre-d-hermes": {
+    "heightMm": 110.3,
+    "blur": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGwAAAARX6A4kqQ0eAG44fAlIgKkftbrOOqCTa1tS1422NzW/5DAClgDEhBBfxpIA5lghIn9i4c3iOj/BODDhUg8HUQSAHklcgQgchnzdCAKfT82gGLgvDP/6e/aK86f5XfTNIyncdtnA5BZnKUK3gNWUDgghgAAADAEAJ0BKhAAFQA+0VSkS6gko6GwCAEAGgloALsBi6Scr/uObISlN6eiAAD8WqL3Dnx1B+zrUh9CpnNveqi1qM0ThHFYR2oBQOQvnI6shT0x+bwp+txpwq4Yt5qlwd33tplCgUysJv6281l/XEYYN50S+ilEb+URc69KXoyKjJEmced5bgAA",
+    "poster": "/bottles/terre-d-hermes.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48278382613350834,
+        "y": 0.17977139435853096
+      },
+      "cap": {
+        "x": 0.3018093549266337,
+        "y": 0.09304187178125728,
+        "w": 0.3963812901467327,
+        "h": 0.14160136081120633
+      },
+      "shadow": "/bottles/terre-d-hermes.shadow.webp",
+      "body": "/bottles/terre-d-hermes.body.webp",
+      "capUrl": "/bottles/terre-d-hermes.cap.webp"
+    }
+  },
+  "tobacco-vanille": {
+    "heightMm": 99,
+    "blur": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSGIAAAARX6CgbSQUvwVmiIiAxNpA7RcCm9bWnjyKg44E1rYTNjY8ELTggOT7d9r7HfDJo0qI6P8E4MdGjHfpSf/mtJdiOEwdALOISA6sfCL5j6p9t7wgmQELH069o6pNgHacpHPwHVZQOCB0AAAA8AMAnQEqEAAVAD7RVqNLqCSjIbAIAQAaCUAAC5Xxa6TStHtuT/v8kAD+2O9ln2I0nTkSLhSi5glh9tXyo0BmX8fXLne7n8jVMe30cGnRYvkzIAqbbO4UMNKx1tfOwKowib7gZimfyuv+I/m92bhJLs0dYAA=",
+    "poster": "/bottles/tobacco-vanille.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4808129260846459,
+        "y": 0.20953079380825235
+      },
+      "cap": {
+        "x": 0.3346352467725887,
+        "y": 0.0947166810335926,
+        "w": 0.3307295064548226,
+        "h": 0.17363641462214724
+      },
+      "shadow": "/bottles/tobacco-vanille.shadow.webp",
+      "body": "/bottles/tobacco-vanille.body.webp",
+      "capUrl": "/bottles/tobacco-vanille.cap.webp"
+    }
+  },
+  "un-jardin-sur-le-nil": {
+    "heightMm": 105.4,
+    "blur": "data:image/webp;base64,UklGRvAAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFYAAAARX6CgjSQ1dQqY7yEiAuRm46vML2BUa9uMx2xJAxrMbC3F0EGFuYGvwv83+POZE0T0fwJ4c+oBSIy2ATKjHYDx2FugExHxYFBKqfB3wRf5KicQpWXMc1ZQOCB0AAAAEAQAnQEqEAAVAD7RVKRLqCSjobAIAQAaCWUAA+IRSnWNowkuvtBNugAA9xyBhXmxuMY+/oOIjof2xpoxmHB4cj/RyrC7kEENnvfPxLCm7RmD53Isnz6nfnq0WGz4QRf93PxFjszxvvc3p6MtdFCi2GZqEAA=",
+    "poster": "/bottles/un-jardin-sur-le-nil.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48378292655119826,
+        "y": 0.1842128424005257
+      },
+      "cap": {
+        "x": 0.3000223737006641,
+        "y": 0.09295069641571607,
+        "w": 0.3999552525986718,
+        "h": 0.14804252302669613
+      },
+      "shadow": "/bottles/un-jardin-sur-le-nil.shadow.webp",
+      "body": "/bottles/un-jardin-sur-le-nil.body.webp",
+      "capUrl": "/bottles/un-jardin-sur-le-nil.cap.webp"
+    }
+  },
+  "versace-eros": {
+    "heightMm": 114.4,
+    "blur": "data:image/webp;base64,UklGRvgAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFwAAAARX6CokSQ1tgL2xXgYEQG2zYV+YDuY1LYt5X5GSxZCoGewRJg98uG+pgH3N+DHY24Q0f8JwIct6Z86Mrg4zCmd963xAL2KSAhokvzHWvNsuSP5TXcKAERxmSi8B1ZQOCB2AAAAsAMAnQEqEAAVAD7RVqRLqCSjobAIAQAaCWoAtOgZtqMBgkguKgAAnglzH1ShJlWJ72o7UJ/Rj7YtQB0EI5PfAPNE5g+MmUqEVldi2kkRlRTxiu/Fwth591JTPjUPAEWQd2/AwvnY4egGclzZ9drV8fREXgwAAA==",
+    "poster": "/bottles/versace-eros.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48341862093253685,
+        "y": 0.20415327115423537
+      },
+      "cap": {
+        "x": 0.3211106976239536,
+        "y": 0.09402664960182605,
+        "w": 0.3577786047520928,
+        "h": 0.16142958644728567
+      },
+      "shadow": "/bottles/versace-eros.shadow.webp",
+      "body": "/bottles/versace-eros.body.webp",
+      "capUrl": "/bottles/versace-eros.cap.webp"
+    }
+  },
+  "wood-sage-sea-salt": {
+    "heightMm": 131.3,
+    "blur": "data:image/webp;base64,UklGRugAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFwAAAARX6A0kiQ1eZrhGey7j4iAnPbLRX+zglFs22l+wEA0xECmClBAl1WABnDNVVAFpIDkBSVE9H8CwOVRqZ5eNaQKwT0i+XFMpSTPXN2d6t9s9lbh55lNrRlnBQADl1ZQOCBmAAAAkAMAnQEqEAAVAD7RVKRLqCSjobAIAQAaCWUAACQzj1R6sFmQAADGei7hfLU16KfLV10MFw2IvcXSH4YAWIpxWPwHTyIxEIelY/scWMQOrVRIvpz8pzmibyO7ijUn6iRcBVgZgAAA",
+    "poster": "/bottles/wood-sage-sea-salt.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.4870056370213428,
+        "y": 0.167520217007031
+      },
+      "cap": {
+        "x": 0.38896531675525364,
+        "y": 0.09748867462797733,
+        "w": 0.22206936648949277,
+        "h": 0.11646375704247253
+      },
+      "shadow": "/bottles/wood-sage-sea-salt.shadow.webp",
+      "body": "/bottles/wood-sage-sea-salt.body.webp",
+      "capUrl": "/bottles/wood-sage-sea-salt.cap.webp"
+    }
+  },
+  "ysl-y-edp": {
+    "heightMm": 142.3,
+    "blur": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4WAoAAAAQAAAADwAAFAAAQUxQSFYAAAARX6A0ANA0SYXmMJeICOC58Q+ddAJMam17wvRkoAVEQJGDCkgUeqP3sBvifTNCRP8nwNCcE+xJsRuL29wFRdcFYNi2SGnHjn8PeQO1bUgvygjD8y1ECFZQOCBmAAAAEAQAnQEqEAAVAD7RVqRLqCSjobAIAQAaCWcAA+LqDgDOdRVfSqnmlQAA/uMRXMjSA0SBN09gEWz8mcgKMZTKMPGYOv9V/chl5SAkJXE9JCIgp4kZZIJsOm5Vwpg2wvVEZOYBPgAA",
+    "poster": "/bottles/ysl-y-edp.webp",
+    "layers": {
+      "nozzle": {
+        "x": 0.48803172169203374,
+        "y": 0.19149850367072768
+      },
+      "cap": {
+        "x": 0.38671290874697967,
+        "y": 0.09737375098072287,
+        "w": 0.2265741825060406,
+        "h": 0.13615370535427612
+      },
+      "shadow": "/bottles/ysl-y-edp.shadow.webp",
+      "body": "/bottles/ysl-y-edp.body.webp",
+      "capUrl": "/bottles/ysl-y-edp.cap.webp"
+    }
+  }
+}
