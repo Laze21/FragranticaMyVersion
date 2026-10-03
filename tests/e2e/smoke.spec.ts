@@ -42,12 +42,12 @@ test.describe('fragrance page', () => {
     await expect(page.getByText(/lasts/i).first()).toBeVisible();
     await expect(page.getByText(/projection/i).first()).toBeVisible();
     // Listed vs smelled is the differentiator; both columns are present.
-    await expect(page.getByText(/^listed (by |\(per )/i).first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: /^listed (by |\(per )/i }).first()).toBeVisible();
     await expect(page.getByText(/what people smell/i).first()).toBeVisible();
     // Sources section names where facts come from.
     await expect(page.getByText(/where this page.s facts come from/i).first()).toBeVisible();
-    // Image provenance is stated.
-    await expect(page.getByText(/illustration, not a product photo|photo:/i).first()).toBeVisible();
+    // Image provenance is stated: the stage carries an "Illustration" or "Photo" tag that opens the credit.
+    await expect(page.getByRole('button', { name: /^(illustration|photo)$/i }).first()).toBeVisible();
   });
 
   test('never uses the word "clone" for similar fragrances', async ({ page }) => {
