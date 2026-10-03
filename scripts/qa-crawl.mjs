@@ -1,7 +1,7 @@
 // Dev QA: crawl key routes at several widths; report status, console errors, horizontal overflow.
 import { chromium } from 'playwright';
 const base = `http://localhost:${process.env.PORT ?? 3100}`;
-const routes = (process.env.ROUTES ?? '/,/discover,/discover?q=vanilla%20without%20tobacco,/discover?feel=rainy-day,/fragrance/dior-sauvage,/fragrance/molecule-01,/fragrance/bvlgari-black,/fragrance/paradigme,/notes,/notes/bergamot,/notes/ambroxan,/house/dior,/perfumer/francois-demachy,/compare,/compare?f=dior-sauvage,bleu-de-chanel-edp,ysl-y-edp,/shelf,/diary,/u/demo,/u/demo/shelf,/u/coachdre,/lists,/learn,/learn/sillage,/sign-in,/sign-up,/contribute,/admin,/about/data,/about/moderation,/about/ads,/nope-404').split(',');
+const routes = (process.env.ROUTES ?? '/,/discover,/discover?q=vanilla%20without%20tobacco,/discover?feel=rainy-day,/fragrance/dior-sauvage,/fragrance/molecule-01,/fragrance/bvlgari-black,/fragrance/paradigme,/notes,/notes/bergamot,/notes/ambroxan,/house,/house/dior,/perfumer,/perfumer/francois-demachy,/compare,/compare?f=dior-sauvage,bleu-de-chanel-edp,ysl-y-edp,/shelf,/diary,/u/demo,/u/demo/shelf,/u/coachdre,/lists,/learn,/learn/sillage,/sign-in,/sign-up,/contribute,/admin,/about/data,/about/moderation,/about/ads,/nope-404').split(',');
 const widths = (process.env.WIDTHS ?? '390,768,1440').split(',').map(Number);
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const results = [];
