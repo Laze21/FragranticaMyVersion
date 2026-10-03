@@ -2,29 +2,38 @@
 
 import { useRef, useState } from 'react';
 import { FragranceCard } from '@/components/cards/FragranceCard';
+import { Ledge } from '@/components/scent/Ledge';
 import type { SimilarGroups } from '@/lib/data/similar';
 import styles from './Similar.module.css';
 
-const TABS: Array<{ key: keyof SimilarGroups; label: string; empty: string }> = [
-  { key: 'similar', label: 'Smells similar', empty: 'Nothing close enough yet.' },
-  { key: 'cheaper', label: 'Cheaper', empty: '' },
-  { key: 'higherRated', label: 'Rated higher', empty: '' },
-  { key: 'fresher', label: 'Fresher', empty: '' },
-  { key: 'sweeter', label: 'Sweeter', empty: '' },
-  { key: 'darker', label: 'Darker', empty: '' },
-  { key: 'stronger', label: 'Stronger', empty: '' },
-  { key: 'subtler', label: 'Quieter', empty: '' },
+const TABS: Array<{ key: keyof SimilarGroups; label: string }> = [
+  { key: 'similar', label: 'Smells similar' },
+  { key: 'cheaper', label: 'Cheaper' },
+  { key: 'higherRated', label: 'Rated higher' },
+  { key: 'fresher', label: 'Fresher' },
+  { key: 'sweeter', label: 'Sweeter' },
+  { key: 'darker', label: 'Darker' },
+  { key: 'stronger', label: 'Stronger' },
+  { key: 'subtler', label: 'Quieter' },
 ];
+const IN_PRODUCTION = new Set(['current', 'reformulated', 'limited']);
 
-/** Tabs follow the ARIA tabs pattern: arrow keys move between tabs, Tab moves into the panel. */
-export function Similar({ groups, name }: { groups: SimilarGroups; name: string }) {
+/**
+ * If you like this: the directions as the row's header (a list beside the shelf from 840 up,
+ * chips above it on phones) and one shelf of bottles on a ledge, scroll-snapped, at real scale.
+ * Arrow keys move between directions; Tab moves onto the shelf. A discontinued fragrance opens
+ * on in-production matches, since the point is something you can still buy.
+ */
+export function Similar({ groups, name, status }: { groups: SimilarGroups; name: string; status?: string }) {
   const tabs = TABS.filter((t) => t.key === 'similar' || groups[t.key].length > 0);
   const [active, setActive] = useState(tabs[0].key);
+  const [inProduction, setInProduction] = useState(status === 'discontinued');
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
-  const items = groups[active];
+  const all = groups[active];
+  const items = inProduction ? all.filter((it) => IN_PRODUCTION.has(it.card.status)) : all;
 
   return (
-    <div>
+    <div className={styles.wrap}>
       <div className={styles.tabs} role="tablist" aria-label={`Fragrances related to ${name}`}>
         {tabs.map((t, i) => (
           <button
@@ -37,11 +46,10 @@ export function Similar({ groups, name }: { groups: SimilarGroups; name: string 
             aria-selected={active === t.key}
             aria-controls="similar-panel"
             tabIndex={active === t.key ? 0 : -1}
-            className="chip"
-            data-on={active === t.key || undefined}
+            className={styles.tab}
             onClick={() => setActive(t.key)}
             onKeyDown={(e) => {
-              const dir = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+              const dir = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
               if (!dir) return;
               e.preventDefault();
               const next = (i + dir + tabs.length) % tabs.length;
@@ -49,29 +57,30 @@ export function Similar({ groups, name }: { groups: SimilarGroups; name: string 
               refs.current[next]?.focus();
             }}
           >
-            {t.label}
-            {t.key !== 'similar' && <span className={styles.count}>{groups[t.key].length}</span>}
+            <span className={styles.tabLabel}>{t.label}</span>
+            <span className={`${styles.count} tnum`}>{groups[t.key].length}</span>
           </button>
         ))}
+        {status === 'discontinued' && (
+          <label className={styles.filter}>
+            <input type="checkbox" checked={inProduction} onChange={(e) => setInProduction(e.target.checked)} /> In production only
+          </label>
+        )}
       </div>
       <div id="similar-panel" role="tabpanel" aria-labelledby={`tab-${active}`} className={styles.panel}>
         {items.length ? (
-          <ul role="list" className={styles.grid}>
-            {items.map((it) => (
-              <li key={it.card.slug} className={styles.item}>
-                <FragranceCard card={it.card} sizes="(max-width: 719px) 42vw, 220px" />
-                <p className={styles.why}>{it.why}</p>
-              </li>
+          <Ledge className={styles.shelf}>
+            {items.map((it, i) => (
+              <div key={it.card.slug} className={styles.item}>
+                <FragranceCard card={it.card} sizes="164px" loading={i < 4 ? 'eager' : 'lazy'} reason={it.why} />
+              </div>
             ))}
-          </ul>
+          </Ledge>
         ) : (
-          <p className="t-meta">{TABS.find((t) => t.key === active)?.empty}</p>
+          <p className={styles.none}>{inProduction ? 'Nothing in production is close enough yet.' : 'Nothing close enough yet.'}</p>
         )}
+        <p className={styles.note}>Matched on character, the notes people smell, “smells similar” votes and shared shelves. Close matches are not copies; skin decides.</p>
       </div>
-      <p className={styles.note}>
-        Matched on character, notes people actually smell, community “smells similar” votes and shared shelves. Close matches are not
-        copies; skin decides.
-      </p>
     </div>
   );
 }

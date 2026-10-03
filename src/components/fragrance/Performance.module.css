@@ -1,135 +1,47 @@
 .grid {
   display: grid;
-  gap: var(--s-9);
+  gap: var(--s-7);
 }
-.sub {
-  font-size: var(--t-sub);
-  font-weight: 650;
-  margin-bottom: var(--s-2);
+.left,
+.right {
+  min-width: 0;
 }
 .big {
   display: grid;
-  gap: 2px;
+  gap: 4px;
   margin-bottom: var(--s-5);
 }
-.big :global(.t-figure) {
-  font-size: var(--t-figure-l);
+/* 40px: a headline figure, but a step under the Ratings score so the two sections differ. */
+.figure {
+  font-size: calc(var(--t-figure-l) + 12px);
 }
 .bigNote {
-  font-size: var(--t-micro);
-  color: var(--fg-3);
+  font-size: var(--t-label);
+  color: var(--fg-2);
 }
-.hist {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 6px;
-  height: 150px;
-  align-items: end;
+.row {
+  --label-w: 6.5em;
 }
-.col {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100%;
-  align-items: end;
-  justify-items: stretch;
-  gap: 4px;
-}
-.colBar {
-  align-self: end;
-  background: color-mix(in oklab, var(--scent-ink) 35%, var(--linen));
-  min-height: 2px;
-  transform-origin: bottom;
-  animation: rise var(--d-slow) var(--ease-evaporate);
-}
-.col[data-peak] .colBar {
-  background: var(--scent-ink);
-}
-@keyframes rise {
-  from {
-    transform: scaleY(0);
-  }
-}
-.colPct {
-  font-size: var(--t-micro);
-  font-variant-numeric: tabular-nums;
-  color: var(--fg-3);
-  text-align: center;
-}
-.col[data-peak] .colPct {
+.row[data-typical] > span:first-child,
+.row[data-typical] > span:last-child {
   color: var(--ink);
   font-weight: 650;
-}
-.colLabel {
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  color: var(--fg-2);
-  white-space: nowrap;
 }
 .note {
   margin-top: var(--s-4);
   font-size: var(--t-small);
   color: var(--fg-2);
+  max-width: 48ch;
 }
-.timeline {
-  display: grid;
-  gap: 10px;
-  margin: var(--s-4) 0 0;
-  padding: 0;
+.later {
+  margin-top: var(--s-5);
 }
-.timeline li {
-  display: grid;
-  grid-template-columns: 4.8em 1fr 7.5em;
-  align-items: center;
-  gap: 12px;
+.right > p {
+  margin-bottom: 8px;
 }
-.moment {
-  font-size: var(--t-small);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-.track {
-  height: 8px;
-  background: var(--bg-sunk);
-  position: relative;
-}
-.fill {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--scent-ink);
-  border-radius: 0 4px 4px 0;
-}
-.level {
-  font-size: var(--t-small);
-  color: var(--fg-2);
-}
-.split {
-  margin-top: var(--s-6);
-}
-.splitLabel {
-  font-size: var(--t-micro);
-  font-weight: 600;
-  color: var(--fg-3);
-  margin-bottom: 6px;
-}
-.stack {
-  display: flex;
-  height: 14px;
-  gap: 2px;
-}
-.stack span {
-  background: var(--scent-ink);
-}
-.stackLegend {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--fg-3);
-  margin-top: 4px;
-}
-@media (min-width: 900px) {
+@media (min-width: 840px) {
   .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-10);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--s-9);
   }
 }

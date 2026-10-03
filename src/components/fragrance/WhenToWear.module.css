@@ -1,93 +1,54 @@
-.grid {
+.strip {
   display: grid;
-  gap: var(--s-8);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-6) var(--s-6);
+  align-items: start;
 }
 .block {
   min-width: 0;
 }
-.sub {
-  font-size: var(--t-sub);
-  font-weight: 650;
-  margin-bottom: var(--s-3);
+.block > p {
+  margin-bottom: 8px;
 }
-.seasons {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--s-3);
-  margin: 0;
-  padding: 0;
+.row {
+  --label-w: minmax(0, 7.5em);
 }
-.seasons li {
-  display: grid;
-  justify-items: center;
-  gap: 6px;
-  color: var(--fg-3);
+/* Day is drawn in the wash with an ink edge so it still reads on the band; Night in scent ink. */
+.dayFill {
+  box-shadow: inset 0 0 0 1px var(--scent-ink);
 }
-.seasons li[data-strong] {
-  color: var(--ink);
-}
-.tube {
-  position: relative;
-  width: 100%;
-  max-width: 64px;
-  height: 120px;
-  background: var(--bg-sunk);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.tube span {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: color-mix(in oklab, var(--scent-ink) 45%, var(--linen));
-  transform-origin: bottom;
-  animation: fill var(--d-slow) var(--ease-evaporate);
-}
-li[data-strong] .tube span {
+.dayFill::after {
   background: var(--scent-ink);
 }
-@keyframes fill {
-  from {
-    transform: scaleY(0);
+.more {
+  margin-top: 4px;
+}
+.moreSummary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--t-label);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.moreSummary::-webkit-details-marker {
+  display: none;
+}
+.more[open] .moreSummary {
+  margin-bottom: 4px;
+}
+@media (max-width: 839px) {
+  /* Seasons and day/night share the first row; weather and occasions take a row each. */
+  .block:nth-child(n + 3) {
+    grid-column: 1 / -1;
   }
 }
-.sLabel {
-  font-size: var(--t-small);
-  font-weight: 600;
-}
-.sVal {
-  font-variant-numeric: tabular-nums;
-  font-size: var(--t-small);
-}
-.dn {
-  display: flex;
-  height: 44px;
-  gap: 2px;
-}
-.dn span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 10px;
-  font-size: var(--t-small);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  flex-basis: 0;
-  min-width: max-content;
-}
-.day {
-  background: color-mix(in oklab, var(--bergamot) 34%, var(--paper));
-}
-.night {
-  background: var(--ink);
-  color: var(--porcelain);
-  justify-content: flex-end;
-}
-@media (min-width: 1000px) {
-  .grid {
-    grid-template-columns: 1fr 1fr 1fr;
+@media (min-width: 840px) {
+  .strip {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr);
     gap: var(--s-8);
   }
 }

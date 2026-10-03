@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  gap: var(--s-8);
+  gap: var(--s-7);
 }
 .col {
   min-width: 0;
@@ -8,16 +8,28 @@
 .colHead {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 8px 16px;
+  gap: 6px 16px;
   padding-bottom: var(--s-3);
   margin-bottom: var(--s-4);
   border-bottom: 1px solid var(--line-strong);
 }
 .colTitle {
-  font-size: var(--t-sub);
-  font-weight: 650;
+  min-width: 0;
+}
+.colMeta {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.colMeta b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.summaryCount {
+  font-weight: 500;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
 }
 .layers {
   display: grid;
@@ -25,17 +37,42 @@
 }
 .layer {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
-.layerLabel {
-  font-size: var(--t-micro);
-  font-weight: 600;
-  color: var(--fg-3);
-}
-.tags {
+/* The listed notes as a reading line: Newsreader, each name underlined in its own hue. */
+.inline {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px 14px;
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.35;
+}
+.note {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--hue, var(--stone-2));
+  padding-bottom: 1px;
+}
+.note:hover,
+.note:focus-visible {
+  border-bottom-color: var(--ink);
+}
+.flat {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 46ch;
+}
+.barLink {
+  color: var(--ink);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.barLink:hover,
+.barLink:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 .callouts {
   display: grid;
@@ -43,14 +80,31 @@
   margin-top: var(--s-5);
   font-size: var(--t-small);
   color: var(--fg-2);
+  max-width: 60ch;
 }
 .callouts b {
   color: var(--ink);
   font-weight: 650;
 }
-@media (min-width: 900px) {
+.nobody {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  color: var(--fg-2);
+}
+@media (max-width: 719px) {
+  /* On the phone the summary is the head: the in-fold head would say it twice. */
+  .col:first-child .colHead {
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: var(--s-3);
+  }
+  .col:first-child .colTitle {
+    display: none;
+  }
+}
+@media (min-width: 840px) {
   .grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: var(--s-10);
+    gap: var(--s-9);
   }
 }

@@ -1,119 +1,104 @@
 import type { FragranceDetail } from '@/lib/data/types';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Term } from '@/components/ui/Term';
 import { LONGEVITY_BUCKETS, PROJECTION_LEVELS } from '@/lib/scent/vocab';
-import { histAvg, longevityRange } from '@/lib/scent/read';
-import { projectionAt } from '@/lib/scent/trail';
+import { formatNumber, longevityRange } from '@/lib/scent/read';
 import { SectionHead } from './SectionHead';
 import { VoteButton } from './VoteButton';
 import styles from './Performance.module.css';
 import s from './sections.module.css';
 
-const MOMENTS = [
-  { h: 0.1, label: 'Spray' },
-  { h: 1, label: '1 hour' },
-  { h: 3, label: '3 hours' },
-  { h: 6, label: '6 hours' },
-  { h: 9, label: '9 hours' },
-];
+function Rows({ hist, label, muted }: { hist: number[]; label: string; muted?: (i: number) => boolean }) {
+  const total = hist.reduce((a, b) => a + b, 0) || 1;
+  return (
+    <ul role="list" className={s.bars} aria-label={label}>
+      {PROJECTION_LEVELS.map((l, i) => {
+        const pct = Math.round(((hist[i] ?? 0) / total) * 100);
+        return (
+          <li key={l.value} className={`${s.barRow} ${styles.row}`}>
+            <span className={s.barLabel}>{l.label}</span>
+            <span className={s.barTrack} aria-hidden>
+              <span className={s.barFill} data-muted={muted?.(i) || undefined} style={{ width: `${pct}%` }} />
+            </span>
+            <span className={s.barValue}>{pct}%</span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
+/**
+ * How long, how loud: the typical range as one figure, the reports behind it as rows (the
+ * typical buckets in the fragrance's own colour), and projection as two sets of five labelled
+ * rows, first hour and later. Shares the linen band with "When to wear it" beneath.
+ */
 export function Performance({ f }: { f: FragranceDetail }) {
   const st = f.stats;
   const total = st.longevityHist.reduce((a, b) => a + b, 0);
   const range = longevityRange(st.longevityHist);
-  const max = Math.max(1, ...st.longevityHist);
-  const peak = st.longevityHist.indexOf(Math.max(...st.longevityHist));
   const enough = st.perfVotes >= 5;
-  const input = {
-    character: st.character,
-    longevityHrs: st.longevityMedian,
-    projectionOpening: histAvg(st.projectionOpeningHist),
-    projectionLater: histAvg(st.projectionLaterHist),
-    heartAtMin: f.heartAtMin,
-    drydownAtMin: f.drydownAtMin,
-  };
-  const pTotal = st.projectionOpeningHist.reduce((a, b) => a + b, 0);
   const reformulated = f.variants.filter((v) => v.kind === 'formulation');
+  const typical = (i: number) => !!range && LONGEVITY_BUCKETS[i].lo < range.hi && LONGEVITY_BUCKETS[i].hi > range.lo;
 
   return (
-    <section className={s.section} aria-labelledby="performance">
+    <section className={`${s.section} ${s['gap-96']} ${s.band} ${s.bandTop}`} aria-labelledby="performance">
       <SectionHead
         id="performance"
         title="How long, how loud"
         lede="Ranges, not promises. Skin, climate and how many sprays you use all move these numbers."
         votes={st.perfVotes}
         votesLabel="people reporting"
-        demo={st.includesBaseline}
+        vote={{ kind: 'performance', label: 'Add yours', editedLabel: 'Change yours' }}
       />
       {!enough ? (
-        <div className={s.empty}>
-          <strong>Not enough reports yet</strong>
-          {st.perfVotes ? `${st.perfVotes} ${st.perfVotes === 1 ? 'person has' : 'people have'} reported so far. We show ranges once five people have.` : 'Nobody has reported yet.'}
-        </div>
+        <EmptyState
+          title={`Not enough reports on ${f.name} yet.`}
+          line={`Ranges appear once five people have reported. ${st.perfVotes ? `${st.perfVotes} so far.` : 'Nobody has yet.'}`}
+          action={<VoteButton kind="performance" label="Report how it wore on you" />}
+        />
       ) : (
         <div className={styles.grid}>
-          <div>
-            <h3 className={styles.sub}>
-              <Term slug="longevity">Longevity</Term>
-            </h3>
+          <div className={styles.left}>
             <p className={styles.big}>
-              <span className="t-figure">{range?.text ?? '—'}</span>
-              <span className={styles.bigNote}>what most people get</span>
+              <span className={`t-figure-serif ${styles.figure}`}>{range?.text ?? 'Not enough votes'}</span>
+              <span className={styles.bigNote}>
+                typical, from {formatNumber(st.perfVotes)} reports · <Term slug="longevity">longevity</Term>
+              </span>
             </p>
-            <div className={styles.hist} role="img" aria-label={`Longevity reports: ${LONGEVITY_BUCKETS.map((b, i) => `${b.label} ${Math.round((st.longevityHist[i] / total) * 100)}%`).join(', ')}`}>
-              {LONGEVITY_BUCKETS.map((b, i) => (
-                <div key={b.key} className={styles.col} data-peak={i === peak || undefined}>
-                  <span className={styles.colPct}>{Math.round((st.longevityHist[i] / total) * 100)}%</span>
-                  <span className={styles.colBar} style={{ height: `${(st.longevityHist[i] / max) * 100}%` }} />
-                  <span className={styles.colLabel}>{b.short}</span>
-                </div>
-              ))}
-            </div>
+            <ul role="list" className={s.bars} aria-label="How long people say it lasts">
+              {LONGEVITY_BUCKETS.map((b, i) => {
+                const pct = total ? Math.round((st.longevityHist[i] / total) * 100) : 0;
+                const on = typical(i);
+                return (
+                  <li key={b.key} className={`${s.barRow} ${styles.row}`} data-typical={on || undefined}>
+                    <span className={s.barLabel}>{b.short}</span>
+                    <span className={s.barTrack} aria-hidden>
+                      <span className={s.barFill} data-muted={!on || undefined} style={{ width: `${pct}%`, ['--bar-hue' as string]: 'var(--scent)' }} />
+                    </span>
+                    <span className={s.barValue}>{pct}%</span>
+                  </li>
+                );
+              })}
+            </ul>
             {reformulated.length > 0 && (
               <p className={styles.note}>
-                <Term slug="reformulation">Reformulated</Term>: {reformulated.map((v) => v.label).join(' → ')}. Older bottles are reported to last
-                longer; these numbers mix both.
+                <Term slug="reformulation">Reformulated</Term>: {reformulated.map((v) => v.label).join(' → ')}. Older bottles are reported to last longer;
+                these numbers mix both.
               </p>
             )}
           </div>
 
-          <div>
-            <h3 className={styles.sub}>
-              <Term slug="projection">Projection</Term> over time
-            </h3>
-            <ol className={styles.timeline} role="list">
-              {MOMENTS.filter((m) => m.h <= (st.longevityMedian ?? 8) * 1.15 + 0.5).map((m) => {
-                const p = projectionAt(input, m.h);
-                const level = PROJECTION_LEVELS[Math.max(0, Math.min(4, Math.round(p) - 1))];
-                return (
-                  <li key={m.label}>
-                    <span className={styles.moment}>{m.label}</span>
-                    <span className={styles.track} aria-hidden>
-                      <span className={styles.fill} style={{ width: `${(p / 5) * 100}%` }} />
-                    </span>
-                    <span className={styles.level}>{p < 0.6 ? 'Gone for most' : level.label}</span>
-                  </li>
-                );
-              })}
-            </ol>
-            <div className={styles.split}>
-              <p className={styles.splitLabel}>First hour, as reported</p>
-              <div className={styles.stack} role="img" aria-label={PROJECTION_LEVELS.map((l, i) => `${l.label} ${Math.round((st.projectionOpeningHist[i] / pTotal) * 100)}%`).join(', ')}>
-                {PROJECTION_LEVELS.map((l, i) => {
-                  const w = pTotal ? (st.projectionOpeningHist[i] / pTotal) * 100 : 0;
-                  return w > 0 ? <span key={l.value} style={{ width: `${w}%`, opacity: 0.25 + i * 0.18 }} title={`${l.label}: ${Math.round(w)}%`} /> : null;
-                })}
-              </div>
-              <div className={styles.stackLegend} aria-hidden>
-                <span>Skin</span>
-                <span>Room-filling</span>
-              </div>
-            </div>
+          <div className={styles.right}>
+            <p className={s.eyebrow}>
+              <Term slug="projection">Projection</Term> in the first hour
+            </p>
+            <Rows hist={st.projectionOpeningHist} label="Who could smell it in the first hour" />
+            <p className={`${s.eyebrow} ${styles.later}`}>Three hours later</p>
+            <Rows hist={st.projectionLaterHist} label="Who could smell it three hours later" />
           </div>
         </div>
       )}
-      <div className={s.cta}>
-        <VoteButton kind="performance" label="How did it perform on you?" />
-      </div>
     </section>
   );
 }

@@ -1,17 +1,18 @@
 import Link from 'next/link';
 import type { FragranceDetail, NoteRef } from '@/lib/data/types';
-import { NoteTag } from '@/components/scent/NoteTag';
+import { Blotter } from '@/components/scent/Blotter';
 import { Term } from '@/components/ui/Term';
 import { formatNumber } from '@/lib/scent/read';
 import { SourceBadge } from './SourceBadge';
 import { SectionHead } from './SectionHead';
-import { VoteButton } from './VoteButton';
+import { FoldOnPhone } from './FoldOnPhone';
 import styles from './ListedVsSmelled.module.css';
 import s from './sections.module.css';
 
 /**
  * Our clearest differentiator: what the house says is in it, next to what people actually
- * smell. Two different kinds of truth, kept apart and each labelled with where it came from.
+ * smell. Two kinds of truth on one linen band, each labelled with where it came from. The left
+ * column's title follows the claim's source, so the head never contradicts its own badge.
  */
 export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteIndex: Record<string, NoteRef> }) {
   const st = f.stats;
@@ -29,83 +30,105 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
         ['Heart', f.notes.heart, 'heart-notes'],
         ['Base', f.notes.base, 'base-notes'],
         ['Notes', f.notes.unspecified, null],
-      ] as const)
+      ] as const).filter(([, notes]) => notes.length)
     : [];
+  const claim = f.notesClaim;
+  const listTitle = !f.notes
+    ? 'No official list yet'
+    : claim?.sourceType === 'official_brand'
+      ? `Listed by ${f.brandName}`
+      : claim && !claim.verifiedAt
+        ? `Listed (per ${f.brandName}, not yet checked)`
+        : `Listed by ${f.brandName}`;
 
   return (
-    <section className={s.section} aria-labelledby="notes">
+    <section className={`${s.section} ${s['gap-96']} ${s.band}`} aria-labelledby="notes">
       <SectionHead
         id="notes"
         title="Listed vs. smelled"
         lede={
           <>
-            The <Term slug="note-pyramid">note list</Term> is the house’s description, not an ingredient list. Next to it: what people actually
-            notice on skin.
+            The <Term slug="note-pyramid">note list</Term> is the house’s description, not an ingredient list. Next to it: what people actually notice
+            on skin.
           </>
         }
+        votes={st.perceivedVoters}
+        votesLabel="people"
+        vote={{ kind: 'perceived', label: 'What do you smell?', editedLabel: 'Change what you smell' }}
       />
       <div className={styles.grid}>
         <div className={styles.col}>
-          <div className={styles.colHead}>
-            <h3 className={styles.colTitle}>Listed by the house</h3>
-            {f.notesClaim && <SourceBadge claim={f.notesClaim} />}
-          </div>
-          {f.notes ? (
-            <div className={styles.layers}>
-              {groups
-                .filter(([, notes]) => notes.length)
-                .map(([label, notes, term]) => (
+          <FoldOnPhone
+            summary={
+              <span>
+                {listTitle}
+                {listed.length > 0 && <span className={styles.summaryCount}> · {listed.length} notes</span>}
+              </span>
+            }
+          >
+            <div className={styles.colHead}>
+              <h3 className={`${s.h3} ${styles.colTitle}`}>{listTitle}</h3>
+              {claim && <SourceBadge claim={claim} />}
+            </div>
+            {f.notes ? (
+              <div className={styles.layers}>
+                {groups.map(([label, notes, term]) => (
                   <div key={label} className={styles.layer}>
-                    <p className={styles.layerLabel}>{term ? <Term slug={term}>{label}</Term> : label}</p>
-                    <div className={styles.tags}>
+                    <p className={s.eyebrow}>{term ? <Term slug={term}>{label}</Term> : label}</p>
+                    <p className={styles.inline}>
                       {notes.map((n) => (
-                        <NoteTag key={n.slug} note={n} />
+                        <Link key={n.slug} href={`/notes/${n.slug}`} className={styles.note} style={{ ['--hue' as string]: n.hue }}>
+                          {n.name}
+                        </Link>
                       ))}
-                    </div>
+                    </p>
                   </div>
                 ))}
-              {f.notes.unspecified.length > 0 && !f.notes.top.length && (
-                <p className="t-meta">The house lists notes without a top/heart/base split.</p>
-              )}
-            </div>
-          ) : (
-            <div className={s.empty}>
-              <strong>No official notes yet</strong>
-              {f.status === 'upcoming'
-                ? 'The house hasn’t published a note list for this release.'
-                : 'We haven’t found a published note list from the house.'}{' '}
-              <Link href={`/contribute?fragrance=${f.slug}&kind=official_notes`}>Have a source? Add it</Link>
-            </div>
-          )}
+                {f.notes.unspecified.length > 0 && !f.notes.top.length && <p className={styles.flat}>The house lists notes without a top, heart and base split.</p>}
+              </div>
+            ) : (
+              <p className={styles.flat}>
+                {f.status === 'upcoming' ? 'The house hasn’t published a note list for this release.' : 'We haven’t found a published note list from the house.'}{' '}
+                <Link href={`/contribute?fragrance=${f.slug}&kind=official_notes`}>Have a source? Add it</Link>
+              </p>
+            )}
+          </FoldOnPhone>
         </div>
 
         <div className={styles.col}>
           <div className={styles.colHead}>
-            <h3 className={styles.colTitle}>What people smell</h3>
-            <span className="t-meta">
-              {st.perceivedVoters ? `${formatNumber(st.perceivedVoters)} people` : 'No votes yet'}
-            </span>
+            <h3 className={`${s.h3} ${styles.colTitle}`}>What people smell</h3>
+            {st.perceivedVoters > 0 && (
+              <span className={styles.colMeta}>
+                <b className="tnum">{formatNumber(st.perceivedVoters)}</b> people
+              </span>
+            )}
           </div>
           {top.length ? (
             <>
               <ul role="list" className={s.bars} aria-label="Share of people who notice each note">
                 {top.map(([slug, share]) => {
                   const note = noteIndex[slug];
-                  const notListed = !listedSlugs.has(slug) && f.notes;
+                  const notListed = Boolean(f.notes) && !listedSlugs.has(slug);
+                  const pct = Math.round(share * 100);
                   return (
                     <li key={slug} className={s.barRow}>
                       <span className={s.barLabel}>
-                        <NoteTag note={note} flag={notListed ? 'not listed' : undefined} />
+                        <Blotter hue={note.hue} />
+                        <Link href={`/notes/${note.slug}`} className={styles.barLink}>
+                          {note.name}
+                        </Link>
+                        {notListed && <span className={s.tag}>not listed</span>}
                       </span>
                       <span className={s.barTrack} aria-hidden>
-                        <span className={s.barFill} style={{ width: `${Math.round(share * 100)}%`, background: note.hue }} />
+                        <span className={s.barFill} data-hollow={notListed || undefined} style={{ width: `${pct}%` }} />
                       </span>
-                      <span className={s.barValue}>{Math.round(share * 100)}%</span>
+                      <span className={s.barValue}>{pct}%</span>
                     </li>
                   );
                 })}
               </ul>
-              {(surprising.length > 0 || rarely.length > 0) && (
+              {(surprising.length > 0 || (rarely.length > 0 && st.perceivedVoters >= 20)) && (
                 <div className={styles.callouts}>
                   {surprising.length > 0 && (
                     <p>
@@ -126,14 +149,8 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
               )}
             </>
           ) : (
-            <div className={s.empty}>
-              <strong>Nobody has described it yet</strong>
-              Be the first to say what you smell. Early votes shape what newcomers expect.
-            </div>
+            <p className={styles.nobody}>No one has said what they smell yet.</p>
           )}
-          <div className={s.cta}>
-            <VoteButton kind="perceived" label="What do you smell?" editedLabel="Change what you smell" />
-          </div>
         </div>
       </div>
     </section>

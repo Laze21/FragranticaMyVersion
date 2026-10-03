@@ -1,102 +1,175 @@
-.grid {
+/* One row, 88px tall from 840 up: score, histogram, the agreement word, the dot plot. */
+.row {
   display: grid;
-  gap: var(--s-8);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-6) var(--s-7);
+  align-items: end;
 }
-.big {
+.score {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 4px;
+  white-space: nowrap;
 }
-.big :global(.t-figure) {
+.big {
   font-size: var(--t-figure-xl);
 }
-.big span:last-child {
+.outOf {
   color: var(--fg-3);
   font-weight: 600;
   font-size: var(--t-small);
-}
-.div {
-  margin-top: 6px;
-  font-size: var(--t-small);
-  color: var(--fg-2);
-  max-width: 44ch;
-}
-.div b {
-  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 .hist {
+  width: 120px;
+  display: grid;
+  gap: 4px;
+}
+.histCols {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 4px;
-  height: 110px;
-  margin: var(--s-5) 0 6px;
-}
-.histCol {
-  display: grid;
-  grid-template-rows: 1fr auto;
+  gap: 2px;
+  height: 64px;
   align-items: end;
-  gap: 4px;
 }
 .histBar {
   background: var(--scent-ink);
-  min-height: 1px;
-  transform-origin: bottom;
-  animation: rise var(--d-slow) var(--ease-evaporate);
+  min-height: 2px;
+  transition: height var(--d-slow) var(--ease-evaporate);
 }
-@keyframes rise {
-  from {
-    transform: scaleY(0);
-  }
-}
-.histLabel {
-  font-size: 11px;
-  text-align: center;
+.histAxis {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line-strong);
+  padding-top: 2px;
+  font-size: var(--t-micro);
   color: var(--fg-3);
   font-variant-numeric: tabular-nums;
 }
-.subs {
+.agree {
   display: grid;
-  gap: var(--s-4);
-  margin: 0;
-  align-content: start;
+  gap: 2px;
+  font-size: var(--t-label);
+  color: var(--fg-2);
+  max-width: 24ch;
+  grid-column: 1 / -1;
 }
-.subs dt {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px 8px;
-  align-items: baseline;
-  font-weight: 650;
+.agree b {
+  color: var(--ink);
   font-size: var(--t-small);
+  font-weight: 650;
 }
-.subs dt span {
-  font-weight: 400;
-  color: var(--fg-3);
-  font-size: var(--t-micro);
+
+/* The dot plot: four 18px lanes and one axis beneath, labels in the gutter, values at the dots. */
+.dots {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 260px;
 }
-.subs dd {
+.lane,
+.axis {
   display: grid;
-  grid-template-columns: 1fr 2.6em;
+  grid-template-columns: 6.5em minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  margin: 6px 0 0;
+  column-gap: 12px;
+  height: 18px;
 }
-.subs dd :global(.t-figure) {
-  font-size: 1.2rem;
-  text-align: right;
+.axis {
+  height: 16px;
+  align-items: start;
 }
-.subTrack {
-  height: 8px;
-  background: var(--bg-sunk);
+.laneLabel {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.laneTrack {
   position: relative;
+  height: 100%;
+  margin-right: 1.5em;
+  border-bottom: 1px dotted color-mix(in oklab, var(--ink) 18%, transparent);
 }
-.subTrack span {
+.dot {
   position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--ink);
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--scent-ink);
+  transition: left var(--d-slow) var(--ease-evaporate);
 }
-@media (min-width: 900px) {
+.laneValue {
+  position: absolute;
+  top: 50%;
+  transform: translate(8px, -50%);
+  font-size: var(--t-micro);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: left var(--d-slow) var(--ease-evaporate);
+}
+.axisTrack {
+  position: relative;
+  height: 100%;
+  margin-right: 1.5em;
+  border-top: 1px solid var(--line-strong);
+}
+.axisTrack span {
+  position: absolute;
+  top: 3px;
+  transform: translateX(-50%);
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Phone: the sub-scores as a 2x2 figure grid, 28px tabular with a one-word label. */
+.grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3) var(--s-4);
+  margin: 0;
+}
+.grid > div {
+  display: grid;
+  gap: 2px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.grid dt {
+  order: 2;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.grid dd {
+  margin: 0;
+  font-size: var(--t-figure-l);
+}
+@media (min-width: 840px) {
+  .row {
+    grid-template-columns: auto 120px minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: var(--s-8);
+    min-height: 88px;
+    align-items: end;
+  }
+  .agree {
+    grid-column: auto;
+    align-self: end;
+    padding-bottom: 2px;
+  }
+  .dots {
+    display: block;
+    /* the plot keeps its column when there is no agreement word to print */
+    grid-column: 4;
+  }
   .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-10);
+    display: none;
   }
 }
