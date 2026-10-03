@@ -1,8 +1,24 @@
 .review {
   display: grid;
-  gap: var(--s-3);
+  gap: var(--s-4);
   padding: var(--s-6) 0;
   border-top: 1px solid var(--line);
+}
+/* A removed review keeps its slot as one line. No body, no controls. */
+.removed {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  border-top: 1px solid var(--line);
+  font-size: var(--t-small);
+  font-style: italic;
+  color: var(--fg-3);
+}
+.meta {
+  display: grid;
+  gap: var(--s-3);
+  align-content: start;
+  min-width: 0;
 }
 .by {
   display: flex;
@@ -26,20 +42,63 @@
   font-size: var(--t-micro);
   color: var(--fg-3);
 }
-.rating {
-  font-size: var(--t-small);
+.demo {
+  margin-top: 2px;
+  font-size: var(--t-micro);
+  color: var(--bergamot-ink);
+}
+.score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: var(--t-label);
   color: var(--fg-3);
-  font-variant-numeric: tabular-nums;
+}
+.scoreMain {
   white-space: nowrap;
 }
-.rating b {
-  font-size: 1.25rem;
+.scoreMain b {
+  font-size: var(--t-h3);
   color: var(--ink);
   font-weight: 600;
-  font-stretch: 85%;
+  font-stretch: 88%;
+}
+.subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  font-size: var(--t-micro);
+}
+.subs b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin: 0;
+  padding: 0;
+}
+.focus li {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--fg-2);
+}
+.date {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.kind {
+  font-weight: 600;
 }
 .content {
   min-width: 0;
+  max-width: var(--measure-read);
 }
 .about {
   font-size: var(--t-small);
@@ -48,14 +107,14 @@
 .fragLink {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.08rem;
+  font-size: var(--t-name-s);
 }
 .title {
   font-family: var(--font-serif);
-  font-weight: 560;
-  font-size: 1.3rem;
+  font-weight: 500;
+  font-size: var(--t-h3);
   line-height: 1.25;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   text-wrap: balance;
 }
 .gift {
@@ -69,12 +128,9 @@
 }
 .body {
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--t-prose);
   line-height: 1.6;
-  max-width: 68ch;
-}
-.body[data-kind='quick'] {
-  font-size: 1.125rem;
+  font-variation-settings: 'opsz' 18;
 }
 .body p + p {
   margin-top: 0.75em;
@@ -93,22 +149,8 @@
   font-weight: 650;
   font-size: var(--t-small);
   text-decoration: underline;
+  text-underline-offset: 0.2em;
   min-height: 36px;
-}
-.focus {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: var(--s-3) 0 0;
-  padding: 0;
-}
-.focus li {
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: var(--r-pill);
-  background: var(--bg-sunk);
-  color: var(--fg-2);
 }
 .foot {
   display: flex;
@@ -118,9 +160,6 @@
   margin-top: var(--s-3);
   font-size: var(--t-micro);
   color: var(--fg-3);
-}
-.foot time {
-  margin-right: 8px;
 }
 .action {
   display: inline-flex;
@@ -134,6 +173,7 @@
   font-size: var(--t-micro);
   font-weight: 600;
   color: var(--fg-2);
+  text-decoration: none;
 }
 @media (pointer: coarse) {
   .action {
@@ -147,8 +187,8 @@
 }
 .report {
   margin-top: var(--s-3);
-  padding: var(--s-4);
-  background: var(--paper);
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--line-strong);
   display: grid;
   gap: 8px;
 }
@@ -171,30 +211,48 @@
   display: flex;
   gap: 8px;
 }
-.deleted {
-  font-size: var(--t-small);
-  color: var(--fg-3);
-  font-style: italic;
-}
-@media (min-width: 900px) {
-  .review {
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: var(--s-6);
-  }
-  .by {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-  .rating {
-    width: 100%;
-    order: 3;
-    padding-left: 48px;
-  }
-}
 .confirm {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   color: var(--oxblood);
   font-size: var(--t-small);
+}
+
+/* Quick takes: three in a row from 840, a snap row on phones. The words first. */
+.take {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding-top: var(--s-3);
+  border-top: 2px solid var(--ink);
+  min-width: 0;
+}
+.takeBody {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+.takeMeta {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.takeMeta b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (min-width: 840px) {
+  .review {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: var(--s-7);
+  }
+  .meta {
+    position: sticky;
+    top: calc(var(--header-h) + 24px);
+  }
+  .by {
+    align-items: flex-start;
+  }
 }

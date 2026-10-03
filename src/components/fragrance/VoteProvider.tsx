@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, useTransition } from 'react';
 import { Sheet } from '@/components/ui/Sheet';
+import { Blotter } from '@/components/scent/Blotter';
+import { useRadioGroup } from '@/lib/hooks/useRadioGroup';
 import { toast } from '@/components/ui/Toaster';
 import { useViewer } from '@/components/viewer/ViewerProvider';
 import { clearRating, getMyFragranceState, rate, voteCharacter, votePerceived, votePerformance, voteWear, type MyFragranceState } from '@/app/actions/community';
@@ -122,7 +124,7 @@ function PerceivedSheet({ slug, name, notes, initial, onClose, onDone }: SheetPr
     start(async () => {
       const res = await votePerceived(slug, picked);
       if (!res.ok) return toast(res.error, 'error');
-      await onDone(picked.length ? `Thanks. Your ${picked.length} notes are counted.` : 'Your note votes were cleared.');
+      await onDone(picked.length ? `${picked.length} ${picked.length === 1 ? 'note' : 'notes'} counted.` : 'Note votes cleared.');
     });
 
   return (
@@ -141,7 +143,7 @@ function PerceivedSheet({ slug, name, notes, initial, onClose, onDone }: SheetPr
       <div className={styles.chips} role="group" aria-label="Notes">
         {pool.slice(0, 60).map((n) => (
           <button key={n.slug} type="button" className="chip" aria-pressed={picked.includes(n.slug)} onClick={() => toggle(n.slug)}>
-            <i className={styles.dot} style={{ background: n.hue }} aria-hidden />
+            <Blotter hue={n.hue} />
             {n.name}
             {n.listed && <span className={styles.listed}>listed</span>}
           </button>
@@ -166,38 +168,21 @@ function PerformanceSheet({ slug, name, initial, onClose, onDone }: SheetProps<M
     start(async () => {
       const res = await votePerformance(slug, { longevity: lon, projectionOpening: p0, projectionLater: p1, sprays });
       if (!res.ok) return toast(res.error, 'error');
-      await onDone('Thanks. Your performance notes are counted.');
+      await onDone(`${name}: performance counted.`);
     });
-  const Radio = ({ label, value, current, set }: { label: string; value: number | string; current: number | string | null; set: (v: never) => void }) => (
-    <button type="button" className="chip" role="radio" aria-checked={current === value} onClick={() => set(value as never)}>
-      {label}
-    </button>
-  );
   return (
     <Sheet open onClose={onClose} title={`How did ${name} perform on you?`} description="Your skin, your climate. Every answer helps the range get more honest." footer={<SaveBar pending={pending} onSave={save} onClose={onClose} />}>
       <fieldset className={styles.fieldset}>
         <legend>How long could you smell it?</legend>
-        <div className={styles.chips} role="radiogroup">
-          {LONGEVITY_BUCKETS.map((b) => (
-            <Radio key={b.key} label={b.label} value={b.key} current={lon} set={setLon as (v: never) => void} />
-          ))}
-        </div>
+        <ChipRadios options={LONGEVITY_BUCKETS.map((b) => ({ value: b.key, label: b.label }))} value={lon} onChange={setLon} label="How long it lasted" />
       </fieldset>
       <fieldset className={styles.fieldset}>
         <legend>In the first hour, who could smell it?</legend>
-        <div className={styles.chips} role="radiogroup">
-          {PROJECTION_LEVELS.map((l) => (
-            <Radio key={l.value} label={`${l.label}: ${l.hint}`} value={l.value} current={p0} set={setP0 as (v: never) => void} />
-          ))}
-        </div>
+        <ChipRadios options={PROJECTION_LEVELS.map((l) => ({ value: l.value, label: `${l.label}: ${l.hint}` }))} value={p0} onChange={setP0} label="Projection in the first hour" />
       </fieldset>
       <fieldset className={styles.fieldset}>
         <legend>And three hours later?</legend>
-        <div className={styles.chips} role="radiogroup">
-          {PROJECTION_LEVELS.map((l) => (
-            <Radio key={l.value} label={l.label} value={l.value} current={p1} set={setP1 as (v: never) => void} />
-          ))}
-        </div>
+        <ChipRadios options={PROJECTION_LEVELS.map((l) => ({ value: l.value, label: l.label }))} value={p1} onChange={setP1} label="Projection three hours later" />
       </fieldset>
       <div className={styles.fieldset}>
         <label htmlFor="sprays" className="t-sub">
@@ -229,7 +214,8 @@ function WearSheet({ slug, name, initial, onClose, onDone }: SheetProps<Record<s
     start(async () => {
       const res = await voteWear(slug, fits);
       if (!res.ok) return toast(res.error, 'error');
-      await onDone('Thanks. Counted.');
+      const yes = Object.values(fits).filter((v) => v === true).length;
+      await onDone(yes ? `${name}: fits ${yes} ${yes === 1 ? 'moment' : 'moments'}.` : `${name}: answers counted.`);
     });
   return (
     <Sheet open onClose={onClose} title={`When would you wear ${name}?`} description="Tap once for “yes, it fits”, twice for “no”, three times to skip." footer={<SaveBar pending={pending} onSave={save} onClose={onClose} />}>
@@ -268,12 +254,45 @@ const SUBS = [
   { key: 'originality', label: 'Originality', hint: 'Have you smelled this before?' },
 ] as const;
 
+const TEN = Array.from({ length: 10 }, (_, i) => i + 1);
+
 export function ScoreRow({ value, onChange, label }: { value: number | null; onChange: (v: number) => void; label: string }) {
+  const rg = useRadioGroup({ values: TEN, value, onChange, orientation: 'horizontal' });
   return (
-    <div className={styles.score} role="radiogroup" aria-label={label}>
-      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-        <button key={n} type="button" role="radio" aria-checked={value === n} aria-label={`${n} out of 10`} data-filled={value !== null && n <= value ? 'true' : undefined} onClick={() => onChange(n)}>
+    <div className={styles.score} {...rg.group()} aria-label={label}>
+      {TEN.map((n) => (
+        <button key={n} type="button" {...rg.item(n)} aria-label={`${n} out of 10`} data-filled={value !== null && n <= value ? 'true' : undefined}>
           {n}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** A row of chips that behaves as one radio group: one Tab stop, arrows move and choose. */
+function ChipRadios<T extends string | number>({ options, value, onChange, label }: { options: Array<{ value: T; label: string }>; value: T | null; onChange: (v: T) => void; label: string }) {
+  const values = useMemo(() => options.map((o) => o.value), [options]);
+  const rg = useRadioGroup({ values, value, onChange });
+  return (
+    <div className={styles.chips} {...rg.group()} aria-label={label}>
+      {options.map((o) => (
+        <button key={String(o.value)} type="button" className="chip" {...rg.item(o.value)}>
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** The four-step strip for one character dimension. */
+function SegRadios({ levels, value, onChange, label }: { levels: string[]; value: number | undefined; onChange: (v: number) => void; label: string }) {
+  const values = useMemo(() => levels.map((_, i) => i), [levels]);
+  const rg = useRadioGroup({ values, value: value ?? null, onChange, orientation: 'horizontal' });
+  return (
+    <div className={styles.seg} {...rg.group()} aria-label={label}>
+      {levels.map((l, i) => (
+        <button key={l} type="button" {...rg.item(i)}>
+          {l}
         </button>
       ))}
     </div>
@@ -338,7 +357,7 @@ function CharacterSheet({ slug, name, initial, onClose, onDone }: SheetProps<Rec
     start(async () => {
       const res = await voteCharacter(slug, v);
       if (!res.ok) return toast(res.error, 'error');
-      await onDone('Thanks. The Trail will shift as votes come in.');
+      await onDone('Character counted. The Trail shifts as votes come in.');
     });
   return (
     <Sheet open onClose={onClose} title={`How does ${name} read to you?`} description="Rate each character. Skip any you’re unsure about." footer={<SaveBar pending={pending} onSave={save} onClose={onClose} />} wide>
@@ -346,16 +365,10 @@ function CharacterSheet({ slug, name, initial, onClose, onDone }: SheetProps<Rec
         {DIMENSIONS.map((d) => (
           <fieldset key={d} className={styles.charRow}>
             <legend>
-              <i className={styles.dot} style={{ background: DIMENSION_META[d].hue }} aria-hidden /> {DIMENSION_META[d].label}
+              <Blotter hue={DIMENSION_META[d].hue} /> {DIMENSION_META[d].label}
               <span className="t-meta"> {DIMENSION_META[d].plain}</span>
             </legend>
-            <div className={styles.seg} role="radiogroup" aria-label={DIMENSION_META[d].label}>
-              {levels.map((l, i) => (
-                <button key={l} type="button" role="radio" aria-checked={v[d] === i} onClick={() => setV((x) => ({ ...x, [d]: i }))}>
-                  {l}
-                </button>
-              ))}
-            </div>
+            <SegRadios levels={levels} value={v[d]} onChange={(i) => setV((x) => ({ ...x, [d]: i }))} label={DIMENSION_META[d].label} />
           </fieldset>
         ))}
       </div>

@@ -12,10 +12,24 @@ export const SOURCE_TYPE_LABEL: Record<string, string> = {
   retailer_feed: 'Retailer',
 };
 
-const fmtDate = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : null);
+/** A source is named like a source: no build-log prefixes, no "(to verify)" parentheticals. */
+export function cleanSourceName(name: string): string {
+  return name
+    .replace(/^\s*OFFLINE[\s:·-]*/i, '')
+    .replace(/\s*\([^)]*\)\s*$/, '')
+    .trim();
+}
 
-/** Where a claim came from, one tap away. */
+export const fmtMonth = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : null);
+
+export function confidenceWord(c: number | null): 'High' | 'Medium' | 'Low' | null {
+  if (c === null) return null;
+  return c >= 0.85 ? 'High' : c >= 0.6 ? 'Medium' : 'Low';
+}
+
+/** Where a claim came from, one tap away. The badge says checked or not; the popover says by whom. */
 export function SourceBadge({ claim }: { claim: SourceClaim }) {
+  const word = confidenceWord(claim.confidence);
   return (
     <Popover
       label="Where this came from"
@@ -24,36 +38,34 @@ export function SourceBadge({ claim }: { claim: SourceClaim }) {
         <>
           <Icon name="source" size={14} />
           {SOURCE_TYPE_LABEL[claim.sourceType] ?? claim.sourceType}
-          {claim.isDemo && <span className={styles.demo}>demo</span>}
-          <span className={styles.date}>{claim.verifiedAt ? `· checked ${fmtDate(claim.verifiedAt)}` : '· not yet checked'}</span>
+          <span className={styles.date}>{claim.verifiedAt ? `· checked ${fmtMonth(claim.verifiedAt)}` : '· not yet checked'}</span>
         </>
       }
     >
-      <span className={styles.popTitle}>{claim.sourceName}</span>
+      <span className={styles.popTitle}>{cleanSourceName(claim.sourceName)}</span>
       <dl className={styles.dl}>
         <div>
           <dt>Type</dt>
-          <dd>{SOURCE_TYPE_LABEL[claim.sourceType]}</dd>
+          <dd>{SOURCE_TYPE_LABEL[claim.sourceType] ?? claim.sourceType}</dd>
         </div>
         <div>
-          <dt>Verified</dt>
-          <dd>{fmtDate(claim.verifiedAt) ?? 'Not yet'}</dd>
+          <dt>Checked</dt>
+          <dd>{fmtMonth(claim.verifiedAt) ?? 'Not yet'}</dd>
         </div>
-        {claim.confidence !== null && (
+        {word && (
           <div>
             <dt>Confidence</dt>
-            <dd>{claim.confidence >= 0.85 ? 'High' : claim.confidence >= 0.6 ? 'Medium' : 'Low'}</dd>
+            <dd>{word}</dd>
           </div>
         )}
       </dl>
-      {claim.notes && <span className={styles.note}>{claim.notes}</span>}
       {claim.sourceUrl ? (
         <a href={claim.sourceUrl} rel="noopener nofollow" target="_blank" className={styles.link}>
-          Open source <Icon name="external" size={14} />
+          Open the source <Icon name="external" size={14} />
         </a>
-      ) : claim.isDemo ? (
-        <span className={styles.note}>No page to link to yet: this claim is editorial and still waiting to be checked against the house.</span>
-      ) : null}
+      ) : (
+        <span className={styles.note}>No page to link to yet: this is editorial and still waiting to be checked against the house.</span>
+      )}
     </Popover>
   );
 }

@@ -1,38 +1,18 @@
+/* One ink primary, then "Wearing it today" and the heart sharing a single outlined border. */
 .actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--s-2);
-}
-@media (max-width: 719px) {
-  .actions {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
-  }
-  .actions .shelfBtn,
-  .actions .wear {
-    min-width: 0;
-    padding: 0 10px;
-  }
-  .menuWrap {
-    min-width: 0;
-  }
-  .menuWrap > button {
-    width: 100%;
-  }
-  .wearLong {
-    display: none;
-  }
-}
-@media (min-width: 720px) {
-  .wearShort {
-    display: none;
-  }
 }
 .menuWrap {
   position: relative;
 }
 .shelfBtn {
   min-width: 168px;
+}
+.shelfShort {
+  display: none;
 }
 .shelfIcon {
   display: inline-grid;
@@ -47,20 +27,80 @@
     opacity: 0.2;
   }
 }
+.pair {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+}
+.pair > .wear,
+.pair > .fav {
+  border: 0;
+  border-radius: 0;
+  min-height: 42px;
+}
+.pair > .wear + .fav {
+  border-left: 1px solid var(--line-strong);
+}
+.wear {
+  padding-inline: var(--s-4);
+}
+.wearShort {
+  display: none;
+}
+.fav {
+  width: 44px;
+  padding: 0;
+}
+.fav[aria-pressed='true'] {
+  color: var(--oxblood);
+}
+.fav[aria-pressed='true'] :global(svg) {
+  fill: var(--oxblood);
+}
+
+/* The rail's and the tablet bar's version: 36px, short words, the atomizer alone. */
+.actions[data-compact] {
+  gap: 6px;
+}
+.actions[data-compact] .shelfBtn {
+  min-width: 0;
+  padding-inline: var(--s-3);
+}
+.actions[data-compact] .shelfLong,
+.actions[data-compact] .wearLong,
+.actions[data-compact] .wearShort {
+  display: none;
+}
+.actions[data-compact] .shelfShort {
+  display: inline;
+}
+.actions[data-compact] .pair > .wear,
+.actions[data-compact] .pair > .fav {
+  min-height: 34px;
+}
+.actions[data-compact] .wear {
+  padding-inline: var(--s-3);
+}
+.actions[data-compact] .fav {
+  width: 36px;
+}
+
 .menu {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  z-index: 36; /* above the sticky section nav (30), below the site header (40) */
+  z-index: 36; /* above the section nav (30), below the site header (40) */
   min-width: 220px;
   padding: 6px;
   display: grid;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-2);
   box-shadow: var(--shadow-pop);
 }
-.menu button {
+.menu button,
+.sheetMenu button {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -72,6 +112,15 @@
   font-size: var(--t-small);
   border-radius: var(--r-1);
 }
+.sheetMenu {
+  display: grid;
+}
+.sheetMenu button {
+  min-height: 48px;
+  font-size: var(--t-body);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+}
 .menu button:hover {
   background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
@@ -82,7 +131,8 @@
   border: 1.5px solid var(--ink-3);
   flex: none;
 }
-.menu [aria-checked='true'] .radio {
+.menu [aria-checked='true'] .radio,
+.sheetMenu [aria-checked='true'] .radio {
   border: 4.5px solid var(--ink);
 }
 .remove {
@@ -91,57 +141,35 @@
   color: var(--oxblood);
   border-radius: 0 !important;
 }
-.atomizer {
-  position: relative;
-  display: inline-grid;
-}
-/* Atomizer press: the head dips, a few droplets leave the nozzle. */
-.wear[data-spraying] .atomizer :global(svg) {
-  animation: press 260ms var(--ease-standard);
-}
-@keyframes press {
-  50% {
-    transform: translateY(1.5px) scaleY(0.96);
+
+@media (max-width: 719px) {
+  .actions:not([data-compact]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+  }
+  .actions:not([data-compact]) .shelfBtn {
+    width: 100%;
+    min-width: 0;
+    padding: 0 10px;
+  }
+  .wearLong {
+    display: none;
+  }
+  .wearShort {
+    display: inline;
+  }
+  .wear {
+    padding-inline: var(--s-3);
   }
 }
-.mist {
-  position: absolute;
-  left: 15px;
-  top: 2px;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  opacity: 0;
-}
-.wear[data-spraying] .mist {
-  animation: mist 760ms var(--ease-evaporate) 120ms;
-  box-shadow: 3px -1px 0 0 currentColor, 6px 1px 0 -0.3px currentColor, 8px -3px 0 -0.4px currentColor, 5px -4px 0 -0.3px currentColor;
-}
-@keyframes mist {
-  0% {
-    opacity: 0.9;
-    transform: translate(0, 0);
+@media (pointer: coarse) {
+  .pair > .wear,
+  .pair > .fav {
+    min-height: 42px;
   }
-  100% {
-    opacity: 0;
-    transform: translate(9px, -7px) scale(1.6);
-  }
-}
-.fav {
-  width: 44px;
-  padding: 0;
-}
-.fav[aria-pressed='true'] {
-  color: var(--oxblood);
-  --btn-line: color-mix(in oklab, var(--oxblood) 40%, transparent);
-}
-.fav[aria-pressed='true'] :global(svg) {
-  fill: var(--oxblood);
 }
 @media (prefers-reduced-motion: reduce) {
-  .shelfIcon[data-placed],
-  .wear[data-spraying] .atomizer :global(svg),
-  .wear[data-spraying] .mist {
+  .shelfIcon[data-placed] {
     animation: none;
   }
 }
