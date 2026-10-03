@@ -18,6 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: u('/'), changeFrequency: 'daily', priority: 1 },
     { url: u('/discover'), changeFrequency: 'daily', priority: 0.8 },
     { url: u('/notes'), priority: 0.7 },
+    { url: u('/house'), priority: 0.6 },
+    { url: u('/perfumer'), priority: 0.5 },
     { url: u('/learn'), priority: 0.6 },
     { url: u('/lists'), priority: 0.5 },
     ...fr.map((f) => ({ url: u(`/fragrance/${f.slug}`), lastModified: new Date(f.updated_at), changeFrequency: 'weekly' as const, priority: 0.9 })),

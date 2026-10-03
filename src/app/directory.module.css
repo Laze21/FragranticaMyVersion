@@ -1,0 +1,176 @@
+/* The house and perfumer directories: ruled lists on the reading grid, bottles standing on the
+   rules. No cards; a directory is a page of a publication, not a dashboard of tiles. */
+.page {
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-11);
+}
+.head {
+  max-width: var(--measure-read);
+}
+.title {
+  font-size: var(--t-title-l);
+}
+.lede {
+  margin-top: var(--s-4);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.4;
+  color: var(--fg-2);
+}
+/* Jump line: the groups as one running sentence, so a phone reader can get to "Niche" without
+   scrolling past fourteen designer houses. */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) 0;
+  margin-top: var(--s-5);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.jump a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+  text-underline-offset: 0.15em;
+  padding-block: 6px;
+}
+.jump a:hover {
+  text-decoration-color: currentColor;
+}
+.jump span[aria-hidden] {
+  padding-inline: 0.5em;
+  color: var(--fg-3);
+}
+
+.group {
+  margin-top: var(--s-8);
+  scroll-margin-top: calc(var(--header-h) + var(--s-4));
+}
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-top: var(--s-3);
+  border-top: 2px solid var(--ink);
+}
+.groupTitle {
+  font-family: var(--font-serif);
+  font-size: var(--t-h3);
+  font-weight: 400;
+  line-height: 1.2;
+}
+.groupCount {
+  font-size: var(--t-small);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.list {
+  list-style: none;
+  margin: var(--s-3) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: calc(var(--col) + 2 * var(--col-gap));
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-2) var(--s-4);
+  align-items: end;
+  padding: var(--s-4) 0 0;
+  border-bottom: 1px solid var(--line);
+}
+.rowMain {
+  min-width: 0;
+  align-self: start;
+  padding-bottom: var(--s-4);
+}
+.name {
+  font-size: var(--t-sub);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.name a {
+  color: inherit;
+  text-decoration: none;
+}
+.name a:hover,
+.name a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+.facts {
+  margin-top: 2px;
+  font-size: var(--t-small);
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.known {
+  margin-top: var(--s-2);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-s);
+  line-height: 1.4;
+  color: var(--fg-2);
+  max-width: 44ch;
+}
+.names {
+  margin-top: var(--s-1);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 44ch;
+}
+.names a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  text-underline-offset: 0.15em;
+}
+.names a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* The work: a count above three small bottles whose feet sit on the row's rule. */
+.work {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-2);
+}
+.count {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.thumbs {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.thumb {
+  position: relative;
+  width: 40px;
+  height: 56px;
+}
+.thumb img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+@media (min-width: 720px) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .thumb {
+    width: 44px;
+    height: 62px;
+  }
+}

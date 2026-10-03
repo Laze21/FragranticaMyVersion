@@ -16,6 +16,8 @@ export const NAV_LINKS = [
 export const BROWSE_LINKS = [
   { href: '/discover', label: 'Discover' },
   { href: '/notes', label: 'Notes' },
+  { href: '/house', label: 'Houses' },
+  { href: '/perfumer', label: 'Perfumers' },
   { href: '/learn', label: 'Learn the words' },
   { href: '/compare', label: 'Compare' },
   { href: '/lists', label: 'Lists' },

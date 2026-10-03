@@ -74,7 +74,7 @@ test.describe('compare', () => {
 });
 
 test.describe('layout', () => {
-  const routes = ['/', '/discover?q=rainy+day', '/fragrance/dior-sauvage', '/fragrance/chanel-no-5', '/notes/bergamot', '/house/dior', '/compare?f=dior-sauvage%2Cchanel-no-5', '/learn', '/about/data', '/sign-in'];
+  const routes = ['/', '/discover?q=rainy+day', '/fragrance/dior-sauvage', '/fragrance/chanel-no-5', '/notes/bergamot', '/house/dior', '/house', '/perfumer', '/compare?f=dior-sauvage%2Cchanel-no-5', '/learn', '/about/data', '/sign-in'];
   for (const route of routes) {
     test(`no horizontal overflow or console errors on ${route}`, async ({ page }) => {
       const errors: string[] = [];
