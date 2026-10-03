@@ -236,9 +236,7 @@ export default async function ComparePage(props: PageProps<'/compare'>) {
                 f,
                 i,
                 i === 0 ? (
-                  <span className={styles.dash} aria-label="the reference">
-                    —
-                  </span>
+                  <span className={styles.dash}>the reference</span>
                 ) : (
                   <span className={styles.phrase}>
                     <span className={styles.phraseLong}>{overlapPhrase(overlap.get(f.id) ?? 0, items[0].name)}</span>
@@ -309,9 +307,7 @@ export default async function ComparePage(props: PageProps<'/compare'>) {
                       <span className={styles.barValue}>{Math.round(v * 100)}%</span>
                     </span>
                   ) : (
-                    <span className={styles.dash} aria-label="under ten percent">
-                      —
-                    </span>
+                    <span className={styles.dash}>under 10%</span>
                   ),
                 );
               })}

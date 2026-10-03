@@ -209,7 +209,10 @@
 .phraseShort {
   display: none;
 }
+/* A cell with nothing to compare says so in words, in the null voice. */
 .dash {
+  font-size: var(--t-small);
+  font-style: italic;
   color: var(--fg-3);
 }
 .notes {
