@@ -10,6 +10,16 @@
     background-color: var(--scent-wash);
   }
 }
+/* The ink primary flashes the scent's ink instead, so its porcelain label stays readable. */
+.btn[data-variant='ink'][data-spraying] {
+  animation-name: flashInk;
+}
+@keyframes flashInk {
+  0%,
+  60% {
+    background-color: var(--scent-ink);
+  }
+}
 .head {
   position: relative;
   display: inline-grid;
