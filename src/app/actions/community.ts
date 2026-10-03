@@ -315,6 +315,147 @@ export async function getMyFragranceState(slug: string) {
 export type MyFragranceState = NonNullable<Awaited<ReturnType<typeof getMyFragranceState>>>;
 
 // ---------------------------------------------------------------------------
+// Lists: make one, put a fragrance on one, keep someone else's
+// ---------------------------------------------------------------------------
+/** Postgres says 42P01 for a table that is not there yet: list_saves arrives with the next migration run. */
+const missingTable = (e: unknown) => (e as { code?: string })?.code === '42P01' || /relation .* does not exist/i.test(String((e as Error)?.message ?? ''));
+
+function slugify(title: string): string {
+  return title
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60) || 'list';
+}
+
+export interface MyList {
+  id: string;
+  slug: string;
+  title: string;
+  count: number;
+  /** true when the fragrance the menu was opened for is already on it */
+  has?: boolean;
+}
+
+/** The viewer's own lists, newest first; with `slug`, whether each already holds that fragrance. */
+export async function myLists(slug?: string): Promise<MyList[]> {
+  const v = await getViewer();
+  if (!v) return [];
+  const rows = await sql<{ id: string; slug: string; title: string; n: string; has: boolean }>(
+    `select l.id, l.slug, l.title, count(li.fragrance_id) n,
+            bool_or(f.slug = $2) has
+       from public.lists l
+       left join public.list_items li on li.list_id = l.id
+       left join public.fragrances f on f.id = li.fragrance_id
+      where l.user_id = $1 group by l.id order by l.created_at desc`,
+    [v.id, slug ?? null],
+  );
+  return rows.map((r) => ({ id: r.id, slug: r.slug, title: r.title, count: Number(r.n), has: Boolean(r.has) }));
+}
+
+export async function createList(input: { title: string; description?: string | null; slugs?: string[]; isPublic?: boolean }) {
+  return guard(async () => {
+    const v = await requireViewer();
+    const title = (input.title ?? '').trim();
+    if (title.length < 2 || title.length > 140) throw new UserError('Give the list a title, 2 to 140 characters.');
+    const description = (input.description ?? '').trim().slice(0, 600) || null;
+    const base = slugify(title);
+    const taken = await sql<{ slug: string }>(`select slug from public.lists where user_id = $1 and slug like $2`, [v.id, `${base}%`]);
+    const used = new Set(taken.map((t) => t.slug));
+    let slug = base;
+    for (let n = 2; used.has(slug); n++) slug = `${base}-${n}`;
+    const db = await getDb();
+    const id = await db.tx(async (q) => {
+      const [row] = await q.query<{ id: string }>(
+        `insert into public.lists (user_id, slug, title, description, is_public) values ($1, $2, $3, $4, $5) returning id`,
+        [v.id, slug, title, description, input.isPublic ?? true],
+      );
+      const slugs = Array.from(new Set((input.slugs ?? []).filter(Boolean))).slice(0, 50);
+      if (slugs.length) {
+        await q.query(
+          `insert into public.list_items (list_id, fragrance_id, position)
+           select $1, f.id, s.ord - 1 from unnest($2::text[]) with ordinality s(slug, ord) join public.fragrances f on f.slug = s.slug`,
+          [row.id, slugs],
+        );
+      }
+      return row.id;
+    });
+    revalidatePath('/lists');
+    return { id, slug, handle: v.handle, href: `/lists/${v.handle}/${slug}` };
+  });
+}
+
+/** Puts a fragrance at the end of one of the viewer's lists; already there is not an error. */
+export async function addToList(slug: string, listId: string, note?: string | null) {
+  return guard(async () => {
+    const v = await requireViewer();
+    const fid = await fragranceId(slug);
+    const list = await sqlOne<{ id: string; slug: string; title: string }>('select id, slug, title from public.lists where id = $1 and user_id = $2', [listId, v.id]);
+    if (!list) throw new UserError('That list isn’t yours.');
+    await sql(
+      `insert into public.list_items (list_id, fragrance_id, position, note)
+       values ($1, $2, coalesce((select max(position) + 1 from public.list_items where list_id = $1), 0), $3)
+       on conflict (list_id, fragrance_id) do update set note = coalesce(excluded.note, public.list_items.note)`,
+      [list.id, fid, note?.trim().slice(0, 500) || null],
+    );
+    revalidatePath('/lists');
+    revalidatePath(`/lists/${v.handle}/${list.slug}`);
+    return { title: list.title, href: `/lists/${v.handle}/${list.slug}` };
+  });
+}
+
+export async function removeFromList(slug: string, listId: string) {
+  return guard(async () => {
+    const v = await requireViewer();
+    const fid = await fragranceId(slug);
+    const list = await sqlOne<{ slug: string }>('select slug from public.lists where id = $1 and user_id = $2', [listId, v.id]);
+    if (!list) throw new UserError('That list isn’t yours.');
+    await sql('delete from public.list_items where list_id = $1 and fragrance_id = $2', [listId, fid]);
+    revalidatePath('/lists');
+    revalidatePath(`/lists/${v.handle}/${list.slug}`);
+  });
+}
+
+/** Save (or unsave) someone else's list. Your own lists are already yours. */
+export async function toggleSaveList(listId: string) {
+  return guard(async () => {
+    const v = await requireViewer();
+    const list = await sqlOne<{ user_id: string; slug: string; handle: string }>(
+      'select l.user_id, l.slug, p.handle from public.lists l join public.profiles p on p.id = l.user_id where l.id = $1 and l.is_public',
+      [listId],
+    );
+    if (!list) throw new UserError('That list is gone.');
+    if (list.user_id === v.id) throw new UserError('It’s your list already.');
+    try {
+      const existing = await sqlOne('select 1 from public.list_saves where user_id = $1 and list_id = $2', [v.id, listId]);
+      if (existing) await sql('delete from public.list_saves where user_id = $1 and list_id = $2', [v.id, listId]);
+      else await sql('insert into public.list_saves (user_id, list_id) values ($1, $2)', [v.id, listId]);
+      revalidatePath('/lists');
+      revalidatePath(`/lists/${list.handle}/${list.slug}`);
+      return { saved: !existing };
+    } catch (e) {
+      if (missingTable(e)) throw new UserError('Saving lists switches on with the next database update.');
+      throw e;
+    }
+  });
+}
+
+/** Ids of the lists the viewer has saved; empty until the list_saves table exists. */
+export async function savedListIds(): Promise<string[]> {
+  const v = await getViewer();
+  if (!v) return [];
+  try {
+    const rows = await sql<{ list_id: string }>('select list_id from public.list_saves where user_id = $1', [v.id]);
+    return rows.map((r) => r.list_id);
+  } catch (e) {
+    if (missingTable(e)) return [];
+    throw e;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Follows
 // ---------------------------------------------------------------------------
 export async function toggleFollow(handle: string) {
