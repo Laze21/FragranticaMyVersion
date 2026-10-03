@@ -165,10 +165,11 @@
   .table[data-cols='4'][data-pair] {
     --vis: 2;
   }
-  .table[data-pair='ab'] [data-col='2'],
-  .table[data-pair='ab'] [data-col='3'],
-  .table[data-pair='cd'] [data-col='0'],
-  .table[data-pair='cd'] [data-col='1'] {
+  /* Specific enough to beat the rows' own display rules (page.module.css sets grids on cells by kind). */
+  .table[data-cols='4'][data-pair='ab'] [data-col='2'],
+  .table[data-cols='4'][data-pair='ab'] [data-col='3'],
+  .table[data-cols='4'][data-pair='cd'] [data-col='0'],
+  .table[data-cols='4'][data-pair='cd'] [data-col='1'] {
     display: none;
   }
 }

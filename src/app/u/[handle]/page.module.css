@@ -1,106 +1,164 @@
+/*
+ * A person's page: the header, then a 5/7 split (identity left, what they wear right), then
+ * lists and reviews at full width. The person's Trail heads the identity column; the rotation
+ * and the shelf are planks, the same furniture as /shelf.
+ */
 .page {
   padding-top: var(--s-8);
+  padding-bottom: var(--s-11);
 }
-.head {
-  display: flex;
-  gap: var(--s-5);
-  align-items: flex-start;
-  padding-bottom: var(--s-7);
-  border-bottom: 1px solid var(--line);
-}
-.id {
-  min-width: 0;
-}
-.name {
-  font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 116%;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
-  overflow-wrap: anywhere;
-}
-.meta {
-  margin-top: 6px;
-  font-size: var(--t-small);
-  color: var(--fg-2);
-}
-.bio {
-  margin-top: var(--s-3);
-  font-family: var(--font-serif);
-  font-size: 1.15rem;
-  max-width: 56ch;
-}
-.follow {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: var(--s-3);
-}
-.grid {
+.body {
   display: grid;
-  gap: var(--s-8);
+  gap: var(--s-9);
   margin-top: var(--s-8);
 }
 .h2 {
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
-  margin-bottom: var(--s-3);
+  font-size: var(--t-title-m);
+  margin: 0 0 var(--s-4);
 }
-.line {
+.identity,
+.rotation {
+  min-width: 0;
+}
+
+/* ---------- Scent identity ---------- */
+.trail {
+  margin: 0 0 var(--s-5);
+  display: grid;
+  gap: 6px;
+  max-width: 100%;
+}
+.trail svg {
+  max-width: 100%;
+  height: auto;
+}
+.trailCap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.trailMark {
+  width: 18px;
+  height: 7px;
+  color: var(--ink);
+}
+.prose {
+  display: grid;
+  gap: 6px;
+  margin-bottom: var(--s-5);
   font-family: var(--font-serif);
-  font-size: 1.15rem;
-  margin-bottom: var(--s-4);
+  font-size: var(--t-serif);
+  line-height: 1.4;
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+.quiet {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  color: var(--fg-2);
   max-width: 44ch;
 }
-.rotation {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: var(--s-4);
-  margin: 0;
+
+/* ---------- Current rotation ---------- */
+.rotationScroll {
+  min-width: 0;
 }
-.rotation a {
-  display: grid;
-  gap: 4px;
+.rSlot {
+  position: relative;
+  display: block;
+  height: 140px;
   text-decoration: none;
 }
+/* The bottle keeps to the right of its slot so the wear count can stand beside its base. */
 .rThumb {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  background: var(--paper);
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 96px;
+  height: 128px;
 }
-.rThumb img,
-.sThumb img {
+.rImg {
   object-fit: contain;
+  object-position: center bottom;
+}
+.rCount {
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  font-size: var(--t-h3);
+  color: var(--ink);
+}
+.rCaptions {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  margin: 14px 0 0;
+  padding: 0 6px;
+  list-style: none;
+}
+.rCaptions li {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 .rName {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: var(--t-name-s);
   line-height: 1.15;
+  overflow-wrap: anywhere;
 }
-.section {
-  margin-top: var(--s-9);
+.rHouse {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
 }
-.rowHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+.rNote {
+  margin-top: var(--s-3);
+  font-size: var(--t-micro);
+  color: var(--fg-3);
 }
-.shelf {
-  display: flex;
-  gap: 4px;
-  align-items: flex-end;
-  overflow-x: auto;
-  margin: 0;
-  padding-bottom: 14px;
-  border-bottom: 8px solid #b2a48c;
+
+/* ---------- The shelf strip ---------- */
+.shelfBlock {
+  margin-top: var(--s-8);
 }
-.sThumb {
+.shelfScroll {
+  min-width: 0;
+}
+/* The plank ends one slot after the last bottle, and never runs the width of an empty column. */
+.shelfLedge {
+  width: max-content;
+  min-width: 40%;
+  max-width: 100%;
+}
+.sSlot {
   position: relative;
   display: block;
-  width: 80px;
-  height: 110px;
+  width: 96px;
+  height: 128px;
+}
+.sThumb {
+  position: absolute;
+  inset: 0;
+}
+.sTick {
+  align-self: end;
+  justify-self: center;
+  width: 1px;
+  height: 8px;
+  min-width: 1px;
+  margin-inline: 24px;
+  background: color-mix(in oklab, var(--ink) 30%, transparent);
+}
+.shelfLink {
+  margin-top: var(--s-2);
+}
+
+/* ---------- Lists and reviews ---------- */
+.section {
+  margin-top: var(--s-10);
 }
 .lists {
   display: grid;
@@ -109,11 +167,69 @@
 }
 .lists a {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-size: var(--t-serif);
 }
-@media (min-width: 900px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--s-10);
+.reviews {
+  display: grid;
+  gap: var(--s-6);
+}
+.noReviews {
+  display: grid;
+  gap: var(--s-4);
+  justify-items: start;
+}
+.noReviewsLine {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.45;
+  color: var(--fg-2);
+  max-width: var(--measure-read);
+  text-wrap: pretty;
+}
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 719px) {
+  .rotationScroll,
+  .shelfScroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: thin;
+  }
+  /* Three slots across the phone, snapping; the captions scroll with the plank. */
+  .rotationLedge,
+  .rCaptions {
+    min-width: calc(var(--slots) * 112px);
+  }
+  .rotationLedge > div:first-child > * {
+    scroll-snap-align: start;
+  }
+  .rThumb {
+    width: 80px;
+    height: 107px;
+  }
+  .rCount {
+    font-size: var(--t-sub);
+  }
+  .shelfLedge {
+    min-width: 0;
+  }
+  .sSlot {
+    width: 128px;
+    height: 170px;
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .shelfLedge {
+    min-width: 50%;
+  }
+}
+@media (min-width: 1100px) {
+  .body {
+    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(0, 1fr);
+    column-gap: var(--col-gap);
   }
 }

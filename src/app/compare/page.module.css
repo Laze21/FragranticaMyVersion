@@ -194,6 +194,9 @@
   font-weight: 400;
   color: var(--fg-3);
 }
+.subLine + .subLine::before {
+  content: '· ';
+}
 .null {
   font-size: var(--t-small);
   font-style: italic;
@@ -413,20 +416,25 @@
   }
 }
 
-/* Phone: side by side under a full-width row header; letters as 20px captions. */
+/* Phone: side by side under a full-width row header; letters as a 16px caption line. The chip
+   leaves the title line (the pill row's "+" adds); the seasons glyph narrows to 24px columns so
+   three fit across 358px; the price breaks into its two lines. */
 @media (max-width: 839px) {
   .page {
     padding-top: var(--s-4);
   }
+  .headPicker {
+    display: none;
+  }
   .meta {
-    margin: 8px 0 4px;
+    margin: 8px 0 2px;
     font-size: var(--t-micro);
   }
   .row {
     grid-template-columns: repeat(var(--vis), minmax(0, 1fr));
     column-gap: 12px;
-    row-gap: 6px;
-    padding: 12px 0;
+    row-gap: 4px;
+    padding: 10px 0;
   }
   .label {
     grid-column: 1 / -1;
@@ -437,19 +445,18 @@
   }
   .cell {
     display: grid;
-    grid-template-rows: 20px auto;
+    grid-template-rows: 16px auto;
     gap: 2px;
   }
   .cellLetter {
     display: block;
+    line-height: 16px;
   }
   .row[data-kind='prose'],
-  .row[data-kind='wide'],
   .row[data-kind='trail'] {
     grid-template-columns: minmax(0, 1fr);
   }
   .row[data-kind='prose'] .cell,
-  .row[data-kind='wide'] .cell,
   .row[data-kind='trail'] .cell {
     grid-column: auto;
     grid-template-rows: none;
@@ -457,24 +464,29 @@
     column-gap: 8px;
     align-items: start;
   }
-  .row[data-kind='wide'] .cell {
-    align-items: center;
+  .row[data-kind='trail'] {
+    row-gap: 6px;
   }
-  .row[data-kind='wide'] .cellBody {
-    display: flex;
-    align-items: flex-end;
-    gap: 14px;
+  .trailCell {
+    gap: 0;
+    max-width: 300px;
   }
-  .row[data-kind='wide'] .seasons {
-    display: flex;
-    align-items: flex-end;
-    gap: 14px;
-  }
-  .row[data-kind='wide'] .seasonCaption {
-    padding-bottom: 2px;
+  .trailCaption {
+    line-height: 16px;
   }
   .axisShared {
     grid-column: auto;
+    max-width: 328px;
+  }
+  .seasons > ul {
+    grid-template-columns: repeat(4, 24px);
+    column-gap: 4px;
+  }
+  .subLine {
+    display: block;
+  }
+  .subLine + .subLine::before {
+    content: none;
   }
   .merged {
     grid-column: 1 / -1;

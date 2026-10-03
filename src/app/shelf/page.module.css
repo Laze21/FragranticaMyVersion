@@ -29,6 +29,24 @@
 .ledge {
   --card-name-lines: 2;
 }
+/* Someone else's shelf: whose it is, in one line above the cabinet. */
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: var(--s-5);
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+.owner a {
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.owner a:hover {
+  text-decoration: underline;
+}
 .welcome {
   margin-bottom: var(--s-5);
   padding: 10px 0 10px 14px;

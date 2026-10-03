@@ -25,9 +25,9 @@ const SEASONS = ['spring', 'summer', 'autumn', 'winter'] as const;
 const SEASON_NAME: Record<(typeof SEASONS)[number], string> = { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter' };
 /* The hero's status words, so a status reads the same here as there (handoff: a shared map in vocab.ts). */
 const STATUS_NOTE: Record<string, string> = { reformulated: 'Reformulated', discontinued: 'Discontinued', limited: 'Limited edition', upcoming: 'Announced' };
-/* The shared axis under the Trail row, in hours; the thumb is 300 wide, so the axis is drawn on the same scale. */
-const AXIS_W = 300;
+/* The ruler under the Trail row, in hours. Four columns get a 260-wide thumb so its 12px end-labels never scale under 12px at 1280. */
 const AXIS_HOURS = [0, 2, 4, 8, 12];
+const thumbBox = (n: number) => (n === 4 ? { width: 260, height: 56 } : { width: 300, height: 64 });
 
 function parseSlugs(raw: unknown): string[] {
   return String(raw ?? '')
@@ -201,14 +201,14 @@ export default async function ComparePage(props: PageProps<'/compare'>) {
                 <div className={styles.trailCaption}>
                   <span className={styles.trailTick}>{longevityTickText(trails[i]) ?? 'Not enough votes to say how long'}</span>
                 </div>
-                <TrailThumb input={trails[i]} size="compare" className={styles.trail} id={`cmp-${f.slug}`} />
-                <TrailAxis input={trails[i]} />
+                <TrailThumb input={trails[i]} size="compare" {...thumbBox(n)} className={styles.trail} id={`cmp-${f.slug}`} />
+                <TrailAxis input={trails[i]} width={thumbBox(n).width} />
               </div>,
               styles.trailCol,
             ),
           )}
           <div className={styles.axisShared} aria-hidden="true">
-            <TrailAxis />
+            <TrailAxis width={thumbBox(n).width} />
           </div>
         </Row>
 
@@ -357,7 +357,10 @@ export default async function ComparePage(props: PageProps<'/compare'>) {
                   <span className={styles.value}>{PRICE_BANDS[f.priceBand as PriceBand].label}</span>
                   {f.priceUsd && f.sizeMl ? (
                     <span className={styles.sub}>
-                      ~${Math.round(f.priceUsd)} / {f.sizeMl} ml · ${(f.priceUsd / f.sizeMl).toFixed(2)} per ml
+                      <span className={styles.subLine}>
+                        ~${Math.round(f.priceUsd)} / {f.sizeMl} ml
+                      </span>
+                      <span className={styles.subLine}>${(f.priceUsd / f.sizeMl).toFixed(2)} per ml</span>
                     </span>
                   ) : null}
                 </Figure>
@@ -513,19 +516,19 @@ function Null({ children, n }: { children: ReactNode; n?: string }) {
 
 /*
  * The ruler under a Trail: Spray · 2h · 4h · 8h · 12h on the thumb's own scale, plus this
- * column's median as an ink tick ("~8h"). A fixed label within 14px of the median gives way to
+ * column's median as an ink tick ("~8h"). A fixed label within 22px of the median gives way to
  * it. Without an input it is the bare shared axis the stacked layout draws once.
  */
-function TrailAxis({ input }: { input?: TrailInput }) {
-  const x = xScale(AXIS_W);
+function TrailAxis({ input, width }: { input?: TrailInput; width: number }) {
+  const x = xScale(width);
   const median = input && input.longevityHrs !== null ? trailEnds(input).median : null;
   const mx = median !== null ? x(median) : null;
   return (
-    <svg className={styles.axis} viewBox={`0 0 ${AXIS_W} 22`} width={AXIS_W} height={22} aria-hidden="true">
-      <line x1={0} x2={AXIS_W} y1={1.5} y2={1.5} className={styles.axisLine} />
+    <svg className={styles.axis} viewBox={`0 0 ${width} 22`} width={width} height={22} aria-hidden="true">
+      <line x1={0} x2={width} y1={1.5} y2={1.5} className={styles.axisLine} />
       {AXIS_HOURS.map((h) => {
         const px = x(h);
-        const yields = mx !== null && Math.abs(px - mx) < 14;
+        const yields = mx !== null && Math.abs(px - mx) < 22;
         return (
           <g key={h}>
             <line x1={px} x2={px} y1={1} y2={5} className={styles.axisLine} />
@@ -540,7 +543,7 @@ function TrailAxis({ input }: { input?: TrailInput }) {
       {mx !== null && median !== null && (
         <g className={styles.axisMedian}>
           <line x1={mx} x2={mx} y1={0} y2={7} />
-          <text x={mx} y={17} textAnchor={mx > AXIS_W - 20 ? 'end' : 'middle'}>
+          <text x={mx} y={17} textAnchor={mx > width - 20 ? 'end' : 'middle'}>
             ~{Math.round(median)}h
           </text>
         </g>
