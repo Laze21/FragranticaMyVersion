@@ -17,7 +17,9 @@ const INK = '#1c1a17';
 const PORCELAIN = '#f3f0ea';
 
 const root = process.cwd();
-const fonts = Promise.all([readFile(path.join(root, 'src/fonts/og/newsreader-italic.ttf')), readFile(path.join(root, 'src/fonts/og/archivo.ttf'))]);
+// Static instances of the site fonts (see scripts/fonts/strip-variations.mjs): Satori cannot read the variable subsets.
+let fonts: Promise<[Buffer, Buffer]> | undefined;
+const loadFonts = () => (fonts ??= Promise.all([readFile(path.join(root, 'src/fonts/og/newsreader-italic.ttf')), readFile(path.join(root, 'src/fonts/og/archivo.ttf'))]));
 
 /** The mark as a standalone SVG string, since Satori cannot read our React components' styles. */
 function markSvg(width: number, height: number) {
@@ -32,7 +34,7 @@ const dataUri = (svg: string) => `data:image/svg+xml;base64,${Buffer.from(svg).t
 export default async function OG(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
   const f = await getFragrance(slug);
-  const [serif, sans] = await fonts;
+  const [serif, sans] = await loadFonts();
   if (!f) {
     return new ImageResponse(<div style={{ display: 'flex', width: '100%', height: '100%', background: PORCELAIN }} />, { ...size });
   }
