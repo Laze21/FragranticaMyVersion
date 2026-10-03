@@ -151,7 +151,7 @@
   left: -1px;
   width: 2px;
   background: var(--ink);
-  opacity: 0.55;
+  opacity: 0.35;
   pointer-events: none;
   transition: transform var(--d-instant) linear, opacity var(--d-quick) var(--ease-standard);
 }
@@ -214,6 +214,28 @@
 .tipRow b {
   margin-left: auto;
   font-variant-numeric: tabular-nums;
+}
+
+/* Narrow charts: the shares as a legend row instead of a label column in the tail. */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 4px 0 0;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.legendItem i {
+  width: 10px;
+  height: 10px;
+  box-shadow: inset 0 0 0 1px rgb(28 26 23 / 0.2);
 }
 
 /* The fixed readout for touch: time, projection word, top three, always there. */

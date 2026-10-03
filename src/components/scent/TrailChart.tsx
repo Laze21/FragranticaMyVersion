@@ -104,7 +104,10 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
   const prev = useRef<{ key: string; edges: Edges } | null>(null);
   useEffect(() => {
     const key = `${width}:${plotH}:${g.bands.map((b) => b.dim).join(',')}`;
-    const next: Edges = { tops: g.bands.map((b) => b.top), bots: g.bands.map((b) => b.bot) };
+    const next: Edges = {
+      tops: g.bands.map((b) => b.top),
+      bots: g.bands.map((b) => b.bot),
+    };
     const last = prev.current;
     prev.current = { key, edges: next };
     if (!last || last.key !== key || reducedMotion()) {
@@ -119,7 +122,10 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
       const t = Math.min(1, (now - t0) / total);
       const e = ease(t);
       const mixArr = (a: number[], b: number[]) => a.map((v, i) => v + (b[i] - v) * e);
-      setLerp({ tops: last.edges.tops.map((row, i) => mixArr(row, next.tops[i])), bots: last.edges.bots.map((row, i) => mixArr(row, next.bots[i])) });
+      setLerp({
+        tops: last.edges.tops.map((row, i) => mixArr(row, next.tops[i])),
+        bots: last.edges.bots.map((row, i) => mixArr(row, next.bots[i])),
+      });
       if (t < 1) raf = requestAnimationFrame(step);
       else setLerp(null);
     };
@@ -128,7 +134,10 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
   }, [g, width, plotH]);
 
   const xs = useMemo(() => g.samples.map((s) => s.x), [g]);
-  const edges: Edges = lerp ?? { tops: g.bands.map((b) => b.top), bots: g.bands.map((b) => b.bot) };
+  const edges: Edges = lerp ?? {
+    tops: g.bands.map((b) => b.top),
+    bots: g.bands.map((b) => b.bot),
+  };
   const paths = useMemo(() => (lerp ? edges.tops.map((t, i) => bandPath(xs, t, edges.bots[i])) : g.bands.map((b) => b.path)), [lerp, edges, xs, g]);
   const outline = lerp && edges.tops.length ? bandPath(xs, edges.tops[0], edges.bots[edges.bots.length - 1]) : g.outline;
 
@@ -190,6 +199,8 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
     .join(', ')}`;
   const scrubX = g.xForHours(atHours);
   const useRow = readout ? readout === 'row' : coarse;
+  // Under 480px the tail has no room for a label column: the shares move to a legend row under the axis.
+  const narrow = width < 480;
 
   // the band under the pointer, for the edge marks
   let hoverBand = -1;
@@ -208,14 +219,35 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
       ? (() => {
           let j = 0;
           for (let k = 0; k < xs.length; k++) if (Math.abs(xs[k] - scrubX) < Math.abs(xs[j] - scrubX)) j = k;
-          return { top: edges.tops[hoverBand][j], bot: edges.bots[hoverBand][j] };
+          return {
+            top: edges.tops[hoverBand][j],
+            bot: edges.bots[hoverBand][j],
+          };
         })()
       : null;
 
   const phases = [
-    { key: 'opening' as const, label: 'Opening', window: `0–${fmtMin(input.heartAtMin)}`, from: 0, to: heartH },
-    { key: 'heart' as const, label: 'Heart', window: `${fmtMin(input.heartAtMin)}–${fmtMin(input.drydownAtMin)}`, from: heartH, to: dryH },
-    { key: 'drydown' as const, label: 'Drydown', window: `${fmtMin(input.drydownAtMin)} on`, from: dryH, to: endH },
+    {
+      key: 'opening' as const,
+      label: 'Opening',
+      window: `0–${fmtMin(input.heartAtMin)}`,
+      from: 0,
+      to: heartH,
+    },
+    {
+      key: 'heart' as const,
+      label: 'Heart',
+      window: `${fmtMin(input.heartAtMin)}–${fmtMin(input.drydownAtMin)}`,
+      from: heartH,
+      to: dryH,
+    },
+    {
+      key: 'drydown' as const,
+      label: 'Drydown',
+      window: `${fmtMin(input.drydownAtMin)} on`,
+      from: dryH,
+      to: endH,
+    },
   ].filter((p) => p.to > p.from);
 
   /* ---- labels: two widest in-band when their ink passes, everything in the tail ---- */
@@ -226,7 +258,12 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
     .map((b) => {
       const j = xs.indexOf(b.labelX);
       const y = j >= 0 ? (edges.tops[g.bands.indexOf(b)][j] + edges.bots[g.bands.indexOf(b)][j]) / 2 : b.labelY;
-      return { dim: b.dim, x: b.labelX, y, ink: bandLabelInk(DIMENSION_META[b.dim].hue) };
+      return {
+        dim: b.dim,
+        x: b.labelX,
+        y,
+        ink: bandLabelInk(DIMENSION_META[b.dim].hue),
+      };
     });
   const endTexts = g.bands.map((b) => `${LABELS[b.dim]} ${Math.round(b.share * 100)}%`);
   const endW = Math.max(0, ...endTexts.map((t) => textW(t)));
@@ -236,7 +273,14 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
   const endLabels = g.bands.map((b, i) => {
     const j = xs.indexOf(b.lastX);
     const fromY = j >= 0 ? (edges.tops[i][j] + edges.bots[i][j]) / 2 : b.lastY;
-    return { dim: b.dim, text: endTexts[i], x: endLabelX, y: Math.max(8, Math.min(plotH - 8, endY0 + i * lineH)), fromX: b.lastX, fromY };
+    return {
+      dim: b.dim,
+      text: endTexts[i],
+      x: endLabelX,
+      y: Math.max(8, Math.min(plotH - 8, endY0 + i * lineH)),
+      fromX: b.lastX,
+      fromY,
+    };
   });
 
   /* ---- axis: majors, minors, and the longevity tick with its words ---- */
@@ -251,6 +295,8 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
     const w = textW(t.label) / 2;
     return x + w < tickBox[0] - 4 || x - w > tickBox[1] + 4;
   });
+
+  const phaseLabelEnd: number[] = [];
 
   const setFromPointer = (e: React.PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -297,9 +343,11 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
                 <g key={p}>
                   <line x1={padLeft} x2={width} y1={cy - halfFor(p)} y2={cy - halfFor(p)} className={styles.guide} />
                   <line x1={padLeft} x2={width} y1={cy + halfFor(p)} y2={cy + halfFor(p)} className={styles.guide} />
-                  <text x={0} y={cy - halfFor(p) - 4} className={styles.guideLabel}>
-                    {PROJECTION_LEVELS[p - 1].label}
-                  </text>
+                  {!narrow && (
+                    <text x={0} y={cy - halfFor(p) - 4} className={styles.guideLabel}>
+                      {PROJECTION_LEVELS[p - 1].label}
+                    </text>
+                  )}
                 </g>
               ))}
             </g>
@@ -307,14 +355,17 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
               {phases.map((p, i) => {
                 const x0 = i === 0 ? padLeft : g.xForHours(p.from);
                 const x1 = g.xForHours(p.to);
-                const room = x1 - x0;
+                // a label starts at its rule, or after the previous label when the phase is short
+                const x = Math.max(x0 + (i === 0 ? 0 : 6), phaseLabelEnd[i - 1] ?? 0);
+                const withWindow = x1 - x > textW(`${p.label} · ${p.window}`, 13);
+                phaseLabelEnd[i] = x + textW(withWindow ? `${p.label} · ${p.window}` : p.label, 13) + 8;
                 return (
                   <g key={p.key}>
                     {i > 0 && <line x1={x0} x2={x0} y1={-topPad + 14} y2={plotH} className={styles.phaseRule} />}
-                    {room > 40 && (
-                      <text x={x0 + (i === 0 ? 0 : 6)} y={-10} className={styles.phaseLabel}>
+                    {x < width - 40 && (
+                      <text x={x} y={-10} className={styles.phaseLabel}>
                         {p.label}
-                        {room > textW(`${p.label} · ${p.window}`, 13) && <tspan className={styles.phaseWindow}> · {p.window}</tspan>}
+                        {withWindow && <tspan className={styles.phaseWindow}> · {p.window}</tspan>}
                       </text>
                     )}
                   </g>
@@ -343,14 +394,15 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
                   {LABELS[l.dim]}
                 </text>
               ))}
-              {endLabels.map((l) => (
-                <g key={`end-${l.dim}`} className={styles.endLabel}>
-                  <line x1={l.fromX} y1={l.fromY} x2={l.x - 5} y2={l.y} />
-                  <text x={l.x} y={l.y} dy="0.35em">
-                    {l.text}
-                  </text>
-                </g>
-              ))}
+              {!narrow &&
+                endLabels.map((l) => (
+                  <g key={`end-${l.dim}`} className={styles.endLabel}>
+                    <line x1={l.fromX} y1={l.fromY} x2={l.x - 5} y2={l.y} />
+                    <text x={l.x} y={l.y} dy="0.35em">
+                      {l.text}
+                    </text>
+                  </g>
+                ))}
             </g>
           </g>
           <g transform={`translate(0 ${topPad + plotH + 4})`} className={styles.axis}>
@@ -384,7 +436,11 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
           className={styles.scrubLine}
           data-mode={scrubMode}
           data-active={scrub !== null || undefined}
-          style={{ transform: `translateX(${scrubX}px)`, top: topPad - 6, height: plotH + 10 }}
+          style={{
+            transform: `translateX(${scrubX}px)`,
+            top: topPad - 6,
+            height: plotH + 10,
+          }}
           aria-hidden="true"
         >
           <i style={{ top: cy + 6 }} />
@@ -402,6 +458,16 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
           </div>
         )}
       </div>
+      {narrow && (
+        <p className={styles.legend} aria-hidden="true">
+          {g.bands.map((b, i) => (
+            <span key={b.dim} className={styles.legendItem}>
+              <i style={{ background: DIMENSION_META[b.dim].hue }} />
+              {endTexts[i]}
+            </span>
+          ))}
+        </p>
+      )}
       {useRow && (
         <p className={styles.readout} aria-hidden="true">
           <b>{fmtHours(atHours)}</b>
@@ -442,7 +508,7 @@ export function TrailChart({ input, name, height = 220, onDrawn, readout }: Trai
       >
         <TrailMark className={styles.glyph} />
         <span className={styles.sliderWord}>Trail</span>
-        <span className={styles.sliderHint}>{scrub === null ? (coarse ? 'Drag across the trail' : 'Hover or drag across the trail') : valueText}</span>
+        <span className={styles.sliderHint}>{scrub === null || useRow ? (coarse ? 'Drag across the trail' : 'Hover or drag across the trail') : valueText}</span>
       </div>
       <figcaption id={`${id}-cap`} className="visually-hidden">
         Trail for {name}: {describeTrail(input, LABELS)}

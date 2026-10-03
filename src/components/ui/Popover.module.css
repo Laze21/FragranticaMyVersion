@@ -3,6 +3,7 @@
 }
 /* Raised surface: paper, the stronger line, the one warm shadow. Enters with a 4px drift, leaves by fading. */
 .pop {
+  display: block;
   position: fixed;
   z-index: 70;
   width: min(320px, calc(100vw - 16px));

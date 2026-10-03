@@ -178,9 +178,7 @@
 }
 .dataText {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-wrap: pretty; /* a second line beats an ellipsis that hides the concentration */
 }
 .rating {
   display: inline-flex;

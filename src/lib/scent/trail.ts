@@ -361,24 +361,25 @@ export function bandLabelInk(hue: string): 'ink' | 'paper' | null {
 export const MARK_INPUT: TrailInput = {
   character: {
     overall: {},
-    opening: { fresh: 0.6, woody: 0.25, warm: 0.15 },
-    heart: { fresh: 0.4, woody: 0.35, warm: 0.25 },
+    // opening and heart share one mix so the nose is a clean point; the drydown turns it woody
+    opening: { fresh: 0.55, woody: 0.3, warm: 0.15 },
+    heart: { fresh: 0.55, woody: 0.3, warm: 0.15 },
     drydown: { fresh: 0.15, woody: 0.45, warm: 0.4 },
   },
   longevityHrs: 8,
   longevityLateHrs: 10,
   projectionOpening: 4,
   projectionLater: 2.5,
-  heartAtMin: 20,
-  drydownAtMin: 150,
+  heartAtMin: 30,
+  drydownAtMin: 180,
 };
 
 export const MARK_FILLS = [0.38, 0.62, 1];
 
 /** The mark's bands, fitted so the faded end lands on the right edge of the box. */
-export function markGeometry(width = 40, height = 16) {
+export function markGeometry(width = 40, height = 16, samples = 96) {
   // buildTrail lays 14h across the width; scale up so the 10h end sits at the edge instead.
-  const probe = buildTrail(MARK_INPUT, width, height, { samples: 48 });
-  const fitted = buildTrail(MARK_INPUT, (width * width) / probe.lateX, height, { samples: 48 });
+  const probe = buildTrail(MARK_INPUT, width, height, { samples });
+  const fitted = buildTrail(MARK_INPUT, (width * width) / probe.lateX, height, { samples });
   return { bands: fitted.bands.map((b, i) => ({ dim: b.dim, path: b.path, opacity: MARK_FILLS[i] ?? 1 })), outline: fitted.outline, endX: fitted.endX };
 }

@@ -39,7 +39,7 @@ export function Term({ slug, children, quiet }: { slug: string; children?: React
         </span>
       )}
       <Link href={href} className={styles.more}>
-        {note ? `All about ${note.name.toLowerCase()}` : `More about ${t.term.toLowerCase()}`}
+        {note ? `All about ${note.name.toLowerCase()}` : `More about ${t.term.replace(/\s*\(.*\)$/, '').toLowerCase()}`}
       </Link>
     </Popover>
   );

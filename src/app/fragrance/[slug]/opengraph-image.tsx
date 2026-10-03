@@ -7,7 +7,7 @@ import { APP_NAME } from '@/lib/config';
 import { longevityPercentile, longevityTickText, markGeometry, MARK_FILLS, type TrailInput } from '@/lib/scent/trail';
 import { DIMENSION_META } from '@/lib/scent/vocab';
 import { histAvg, topDims } from '@/lib/scent/read';
-import { trailThumbSvg } from '@/components/scent/TrailThumb';
+import { trailThumbSvg } from '@/components/scent/trailThumbScene';
 
 export const alt = 'Fragrance card';
 export const size = { width: 1200, height: 630 };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { duration, reducedMotion } from '@/lib/motion';
 
 /**
@@ -11,11 +11,15 @@ import { duration, reducedMotion } from '@/lib/motion';
  */
 export function usePresence(open: boolean, exitMs?: number): boolean {
   const [exiting, setExiting] = useState(false);
+  const wasOpen = useRef(open);
   useEffect(() => {
+    const closing = wasOpen.current && !open;
+    wasOpen.current = open;
     if (open) {
       setExiting(false);
       return;
     }
+    if (!closing) return;
     const ms = reducedMotion() ? 0 : (exitMs ?? duration('exit'));
     if (!ms) return;
     setExiting(true);

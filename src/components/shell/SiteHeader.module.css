@@ -218,8 +218,9 @@
   .wordmark {
     font-size: var(--t-name);
   }
-  .signin,
-  .account {
+  /* Specific enough to beat the global .btn whichever order the dev server injects the sheets. */
+  .header .signin,
+  .header .account {
     display: none;
   }
   .browse {

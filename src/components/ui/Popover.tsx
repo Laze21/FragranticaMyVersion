@@ -28,7 +28,7 @@ export function Popover({
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ left: number; top: number; above: boolean } | null>(null);
   const btn = useRef<HTMLButtonElement>(null);
-  const pop = useRef<HTMLDivElement>(null);
+  const pop = useRef<HTMLSpanElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const viaKeyboard = useRef(false);
   const id = useId();
@@ -100,8 +100,9 @@ export function Popover({
       >
         {trigger}
       </button>
+      {/* A span, so a term inside a paragraph never puts a div in a p. */}
       {present && (
-        <div
+        <span
           ref={pop}
           id={id}
           role="dialog"
@@ -114,7 +115,7 @@ export function Popover({
           onMouseLeave={leave}
         >
           {children}
-        </div>
+        </span>
       )}
     </Wrap>
   );

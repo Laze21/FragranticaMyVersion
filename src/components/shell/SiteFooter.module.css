@@ -1,14 +1,14 @@
 .footer {
   margin-top: var(--s-12);
-  padding: var(--s-7) 0 calc(var(--s-7) + var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding: var(--s-6) 0 calc(var(--s-6) + var(--tabbar-h) + env(safe-area-inset-bottom));
   color: var(--fg-2);
 }
 .grid {
   display: grid;
-  gap: var(--s-6) var(--s-8);
+  gap: var(--s-5) var(--s-8);
   grid-template-columns: 1fr;
   border-top: 2px solid var(--ink);
-  padding-top: var(--s-6);
+  padding-top: var(--s-5);
 }
 .brand {
   display: flex;
@@ -67,6 +67,26 @@
   font-size: var(--t-micro);
   color: var(--fg-3);
   max-width: 64ch;
+}
+@media (max-width: 719px) {
+  .footer {
+    margin-top: var(--s-10);
+  }
+  .blurb {
+    font-size: var(--t-serif-s);
+    line-height: 1.4;
+  }
+  /* The third group runs as one line under the two columns, so the colophon stays short. */
+  .group:last-child ul {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4px;
+  }
+  .group:last-child li:not(:last-child)::after {
+    content: '·';
+    margin-left: 4px;
+    color: var(--fg-3);
+  }
 }
 @media (min-width: 720px) {
   .grid {
