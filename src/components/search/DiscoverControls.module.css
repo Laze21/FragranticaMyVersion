@@ -78,7 +78,7 @@
 .chips > li {
   display: flex;
   align-items: center;
-  min-width: 0;
+  flex: none;
 }
 .clear,
 .rawLink {

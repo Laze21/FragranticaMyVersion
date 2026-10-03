@@ -685,8 +685,7 @@ function NotePicker({ label, notes, selected, onChange, exclude, idPrefix }: { l
         <div className={styles.chips}>
           {selected.map((s) => (
             <button key={s} type="button" className={`chip ${exclude ? 'chip--exclude' : ''}`} data-on="true" onClick={() => onChange(selected.filter((x) => x !== s))} aria-label={`Remove ${name(s)}`}>
-              {exclude ? 'No ' : ''}
-              {name(s)} <Icon name="close" size={14} />
+              {exclude ? `No ${name(s).toLowerCase()}` : name(s)} <Icon name="close" size={14} />
             </button>
           ))}
         </div>
