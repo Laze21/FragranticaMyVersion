@@ -62,7 +62,7 @@ test.describe('account flows', () => {
     await signInDemo(page);
     await page.goto('/fragrance/not-a-perfume');
     await page.locator('#hero-actions').getByRole('button', { name: /wearing it today|worn today/i }).click();
-    await expect(page.getByText(/logged|worn|today/i).first()).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: /logged/i }).first()).toBeVisible();
     await page.goto('/diary');
     await expect(page.getByText(/Not a Perfume/).first()).toBeVisible();
   });

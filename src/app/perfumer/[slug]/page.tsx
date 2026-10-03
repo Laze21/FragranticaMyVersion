@@ -18,6 +18,7 @@ const COUNTRY = new Intl.DisplayNames(['en'], { type: 'region' });
 export async function generateMetadata(props: PageProps<'/perfumer/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
   const d = await getPerfumer(slug);
+  if (!d) notFound();
   if (!d) return { title: 'Perfumer not found' };
   return { title: `${d.perfumer.name}, perfumer`, description: String(d.perfumer.bio ?? ''), alternates: { canonical: `/perfumer/${slug}` } };
 }

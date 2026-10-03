@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('bottle stage and motion', () => {
   test('shows the poster first and keeps the information without 3D', async ({ page }) => {
     await page.goto('/fragrance/dior-sauvage');
-    const poster = page.locator('img[src*="/bottles/dior-sauvage"]').first();
+    const poster = page.locator('img[src*="dior-sauvage"]').first();
     await expect(poster).toBeVisible();
     await expect(poster).toHaveAttribute('alt', /Sauvage|bottle/i);
     // The stage never blocks the ten-second read.

@@ -36,7 +36,7 @@ export async function suggest(q: string): Promise<Suggestion[]> {
   const tsq = prefixQuery(query);
   const [frags, brands, notes, perfumers] = await Promise.all([
     sql<{ slug: string; name: string; brand: string; year: number | null; poster: string | null; rank: number }>(
-      `select f.slug, f.name, b.name brand, f.release_year year, p.url poster,
+      `select f.slug, f.name, b.name brand, f.release_year as year, p.url poster,
               (case when $2::text is not null and fs.tsv @@ to_tsquery('simple', $2) then ts_rank(fs.tsv, to_tsquery('simple', $2)) * 2 else 0 end)
               + extensions.word_similarity(public.immutable_unaccent(lower($1)), public.immutable_unaccent(lower(f.name || ' ' || b.name))) as rank
          from public.fragrance_search fs

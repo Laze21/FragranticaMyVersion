@@ -27,7 +27,7 @@ test.describe('search and discovery', () => {
 
   test('shows an honest empty state for a query nothing matches', async ({ page }) => {
     await page.goto('/discover?q=zzqxv');
-    await expect(page.getByText(/no (fragrances|results|matches)/i).first()).toBeVisible();
+    await expect(page.getByText(/nothing matches|no results|no fragrances/i).first()).toBeVisible();
   });
 });
 
@@ -53,10 +53,11 @@ test.describe('fragrance page', () => {
     expect(text.toLowerCase()).not.toMatch(/\bclones?\b/);
   });
 
-  test('handles a long name and a 404 gracefully', async ({ page }) => {
-    const res = await page.goto('/fragrance/does-not-exist');
-    expect(res?.status()).toBe(404);
-    await expect(page.getByText(/can.t find|not found|no such/i).first()).toBeVisible();
+  test('shows the not-found page for an unknown fragrance', async ({ page }) => {
+    // With a streaming loading boundary the HTTP status is already sent; the page carries noindex instead.
+    await page.goto('/fragrance/does-not-exist');
+    await expect(page.getByText(/evaporated|not found|can.t find/i).first()).toBeVisible();
+    await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
   });
 });
 

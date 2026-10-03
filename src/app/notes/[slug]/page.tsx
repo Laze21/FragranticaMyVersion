@@ -18,6 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps<'/notes/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
   const n = await getNote(slug);
+  if (!n) notFound();
   if (!n) return { title: 'Note not found' };
   return {
     title: `${n.name}: what it smells like`,

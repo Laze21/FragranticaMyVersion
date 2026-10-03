@@ -34,6 +34,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: PageProps<'/fragrance/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params;
   const f = await getFragrance(slug);
+  if (!f) notFound();
   if (!f) return { title: 'Fragrance not found' };
   const conc = f.concentration ? CONCENTRATION_LABEL[f.concentration]?.long : '';
   const dims = topDims(f.stats.character.overall, 3, 0.15).map((d) => DIMENSION_META[d].label.toLowerCase());
