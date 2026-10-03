@@ -170,12 +170,12 @@
   translate: -50% 0;
   color: var(--stone-2);
 }
-/* Contact ellipse in the fragrance's wash, under the base where it meets the plank. */
+/* Contact ellipse in the fragrance's wash, behind the base: the poster's own shadow sits over it. */
 .base {
   position: absolute;
   left: 30%;
   right: 30%;
-  bottom: -2px;
+  bottom: 7px;
   height: 6px;
   border-radius: 50%;
   background: var(--scent-wash-2);
@@ -324,9 +324,11 @@
 .gridItem {
   position: relative;
 }
+/* Top-left: the card's own shelf mark owns the top-right corner. */
 .gridItem .editBtn {
   top: 4px;
-  right: 4px;
+  left: 4px;
+  right: auto;
 }
 
 /* ---------- List view ---------- */
@@ -593,11 +595,6 @@
   .views button {
     padding: 0 10px;
   }
-  .tabs {
-    margin-inline: calc(-1 * var(--gutter));
-    padding-inline: var(--gutter);
-    mask-image: linear-gradient(to right, #000 85%, transparent);
-  }
   .captions {
     column-gap: var(--s-3);
   }
@@ -609,6 +606,14 @@
   }
   .trail {
     justify-self: start;
+  }
+}
+/* Under the desktop width the tab row overflows: it fades out at the edge instead of clipping a word. */
+@media (max-width: 1099px) {
+  .tabs {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    mask-image: linear-gradient(to right, #000 88%, transparent);
   }
 }
 @media (min-width: 720px) {

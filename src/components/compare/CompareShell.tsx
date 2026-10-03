@@ -77,16 +77,19 @@ export function CompareShell({ items, head, meta, children }: { items: CompareIt
 
   return (
     <Ctx.Provider value={{ remove }}>
-      <div ref={table} className={styles.table} style={{ ['--cols' as string]: items.length } as CSSProperties} data-cols={items.length} data-pair={four ? pair : undefined} role="table" aria-label="Side by side">
+      <div ref={table} className={styles.table} style={{ ['--cols' as string]: items.length } as CSSProperties} data-cols={items.length} data-pair={four ? pair : undefined}>
         <PillRow items={visible} all={items} four={four} pair={pair} setPair={setPair} onOpen={setOpen} />
         {meta}
-        <div className={styles.sticky} role="row">
-          <div className={styles.corner} role="columnheader" aria-label="Attribute">
-            {four && <PairControl pair={pair} setPair={setPair} items={items} />}
+        {/* The table role sits on the rows alone: the pill row and the meta line are chrome around it. */}
+        <div role="table" aria-label="Side by side">
+          <div className={styles.sticky} role="row">
+            <div className={styles.corner} role="columnheader" aria-label="Attribute">
+              {four && <PairControl pair={pair} setPair={setPair} items={items} />}
+            </div>
+            {head}
           </div>
-          {head}
+          {children}
         </div>
-        {children}
       </div>
 
       <Sheet

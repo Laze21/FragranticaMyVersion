@@ -147,7 +147,18 @@ export function ShelfView({ items: serverItems, insights, owner, editable }: { i
             ))}
           </div>
           {editable && (
-            <Popover hover={false} label="More" trigger={<span aria-hidden="true">···</span>} triggerClassName={`btn btn--quiet btn--small ${styles.more}`} as="div">
+            <Popover
+              hover={false}
+              label="More"
+              trigger={
+                <>
+                  <span aria-hidden="true">···</span>
+                  <span className="visually-hidden">More</span>
+                </>
+              }
+              triggerClassName={`btn btn--quiet btn--small ${styles.more}`}
+              as="div"
+            >
               <ul role="list" className={styles.menu}>
                 <li>
                   <a href="/api/me/shelf.csv" download>

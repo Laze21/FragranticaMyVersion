@@ -189,7 +189,6 @@
 }
 .sub {
   display: block;
-  margin-top: 2px;
   font-size: var(--t-label);
   font-weight: 400;
   color: var(--fg-3);
@@ -206,6 +205,9 @@
   display: block;
   font-size: var(--t-small);
   line-height: 1.35;
+}
+.phraseShort {
+  display: none;
 }
 .dash {
   color: var(--fg-3);
@@ -236,8 +238,9 @@
 }
 .figureMain {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 2px;
+  gap: 2px 6px;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
 }
@@ -394,7 +397,7 @@
     row-gap: 10px;
   }
   .row[data-kind='trail'] .cell {
-    grid-column: 2;
+    grid-column: 2 / -1;
     display: grid;
     grid-template-columns: 20px minmax(0, 1fr);
     column-gap: 8px;
@@ -410,7 +413,7 @@
   }
   .axisShared {
     display: block;
-    grid-column: 2;
+    grid-column: 2 / -1;
     max-width: 448px;
     padding-left: 28px;
   }
@@ -483,6 +486,12 @@
     column-gap: 4px;
   }
   .subLine {
+    display: block;
+  }
+  .phraseLong {
+    display: none;
+  }
+  .phraseShort {
     display: block;
   }
   .subLine + .subLine::before {

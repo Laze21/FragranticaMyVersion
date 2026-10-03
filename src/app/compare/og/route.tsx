@@ -106,7 +106,8 @@ export async function GET(req: NextRequest) {
   }
 
   const n = items.length;
-  const slot = 300;
+  // Posters are 4:5 frames; their boxes may overlap by 24px (the bottles do not) so four fit the 528px ledge.
+  const slot = n <= 2 ? 300 : n === 3 ? 250 : 200;
   const posters = await Promise.all(items.map((f) => posterPng(f, slot)));
   const nameSize = n <= 2 ? 40 : n === 3 ? 34 : 28;
   const trailH = n === 4 ? 52 : 64;
@@ -128,10 +129,15 @@ export async function GET(req: NextRequest) {
       <div style={{ display: 'flex', width: '100%', height: '100%', background: PORCELAIN, color: INK, fontFamily: 'Archivo' }}>
         {/* The ledge: bottles bottom-aligned at their real heights on a two-faced plank. */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', width: 520, height: '100%', padding: '0 0 64px 56px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', height: slot, padding: '0 12px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: slot, padding: '0 12px' }}>
             {items.map((f, i) => {
               const h = Math.round(slot * slotHeight(f.bottleHeightMm));
-              return posters[i] ? <img key={f.slug} src={posters[i]!} height={h} width={Math.round(h * 0.75)} style={{ objectFit: 'contain', objectPosition: 'bottom' }} alt="" /> : <div key={f.slug} style={{ width: 60, height: h, background: LINE }} />;
+              const margin = i > 0 ? -24 : 0;
+              return posters[i] ? (
+                <img key={f.slug} src={posters[i]!} height={h} width={Math.round(h * 0.75)} style={{ objectFit: 'contain', objectPosition: 'bottom', marginLeft: margin }} alt="" />
+              ) : (
+                <div key={f.slug} style={{ width: 60, height: h, background: LINE, marginLeft: margin }} />
+              );
             })}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>

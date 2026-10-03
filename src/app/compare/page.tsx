@@ -240,7 +240,10 @@ export default async function ComparePage(props: PageProps<'/compare'>) {
                     —
                   </span>
                 ) : (
-                  <span className={styles.phrase}>{overlapPhrase(overlap.get(f.id) ?? 0, items[0].name)}</span>
+                  <span className={styles.phrase}>
+                    <span className={styles.phraseLong}>{overlapPhrase(overlap.get(f.id) ?? 0, items[0].name)}</span>
+                    <span className={styles.phraseShort}>{overlapPhrase(overlap.get(f.id) ?? 0)}</span>
+                  </span>
                 ),
               ),
             )}
@@ -516,7 +519,7 @@ function Null({ children, n }: { children: ReactNode; n?: string }) {
 
 /*
  * The ruler under a Trail: Spray · 2h · 4h · 8h · 12h on the thumb's own scale, plus this
- * column's median as an ink tick ("~8h"). A fixed label within 22px of the median gives way to
+ * column's median as an ink tick ("~8h"). A fixed label within 28px of the median gives way to
  * it. Without an input it is the bare shared axis the stacked layout draws once.
  */
 function TrailAxis({ input, width }: { input?: TrailInput; width: number }) {
@@ -528,7 +531,7 @@ function TrailAxis({ input, width }: { input?: TrailInput; width: number }) {
       <line x1={0} x2={width} y1={1.5} y2={1.5} className={styles.axisLine} />
       {AXIS_HOURS.map((h) => {
         const px = x(h);
-        const yields = mx !== null && Math.abs(px - mx) < 22;
+        const yields = mx !== null && Math.abs(px - mx) < 28;
         return (
           <g key={h}>
             <line x1={px} x2={px} y1={1} y2={5} className={styles.axisLine} />
@@ -543,7 +546,7 @@ function TrailAxis({ input, width }: { input?: TrailInput; width: number }) {
       {mx !== null && median !== null && (
         <g className={styles.axisMedian}>
           <line x1={mx} x2={mx} y1={0} y2={7} />
-          <text x={mx} y={17} textAnchor={mx > width - 20 ? 'end' : 'middle'}>
+          <text x={mx} y={17} textAnchor={mx > width * 0.72 ? 'end' : 'middle'}>
             ~{Math.round(median)}h
           </text>
         </g>

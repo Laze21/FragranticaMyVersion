@@ -272,10 +272,14 @@ export async function shelfOverlap(ids: string[]): Promise<Map<string, number>> 
   return new Map(rows.map((r) => [r.fragrance_id, Number(r.total) ? Number(r.n) / Number(r.total) : 0]));
 }
 
-/** "1 in 10 Sauvage owners also own this": a share as a ratio people can picture. */
-export function overlapPhrase(share: number, baseName: string): string {
-  if (share <= 0) return `No ${baseName} owners also own this yet`;
-  if (share >= 0.95) return `Nearly every ${baseName} owner also owns this`;
+/**
+ * "1 in 10 Sauvage owners also own this": a share as a ratio people can picture. Without a
+ * name (phones, where the row header already names the reference) it is "1 in 10 also own this".
+ */
+export function overlapPhrase(share: number, baseName?: string): string {
+  const who = baseName ? `${baseName} owners` : 'of them';
+  if (share <= 0) return baseName ? `No ${who} also own this yet` : 'None also own this yet';
+  if (share >= 0.95) return baseName ? `Nearly every ${baseName} owner also owns this` : 'Nearly all also own this';
   const denom = Math.max(2, Math.round(1 / share));
-  return `1 in ${denom} ${baseName} owners also own this`;
+  return baseName ? `1 in ${denom} ${who} also own this` : `1 in ${denom} also own this`;
 }

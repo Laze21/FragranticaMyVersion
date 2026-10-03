@@ -26,6 +26,11 @@
   margin-right: 4px;
   color: var(--fg-2);
 }
+/* The separator travels with what follows it, so a wrap never leaves a dot on its own. */
+.flag,
+.social {
+  white-space: nowrap;
+}
 .social {
   color: var(--fg-3);
 }

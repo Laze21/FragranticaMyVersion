@@ -208,14 +208,17 @@
     scroll-snap-align: start;
   }
   .rThumb {
-    width: 80px;
-    height: 107px;
+    width: 72px;
+    height: 96px;
   }
   .rCount {
     font-size: var(--t-sub);
   }
+  /* About two bottles to a screen, scrolling; the plank is as long as the strip. */
   .shelfLedge {
+    width: max-content;
     min-width: 0;
+    max-width: none;
   }
   .sSlot {
     width: 128px;

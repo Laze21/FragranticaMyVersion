@@ -61,12 +61,12 @@ export function ProfileHeader({
           {locked && <Icon name="lock" size={16} className={styles.lock} label="Private profile" />}
           {meta.join(' · ')}
           {p.isDemo && (
-            <>
+            <span className={styles.flag}>
               {' · '}
               <DemoFlag label="Demo account" />
-            </>
+            </span>
           )}
-          {social && <span className={styles.social}> · {social}</span>}
+          {social && <span className={styles.social}>{' · '}{social}</span>}
         </p>
         {identity && <p className={styles.identity}>{identity}</p>}
         {p.bio && <p className={styles.bio}>{p.bio}</p>}
