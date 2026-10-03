@@ -66,11 +66,15 @@
   min-width: 0;
 }
 /* The ledge's row becomes a snap scroller; the plank stays put beneath it. */
+.shelf {
+  --card-name-lines: 2;
+}
 .shelf > div:first-of-type {
   display: grid;
   grid-template-columns: none;
   grid-auto-flow: column;
-  grid-auto-columns: 164px;
+  grid-auto-columns: 180px;
+  align-items: start;
   column-gap: var(--s-4);
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -82,10 +86,6 @@
 .item {
   scroll-snap-align: start;
   min-width: 0;
-}
-/* Names reserve two lines so the shelf's floor stays level across the row. */
-.item h3 {
-  min-height: 2lh;
 }
 .none {
   font-family: var(--font-serif);

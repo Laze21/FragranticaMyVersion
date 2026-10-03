@@ -47,15 +47,26 @@ function scrollTo(y: number, ms: number) {
 function riseTags(root: HTMLElement | null, at: number) {
   if (!root) return () => {};
   const targets = Array.from(root.querySelectorAll<HTMLElement>('[data-mist-target]')).slice(0, 5);
-  const settle = targets.map((t) => t.animate([{ opacity: 0.35, transform: 'translateY(6px)' }], { duration: 0, fill: 'forwards' }));
+  const settle = targets.map((t) =>
+    t.animate([{ opacity: 0.35, transform: 'translateY(6px)' }], {
+      duration: 0,
+      fill: 'forwards',
+    }),
+  );
   const rise = window.setTimeout(() => {
     targets.forEach((t, i) => {
-      const a = t.animate([{ opacity: 0.35, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], {
-        duration: 420,
-        delay: i * 40,
-        easing: 'cubic-bezier(0.2, 0.7, 0.1, 1)',
-        fill: 'forwards',
-      });
+      const a = t.animate(
+        [
+          { opacity: 0.35, transform: 'translateY(6px)' },
+          { opacity: 1, transform: 'translateY(0)' },
+        ],
+        {
+          duration: 420,
+          delay: i * 40,
+          easing: 'cubic-bezier(0.2, 0.7, 0.1, 1)',
+          fill: 'forwards',
+        },
+      );
       a.onfinish = () => {
         settle[i]?.cancel();
         a.cancel();
@@ -75,6 +86,7 @@ export function MistOverlay() {
   useEffect(() => {
     instances += 1;
     const mine = instances === 1;
+    const cleanup = { current: () => {} };
     const onExplore = (e: Event) => {
       if (!mine || busy.current) return;
       const detail = (e as CustomEvent<ExploreDetail>).detail;
@@ -103,17 +115,36 @@ export function MistOverlay() {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      Object.assign(canvas.style, { position: 'fixed', inset: '0', width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: '55' });
+      Object.assign(canvas.style, {
+        position: 'fixed',
+        inset: '0',
+        width: '100vw',
+        height: '100vh',
+        pointerEvents: 'none',
+        zIndex: '55',
+      });
       canvas.setAttribute('aria-hidden', 'true');
       document.body.appendChild(canvas);
       const ctx = canvas.getContext('2d')!;
       ctx.scale(dpr, dpr);
 
       const hues = detail.hues.length ? detail.hues : ['#9a8f80'];
-      const originDoc = { x: detail.origin.x, y: detail.origin.y + detail.scrollY };
+      const originDoc = {
+        x: detail.origin.x,
+        y: detail.origin.y + detail.scrollY,
+      };
       const nib = fig.querySelector<HTMLElement>('[data-trail-nib]');
       const ease = easeFn('evaporate');
-      type P = { born: number; dur: number; r: number; color: string; jx: number; jy: number; lift: number; wobble: number };
+      type P = {
+        born: number;
+        dur: number;
+        r: number;
+        color: string;
+        jx: number;
+        jy: number;
+        lift: number;
+        wobble: number;
+      };
       const parts: P[] = Array.from({ length: PARTICLES }, (_, i) => ({
         born: phone ? 60 + Math.random() * 120 : 200 + (i / PARTICLES) * 500,
         dur: phone ? 280 : 520 + Math.random() * 260,
@@ -184,7 +215,6 @@ export function MistOverlay() {
         canvas.remove();
       };
     };
-    const cleanup = { current: () => {} };
     window.addEventListener('scent:explore', onExplore);
     return () => {
       instances -= 1;

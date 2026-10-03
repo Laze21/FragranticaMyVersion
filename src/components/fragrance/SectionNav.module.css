@@ -1,24 +1,35 @@
+/* The bar carries the wash at half strength, so it reads as the floor the stage stands on. */
 .nav {
-  position: sticky;
-  top: var(--header-h);
+  position: relative;
   z-index: 30;
-  background: var(--porcelain);
+  background: color-mix(in oklab, var(--scent-wash) 50%, var(--porcelain));
   border-bottom: 1px solid var(--line);
 }
-.nav ul {
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+.actions {
+  display: none;
+  flex: none;
+}
+.list {
   display: flex;
   gap: 2px;
+  min-width: 0;
+  margin: 0 0 0 -12px; /* the first label's text lands on the content edge */
+  padding: 0;
   overflow-x: auto;
   scrollbar-width: none;
-  margin-block: 0;
 }
-.nav ul::-webkit-scrollbar {
+.list::-webkit-scrollbar {
   display: none;
 }
-.nav a {
+.list a {
   display: inline-flex;
   align-items: center;
-  min-height: 46px;
+  min-height: 48px;
   padding: 0 12px;
   font-size: var(--t-small);
   font-weight: 560;
@@ -26,16 +37,48 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.nav a:hover {
+.list a:hover {
   color: var(--ink);
 }
-.nav a[aria-current] {
+.list a[aria-current] {
   color: var(--ink);
   box-shadow: inset 0 -2px 0 var(--ink);
 }
+
+/* Desktop: a static rule under the hero. The top inset keeps the labels clear of the stage's
+   24px overhang: the bottle's foot and shadow cross the horizon into the bar's top. */
+@media (min-width: 1100px) {
+  .nav {
+    padding-top: 16px;
+  }
+}
+
+/* Tablet: sticks under the header, follows it up when it hides, and takes the shelf actions once
+   the hero's own have scrolled away. The list fades at its right edge instead of clipping. The
+   stage overhangs 16px here, which is exactly the bar's top padding above the labels. */
+@media (min-width: 720px) and (max-width: 1099px) {
+  .nav {
+    position: sticky;
+    top: var(--header-h);
+    transition: top var(--d-standard) var(--ease-evaporate);
+  }
+  .nav[data-header-hidden] {
+    top: 0;
+  }
+  .nav[data-actions] .actions {
+    display: block;
+  }
+  .nav[data-actions] .list {
+    margin-left: 0;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+    mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+    padding-right: 40px;
+  }
+}
+
+/* Phones: the tab bar's Sections sheet replaces the bar. The component stays mounted for the scroll-spy. */
 @media (max-width: 719px) {
-  .nav a {
-    min-height: 44px;
-    padding: 0 10px;
+  .nav {
+    display: none;
   }
 }

@@ -37,7 +37,10 @@ interface Props {
   name: string;
   accent: string;
   image: StageImage | null;
-  model: { url: string; animations: { spray: string | null; open: string | null } } | null;
+  model: {
+    url: string;
+    animations: { spray: string | null; open: string | null };
+  } | null;
   mistHues?: string[];
 }
 
@@ -45,7 +48,10 @@ interface Props {
 function autoLoad3d(): { ok: boolean; reason?: OffReason } {
   if (typeof window === 'undefined') return { ok: false };
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return { ok: false, reason: 'reduced-motion' };
-  const nav = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string }; deviceMemory?: number };
+  const nav = navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string };
+    deviceMemory?: number;
+  };
   if (nav.connection?.saveData) return { ok: false, reason: 'save-data' };
   if (nav.connection?.effectiveType && /(^|-)2g|3g/.test(nav.connection.effectiveType)) return { ok: false, reason: 'slow-network' };
   if (nav.deviceMemory && nav.deviceMemory < 4) return { ok: false, reason: 'low-memory' };
@@ -149,12 +155,22 @@ export function BottleStage({ name, accent, image, model, mistHues = [] }: Props
       origin,
       scrollY: window.scrollY,
       hues: mistHues,
-      stage: fr ? { top: fr.top + window.scrollY, bottom: fr.bottom + window.scrollY, left: fr.left, right: fr.right } : null,
+      stage: fr
+        ? {
+            top: fr.top + window.scrollY,
+            bottom: fr.bottom + window.scrollY,
+            left: fr.left,
+            right: fr.right,
+          }
+        : null,
     };
     window.dispatchEvent(new CustomEvent<ExploreDetail>('scent:explore', { detail }));
-    window.setTimeout(() => {
-      busy.current = false;
-    }, reduce ? 300 : 1800);
+    window.setTimeout(
+      () => {
+        busy.current = false;
+      },
+      reduce ? 300 : 1800,
+    );
   }, [mode, phase, layered, nozzle.x, nozzle.y, mistHues]);
   const exploreRef = useRef(explore);
   exploreRef.current = explore;
@@ -201,10 +217,11 @@ export function BottleStage({ name, accent, image, model, mistHues = [] }: Props
       setOff(verdict.reason ?? null);
       return;
     }
-    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
-    const handle = ric ? ric(() => void load3d(), { timeout: 2500 }) : window.setTimeout(() => void load3d(), 1200);
+    const idle = 'requestIdleCallback' in window;
+    const handle = idle ? window.requestIdleCallback(() => void load3d(), { timeout: 2500 }) : window.setTimeout(() => void load3d(), 1200);
     return () => {
-      if (!ric) clearTimeout(handle);
+      if (idle) window.cancelIdleCallback(handle);
+      else clearTimeout(handle);
     };
   }, [model, threeD, load3d]);
 
@@ -225,7 +242,10 @@ export function BottleStage({ name, accent, image, model, mistHues = [] }: Props
   };
 
   const capStyle = image?.layers?.cap
-    ? ({ '--cap-x': `${image.layers.cap.x * 100}%`, '--cap-y': `${(image.layers.cap.y + image.layers.cap.h) * 100}%` } as React.CSSProperties)
+    ? ({
+        '--cap-x': `${image.layers.cap.x * 100}%`,
+        '--cap-y': `${(image.layers.cap.y + image.layers.cap.h) * 100}%`,
+      } as React.CSSProperties)
     : undefined;
 
   const status = (() => {
@@ -283,7 +303,14 @@ export function BottleStage({ name, accent, image, model, mistHues = [] }: Props
             className={styles.object}
             data-phase={phase}
             data-layered={layered || undefined}
-            style={{ '--mask': `url("${image.url}")`, '--nx': `${nozzle.x * 100}%`, '--ny': `${nozzle.y * 100}%`, ...capStyle } as React.CSSProperties}
+            style={
+              {
+                '--mask': `url("${image.url}")`,
+                '--nx': `${nozzle.x * 100}%`,
+                '--ny': `${nozzle.y * 100}%`,
+                ...capStyle,
+              } as React.CSSProperties
+            }
           >
             {layered ? (
               <>
@@ -327,26 +354,26 @@ export function BottleStage({ name, accent, image, model, mistHues = [] }: Props
         <div className={styles.tagWrap}>
           {image.kind === 'photo' ? (
             <Popover label="About this photo" trigger="Photo" triggerClassName={styles.tag}>
-            <span className={styles.creditHead}>Product photo</span>
-            <span className={styles.creditBody}>
-              {image.credit ? `By ${image.credit}` : 'Credit on file'}
-              {image.license ? ` · ${image.license}` : ''}
-            </span>
-            {image.sourceUrl && (
-              <a href={image.sourceUrl} rel="noopener license" className={styles.creditLink}>
-              Where it came from
-              </a>
-          )}
+              <span className={styles.creditHead}>Product photo</span>
+              <span className={styles.creditBody}>
+                {image.credit ? `By ${image.credit}` : 'Credit on file'}
+                {image.license ? ` · ${image.license}` : ''}
+              </span>
+              {image.sourceUrl && (
+                <a href={image.sourceUrl} rel="noopener license" className={styles.creditLink}>
+                  Where it came from
+                </a>
+              )}
             </Popover>
           ) : (
             <Popover label="About this illustration" trigger="Illustration" triggerClassName={styles.tag}>
-            <span className={styles.creditHead}>An illustration, not a product photo</span>
-            <span className={styles.creditBody}>Drawn from the house’s own imagery. The real bottle may differ in small ways; the label is ours, not theirs.</span>
-            <a href="/contribute?kind=image" className={styles.creditLink}>
-              Have a photo we may use?
-            </a>
+              <span className={styles.creditHead}>An illustration, not a product photo</span>
+              <span className={styles.creditBody}>Drawn from the house’s own imagery. The real bottle may differ in small ways; the label is ours, not theirs.</span>
+              <a href="/contribute?kind=image" className={styles.creditLink}>
+                Have a photo we may use?
+              </a>
             </Popover>
-        )}
+          )}
         </div>
       )}
       <div className={styles.foot}>

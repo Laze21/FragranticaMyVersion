@@ -102,10 +102,15 @@
   .phases {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: none;
-    row-gap: var(--s-6);
+    row-gap: var(--s-5);
   }
   .phase {
     grid-row: auto;
     grid-template-rows: none;
+    row-gap: 8px;
+    padding-top: 8px;
+  }
+  .take {
+    margin-top: var(--s-6);
   }
 }

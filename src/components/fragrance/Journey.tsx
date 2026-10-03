@@ -12,6 +12,8 @@ import s from './sections.module.css';
 const PER_PHASE = 6;
 /* A note counts as noticed in a phase once a fifth of the people describing it put it there. */
 const NOTICED = 0.2;
+/* Under five voters a share is one person's opinion, so no badges and no appended notes. */
+const MIN_VOTERS = 5;
 
 function window_(min: number) {
   if (min < 60) return `${min} min`;
@@ -36,6 +38,19 @@ export function Journey({ f, noteIndex, trail = false }: { f: FragranceDetail; n
     { key: 'heart' as const, label: 'Heart', when: `${window_(f.heartAtMin)}–${window_(f.drydownAtMin)}`, listed: layers?.heart ?? [], layer: 'heart-notes' },
     { key: 'drydown' as const, label: 'Drydown', when: `${window_(f.drydownAtMin)} on`, listed: layers?.base ?? [], layer: 'base-notes' },
   ];
+  const rows = phases.map((p) => {
+    const counts = st.perceivedByPhase[p.key] ?? {};
+    const share = (slug: string) => (voters >= MIN_VOTERS ? (counts[slug] ?? 0) / voters : 0);
+    const listedSlugs = new Set(p.listed.map((n) => n.slug));
+    const noticed = Object.keys(counts)
+      .filter((slug) => !listedSlugs.has(slug) && noteIndex[slug] && share(slug) >= NOTICED)
+      .sort((a, b) => share(b) - share(a))
+      .map((slug) => noteIndex[slug]);
+    const row = [...p.listed.map((n) => ({ n, listed: true })), ...noticed.map((n) => ({ n, listed: false }))];
+    return { ...p, share, shown: row.slice(0, PER_PHASE), more: row.length - Math.min(row.length, PER_PHASE) };
+  });
+  // The key only explains what is drawn: a dashed strip hidden behind "+2" needs no legend.
+  const anyUnlisted = rows.some((p) => p.shown.some((x) => !x.listed));
   const input = {
     character: st.character,
     longevityHrs: st.longevityMedian,
@@ -63,17 +78,8 @@ export function Journey({ f, noteIndex, trail = false }: { f: FragranceDetail; n
       )}
 
       <ol className={styles.phases} id="journey-phases" role="list" data-mist-root tabIndex={-1}>
-        {phases.map((p) => {
-          const counts = st.perceivedByPhase[p.key] ?? {};
-          const share = (slug: string) => (voters ? (counts[slug] ?? 0) / voters : 0);
-          const listedSlugs = new Set(p.listed.map((n) => n.slug));
-          const noticed = Object.keys(counts)
-            .filter((slug) => !listedSlugs.has(slug) && noteIndex[slug] && share(slug) >= NOTICED)
-            .sort((a, b) => share(b) - share(a))
-            .map((slug) => noteIndex[slug]);
-          const row = [...p.listed.map((n) => ({ n, listed: true })), ...noticed.map((n) => ({ n, listed: false }))];
-          const shown = row.slice(0, PER_PHASE);
-          const more = row.length - shown.length;
+        {rows.map((p) => {
+          const { share, shown, more } = p;
           const dims = topDims(st.character[p.key], 2, 0.1);
           return (
             <li key={p.key} className={styles.phase} data-phase={p.key}>
@@ -121,10 +127,10 @@ export function Journey({ f, noteIndex, trail = false }: { f: FragranceDetail; n
           );
         })}
       </ol>
-      {voters > 0 && layers && (
+      {voters >= MIN_VOTERS && layers && (
         <p className={styles.key}>
-          Percentages: share of the {voters.toLocaleString('en-US')} people describing it who notice the note in that phase. Dashed strips are not on the house’s
-          list.
+          Percentages: share of the {voters.toLocaleString('en-US')} people describing it who notice the note in that phase.
+          {anyUnlisted && ' Dashed strips are not on the house’s list.'}
         </p>
       )}
 

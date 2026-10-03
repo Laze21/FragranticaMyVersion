@@ -135,11 +135,11 @@
 .body p + p {
   margin-top: 0.75em;
 }
+/* Clamped by height, not line-clamp, so the paragraphs keep their breaks under the fade. */
 .body[data-clamped] {
-  display: -webkit-box;
-  -webkit-line-clamp: 9;
-  -webkit-box-orient: vertical;
+  max-height: calc(9 * 1.6em);
   overflow: hidden;
+  mask-image: linear-gradient(#000 70%, transparent);
 }
 .more {
   border: 0;

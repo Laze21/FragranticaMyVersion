@@ -43,7 +43,11 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
   const width = () => container.clientWidth;
   const height = () => container.clientHeight;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+    powerPreference: 'low-power',
+  });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setSize(width(), height());
   renderer.setClearColor(0x000000, 0);
@@ -73,7 +77,13 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
   }
   const root = gltf.scene.getObjectByName('Bottle') ?? gltf.scene;
   // Restore what glTF can't carry: back-face glass, draw order, fresnel shading.
-  const ORDER: Record<string, number> = { Shadow: 0, GlassBack: 1, Liquid: 2, GlassFront: 3, Label: 5 };
+  const ORDER: Record<string, number> = {
+    Shadow: 0,
+    GlassBack: 1,
+    Liquid: 2,
+    GlassFront: 3,
+    Label: 5,
+  };
   root.traverse((o) => {
     const mesh = o as THREE.Mesh;
     if (!mesh.isMesh) return;
@@ -108,7 +118,7 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
   let camera = cameraFor(framing, width() / height());
 
   const mixer = new THREE.AnimationMixer(root);
-  const clip = (name: string | null) => (name ? gltf.animations.find((a) => a.name === name) ?? null : null);
+  const clip = (name: string | null) => (name ? (gltf.animations.find((a) => a.name === name) ?? null) : null);
   const nozzle = root.getObjectByName('Nozzle');
   const capNode = root.getObjectByName('Cap');
 
@@ -118,7 +128,13 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
   const mistPos = new Float32Array(MIST * 3);
   const mistVel = new Float32Array(MIST * 3);
   mistGeo.setAttribute('position', new THREE.BufferAttribute(mistPos, 3));
-  const mistMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.012, transparent: true, opacity: 0, depthWrite: false });
+  const mistMat = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.012,
+    transparent: true,
+    opacity: 0,
+    depthWrite: false,
+  });
   const mist = new THREE.Points(mistGeo, mistMat);
   mist.frustumCulled = false;
   root.add(mist);
@@ -290,7 +306,10 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
     obj.getWorldPosition(v);
     v.project(camera);
     const r = el.getBoundingClientRect();
-    return { x: r.left + ((v.x + 1) / 2) * r.width, y: r.top + ((1 - v.y) / 2) * r.height };
+    return {
+      x: r.left + ((v.x + 1) / 2) * r.width,
+      y: r.top + ((1 - v.y) / 2) * r.height,
+    };
   };
 
   let busy = false;
@@ -309,7 +328,7 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
         const step = () => {
           const t = Math.min(1, (performance.now() - t0) / 520);
           const e = 1 - Math.pow(1 - t, 3);
-          pivot.rotation.y = start + (Math.atan2(Math.sin(goal - start), Math.cos(goal - start))) * e;
+          pivot.rotation.y = start + Math.atan2(Math.sin(goal - start), Math.cos(goal - start)) * e;
           kick(60);
           if (t < 1) requestAnimationFrame(step);
           else res();

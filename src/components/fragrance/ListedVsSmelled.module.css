@@ -18,14 +18,6 @@
 .colTitle {
   min-width: 0;
 }
-.colMeta {
-  font-size: var(--t-small);
-  color: var(--fg-2);
-}
-.colMeta b {
-  color: var(--ink);
-  font-weight: 600;
-}
 .summaryCount {
   font-weight: 500;
   color: var(--fg-2);
@@ -102,7 +94,7 @@
     display: none;
   }
 }
-@media (min-width: 840px) {
+@media (min-width: 720px) {
   .grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--s-9);

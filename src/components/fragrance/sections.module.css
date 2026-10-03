@@ -24,6 +24,27 @@
 .gap-0 {
   margin-top: 0;
 }
+/* Phones scale the intervals down together, keeping their order. */
+@media (max-width: 719px) {
+  .section {
+    margin-top: var(--s-9);
+  }
+  .gap-32 {
+    margin-top: var(--s-6);
+  }
+  .gap-64 {
+    margin-top: var(--s-9);
+  }
+  .gap-88 {
+    margin-top: var(--s-10);
+  }
+  .gap-96 {
+    margin-top: var(--s-10);
+  }
+  .gap-0 {
+    margin-top: 0;
+  }
+}
 
 /*
  * A linen band behind a section that still sits in the main column. The pseudo-element paints
@@ -128,7 +149,9 @@
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
+  /* a 44px target that does not make the meta line 44px tall */
   min-height: 44px;
+  margin-block: -10px;
   display: inline-flex;
   align-items: center;
 }
@@ -137,6 +160,16 @@
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+}
+@media (max-width: 719px) {
+  .head {
+    gap: var(--s-2);
+    margin-bottom: var(--s-5);
+  }
+  .lede {
+    font-size: var(--t-serif-s);
+    margin-top: 6px;
+  }
 }
 @media (min-width: 840px) {
   .head {
@@ -185,6 +218,55 @@
   align-items: center;
   column-gap: 12px;
   height: 24px;
+  font-size: var(--t-label);
+}
+/* Narrow columns: the label and value share one line above the track, so the bar gets the width. */
+.barStack {
+  height: auto;
+  min-height: 32px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 6px;
+  row-gap: 4px;
+  column-gap: 8px;
+  align-items: end;
+  align-content: start;
+}
+.barStack .barLabel {
+  grid-area: 1 / 1;
+  white-space: normal;
+  overflow: visible;
+}
+.barStack .barValue {
+  grid-area: 1 / 2;
+}
+.barStack .barTrack {
+  grid-area: 2 / 1 / 3 / 3;
+  align-self: start;
+}
+/* The same fold, only on phones, for lists that sit two abreast there. */
+@media (max-width: 719px) {
+  .stackOnPhone {
+    height: auto;
+    min-height: 32px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 6px;
+    row-gap: 4px;
+    column-gap: 8px;
+    align-items: end;
+    align-content: start;
+  }
+  .stackOnPhone .barLabel {
+    grid-area: 1 / 1;
+    white-space: normal;
+    overflow: visible;
+  }
+  .stackOnPhone .barValue {
+    grid-area: 1 / 2;
+  }
+  .stackOnPhone .barTrack {
+    grid-area: 2 / 1 / 3 / 3;
+    align-self: start;
+  }
 }
 .barLabel {
   display: inline-flex;
@@ -242,6 +324,7 @@
   font-variant-numeric: tabular-nums;
   font-size: var(--t-label);
   font-weight: 600;
+  line-height: 1.15;
   text-align: right;
 }
 .tag {
@@ -281,6 +364,11 @@
   font-size: var(--t-serif-l);
   line-height: 1.45;
   text-wrap: pretty;
+}
+@media (max-width: 719px) {
+  .pullText {
+    font-size: var(--t-serif);
+  }
 }
 
 .prose {

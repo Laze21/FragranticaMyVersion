@@ -33,13 +33,24 @@
   color: var(--fg-2);
   max-width: 48ch;
 }
-.later {
-  margin-top: var(--s-5);
+.pRow {
+  --label-w: 8em;
 }
-.right > p {
+.right {
+  display: grid;
+  gap: var(--s-5);
+}
+.right p {
   margin-bottom: 8px;
 }
-@media (min-width: 840px) {
+/* Phones: the two projection sets side by side, label over track, so the band stays short. */
+@media (max-width: 719px) {
+  .right {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-4);
+  }
+}
+@media (min-width: 720px) {
   .grid {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: var(--s-9);

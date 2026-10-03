@@ -1,21 +1,30 @@
-.panel {
-  background: var(--paper);
-  padding: var(--s-5);
-  display: grid;
-  gap: var(--s-3);
-  border-radius: var(--r-0);
+/* A ruled aside, not a paper box: a 2px ink rule, a serif heading, rows on hairlines. */
+.aside {
+  padding-top: var(--s-4);
+  border-top: 2px solid var(--ink);
 }
 .title {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-weight: 400;
+  font-size: var(--t-h3);
   line-height: 1.2;
 }
-.text {
+.line {
   font-size: var(--t-small);
   color: var(--fg-2);
+  line-height: 1.45;
+}
+.line a {
+  color: var(--ink);
+  font-weight: 600;
+}
+.where {
+  margin-top: 4px;
+  font-size: var(--t-label);
+  color: var(--fg-3);
 }
 .rows {
-  margin: 0;
+  margin: var(--s-3) 0 0;
   padding: 0;
 }
 .rows button {
@@ -23,17 +32,42 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-height: 46px;
+  min-height: 40px;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
   background: none;
   text-align: left;
   font-size: var(--t-small);
   padding: 0;
+  gap: var(--s-3);
+}
+.rows li:last-child button {
+  border-bottom: 1px solid var(--line);
 }
 .rows button:hover b {
   text-decoration: underline;
 }
 .rows b {
   font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.rows b[data-empty] {
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.review {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink);
+}
+@media (pointer: coarse) {
+  .rows button {
+    min-height: 44px;
+  }
+  .review {
+    min-height: 44px;
+  }
 }

@@ -15,7 +15,7 @@ function Rows({ hist, label, muted }: { hist: number[]; label: string; muted?: (
       {PROJECTION_LEVELS.map((l, i) => {
         const pct = Math.round(((hist[i] ?? 0) / total) * 100);
         return (
-          <li key={l.value} className={`${s.barRow} ${styles.row}`}>
+          <li key={l.value} className={`${s.barRow} ${s.stackOnPhone} ${styles.pRow}`}>
             <span className={s.barLabel}>{l.label}</span>
             <span className={s.barTrack} aria-hidden>
               <span className={s.barFill} data-muted={muted?.(i) || undefined} style={{ width: `${pct}%` }} />
@@ -90,12 +90,16 @@ export function Performance({ f }: { f: FragranceDetail }) {
           </div>
 
           <div className={styles.right}>
-            <p className={s.eyebrow}>
-              <Term slug="projection">Projection</Term> in the first hour
-            </p>
-            <Rows hist={st.projectionOpeningHist} label="Who could smell it in the first hour" />
-            <p className={`${s.eyebrow} ${styles.later}`}>Three hours later</p>
-            <Rows hist={st.projectionLaterHist} label="Who could smell it three hours later" />
+            <div>
+              <p className={s.eyebrow}>
+                <Term slug="projection">Projection</Term> in the first hour
+              </p>
+              <Rows hist={st.projectionOpeningHist} label="Who could smell it in the first hour" />
+            </div>
+            <div>
+              <p className={s.eyebrow}>Three hours later</p>
+              <Rows hist={st.projectionLaterHist} label="Who could smell it three hours later" />
+            </div>
           </div>
         </div>
       )}

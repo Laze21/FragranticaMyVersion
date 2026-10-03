@@ -1,0 +1,67 @@
+.figure {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-2);
+}
+.word {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-micro);
+  font-weight: 650;
+  font-stretch: 88%;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+.mark {
+  width: 20px;
+  height: 8px;
+  color: var(--ink);
+}
+.meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-size: var(--t-label);
+  color: var(--fg-2);
+}
+.meta b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.conf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+.confBars {
+  display: inline-flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+.confBars i {
+  width: 3px;
+  background: color-mix(in oklab, var(--ink) 25%, transparent);
+  border-radius: 1px;
+}
+.confBars i:nth-child(1) {
+  height: 5px;
+}
+.confBars i:nth-child(2) {
+  height: 8px;
+}
+.confBars i:nth-child(3) {
+  height: 11px;
+}
+.confBars i[data-on] {
+  background: var(--juniper-ink);
+}

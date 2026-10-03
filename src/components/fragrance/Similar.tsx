@@ -72,7 +72,7 @@ export function Similar({ groups, name, status }: { groups: SimilarGroups; name:
           <Ledge className={styles.shelf}>
             {items.map((it, i) => (
               <div key={it.card.slug} className={styles.item}>
-                <FragranceCard card={it.card} sizes="164px" loading={i < 4 ? 'eager' : 'lazy'} reason={it.why} />
+                <FragranceCard card={it.card} sizes="180px" loading={i < 4 ? 'eager' : 'lazy'} reason={it.why} />
               </div>
             ))}
           </Ledge>

@@ -1,0 +1,165 @@
+/* The spine: thumb, name, score, actions, sections, the one ask. Rules, not boxes. */
+.rail {
+  display: grid;
+  gap: var(--s-6);
+}
+.spine {
+  display: grid;
+  gap: var(--s-4);
+}
+.head {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s-3);
+}
+.thumb {
+  flex: none;
+  width: 56px;
+  height: 70px;
+  display: block;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.headText {
+  min-width: 0;
+  padding-bottom: 2px;
+}
+.name {
+  font-size: var(--t-name);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.score {
+  margin-top: 4px;
+  font-size: var(--t-label);
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+.score b {
+  font-weight: 650;
+  color: var(--ink);
+}
+.demo {
+  color: var(--bergamot-ink);
+  font-weight: 600;
+}
+
+/* The compact actions take no room until the hero's own have scrolled away. */
+.actions {
+  display: none;
+}
+.actions[data-show] {
+  display: block;
+}
+
+.sections ul {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.sections a {
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  padding-left: 10px;
+  font-size: var(--t-label);
+  font-weight: 560;
+  color: var(--fg-2);
+  text-decoration: none;
+  box-shadow: inset 2px 0 0 transparent;
+  transition: box-shadow var(--d-quick) var(--ease-standard), color var(--d-quick) var(--ease-standard);
+}
+.sections a:hover {
+  color: var(--ink);
+}
+.sections a[aria-current] {
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: inset 2px 0 0 var(--ink);
+}
+
+/* The contextual block: the sample size is the brightest small text here, not the faintest. */
+.context {
+  display: grid;
+  gap: 6px;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.sample {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.sample b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.conf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.confBars {
+  display: inline-flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+.confBars i {
+  width: 3px;
+  background: color-mix(in oklab, var(--ink) 25%, transparent);
+  border-radius: 1px;
+}
+.confBars i:nth-child(1) {
+  height: 5px;
+}
+.confBars i:nth-child(2) {
+  height: 8px;
+}
+.confBars i:nth-child(3) {
+  height: 11px;
+}
+.confBars i[data-on] {
+  background: var(--juniper-ink);
+}
+.prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: 44px;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  font: inherit;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+.prompt:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.upcoming {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* Under 1100px the spine folds into the bar (tablet) or the tab bar (phone); the aside stays. */
+@media (max-width: 1099px) {
+  .spine {
+    display: none;
+  }
+}

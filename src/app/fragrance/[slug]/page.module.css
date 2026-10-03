@@ -1,27 +1,54 @@
+/*
+ * The page shell: hero (full-bleed wash at the left), the section bar, the Trail across all
+ * twelve columns, then main (columns 1-8) beside the sticky rail (10-12). Bands that break out
+ * of the main column take their left offset from --main-left, set here so a section can bleed
+ * from an off-centre column: margin-left: calc(-1 * var(--main-left));
+ * margin-right: calc(var(--main-left) + 100% - 100vw).
+ */
+.root {
+  overflow-x: clip;
+}
+.trail {
+  margin-top: var(--s-10);
+}
 .layout {
-  display: grid;
-  gap: var(--s-8);
+  margin-top: var(--s-7);
+  align-items: start;
 }
 .main {
   min-width: 0;
+  --main-left: max(var(--gutter), calc((100vw - var(--content-max)) / 2));
 }
 .rail {
   min-width: 0;
 }
+.reviews,
+.similar {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
 @media (min-width: 1100px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: var(--s-10);
-    align-items: start;
-  }
   .rail {
     position: sticky;
-    top: calc(var(--header-h) + 64px);
+    top: calc(var(--header-h) + 24px);
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .trail {
     margin-top: var(--s-9);
+  }
+  .rail {
+    margin-top: var(--s-10);
   }
 }
 @media (max-width: 719px) {
   .root {
-    padding-bottom: 48px;
+    padding-bottom: var(--s-6);
+  }
+  .trail {
+    margin-top: var(--s-8);
+  }
+  .rail {
+    margin-top: var(--s-9);
   }
 }

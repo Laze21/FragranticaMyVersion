@@ -78,7 +78,10 @@ export function ViewerProvider({ children }: { children: React.ReactNode }) {
     try {
       const res = await fetch('/api/me', { cache: 'no-store' });
       if (!res.ok) throw new Error(String(res.status));
-      const data = (await res.json()) as { viewer: ClientViewer | null; shelf: Record<string, ShelfEntry> };
+      const data = (await res.json()) as {
+        viewer: ClientViewer | null;
+        shelf: Record<string, ShelfEntry>;
+      };
       setViewer(data.viewer);
       setShelf(data.shelf ?? {});
     } catch {
@@ -102,7 +105,15 @@ export function ViewerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ viewer, shelf, loaded, refresh, setShelfEntry, threeD, setThreeD }),
+    () => ({
+      viewer,
+      shelf,
+      loaded,
+      refresh,
+      setShelfEntry,
+      threeD,
+      setThreeD,
+    }),
     [viewer, shelf, loaded, refresh, setShelfEntry, threeD, setThreeD],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

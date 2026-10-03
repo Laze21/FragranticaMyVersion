@@ -2,7 +2,6 @@ import Link from 'next/link';
 import type { FragranceDetail, NoteRef } from '@/lib/data/types';
 import { Blotter } from '@/components/scent/Blotter';
 import { Term } from '@/components/ui/Term';
-import { formatNumber } from '@/lib/scent/read';
 import { SourceBadge } from './SourceBadge';
 import { SectionHead } from './SectionHead';
 import { FoldOnPhone } from './FoldOnPhone';
@@ -18,9 +17,13 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
   const st = f.stats;
   const listed = f.notes ? [...f.notes.top, ...f.notes.heart, ...f.notes.base, ...f.notes.unspecified] : [];
   const listedSlugs = new Set(listed.map((n) => n.slug));
-  const perceived = Object.entries(st.perceived)
-    .filter(([slug]) => noteIndex[slug])
-    .sort((a, b) => b[1] - a[1]);
+  /* Under five voters a share is one person's nose: the rows wait, and the head says how many have spoken. */
+  const enough = st.perceivedVoters >= 5;
+  const perceived = enough
+    ? Object.entries(st.perceived)
+        .filter(([slug, share]) => noteIndex[slug] && share > 0)
+        .sort((a, b) => b[1] - a[1])
+    : [];
   const top = perceived.slice(0, 12);
   const rarely = listed.filter((n) => (st.perceived[n.slug] ?? 0) < 0.15);
   const surprising = perceived.filter(([slug, share]) => !listedSlugs.has(slug) && share >= 0.2);
@@ -61,7 +64,7 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
           <FoldOnPhone
             summary={
               <span>
-                {listTitle}
+                {f.notes ? `Listed by ${f.brandName}` : listTitle}
                 {listed.length > 0 && <span className={styles.summaryCount}> · {listed.length} notes</span>}
               </span>
             }
@@ -98,11 +101,6 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
         <div className={styles.col}>
           <div className={styles.colHead}>
             <h3 className={`${s.h3} ${styles.colTitle}`}>What people smell</h3>
-            {st.perceivedVoters > 0 && (
-              <span className={styles.colMeta}>
-                <b className="tnum">{formatNumber(st.perceivedVoters)}</b> people
-              </span>
-            )}
           </div>
           {top.length ? (
             <>
@@ -149,7 +147,11 @@ export function ListedVsSmelled({ f, noteIndex }: { f: FragranceDetail; noteInde
               )}
             </>
           ) : (
-            <p className={styles.nobody}>No one has said what they smell yet.</p>
+            <p className={styles.nobody}>
+              {st.perceivedVoters
+                ? `${st.perceivedVoters} ${st.perceivedVoters === 1 ? 'person has' : 'people have'} said what they smell. The chart appears at five.`
+                : 'No one has said what they smell yet.'}
+            </p>
           )}
         </div>
       </div>

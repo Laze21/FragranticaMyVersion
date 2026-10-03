@@ -6,7 +6,8 @@
  */
 .stage {
   position: relative;
-  width: min(100%, 640px);
+  /* 640 at most, and never so tall that the first screen cannot hold the hero. */
+  width: min(100%, 640px, calc((100vh - 240px) * 0.8));
   --zoom: 1.08;
   --foot: 0.88;
   --overhang: 24px;
@@ -33,7 +34,12 @@
   cursor: grabbing;
 }
 .frame canvas:focus-visible {
+  outline: none;
+}
+/* The ring sits on the frame, not on the canvas, whose box runs past the frame's edges. */
+.frame:has(canvas:focus-visible) {
   outline: 2px solid var(--focus);
+  outline-offset: 4px;
 }
 .stage[data-mode='3d'] .frame canvas {
   opacity: 1;
@@ -314,6 +320,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
   transition: opacity var(--d-slow) var(--ease-standard);
 }
 .dragHint[data-faded] {
@@ -364,6 +371,9 @@
   .stage {
     width: min(100%, 420px);
     --overhang: 16px;
+  }
+  .foot {
+    bottom: -6px;
   }
 }
 

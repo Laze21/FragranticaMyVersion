@@ -13,7 +13,7 @@ const MARKETED: Record<string, string> = { masculine: 'for men', feminine: 'for 
 function Row({ label, value, hue, hollow }: { label: string; value: number; hue?: string; hollow?: boolean }) {
   const pct = Math.round(value * 100);
   return (
-    <li className={`${s.barRow} ${styles.row}`}>
+    <li className={`${s.barRow} ${s.barStack}`}>
       <span className={s.barLabel}>{label}</span>
       <span className={s.barTrack} aria-hidden>
         <span className={`${s.barFill} ${hollow ? styles.dayFill : ''}`} style={{ width: `${pct}%`, ['--bar-hue' as string]: hue }} />

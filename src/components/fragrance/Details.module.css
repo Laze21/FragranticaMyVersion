@@ -58,6 +58,17 @@
 .subhead {
   margin-bottom: var(--s-3);
 }
+.summaryCount {
+  font-weight: 500;
+  color: var(--fg-2);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 719px) {
+  /* the summary is the head on phones */
+  .subhead {
+    display: none;
+  }
+}
 .sources {
   margin: 0;
   padding: 0;
@@ -123,13 +134,29 @@
   font-size: var(--t-small);
   font-weight: 600;
 }
+.fix a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+}
+@media (pointer: coarse) {
+  .fix a {
+    min-height: 44px;
+  }
+}
 .policy {
   margin-top: var(--s-2);
   font-size: var(--t-micro);
   color: var(--fg-3);
   max-width: 60ch;
 }
-@media (min-width: 840px) {
+@media (max-width: 719px) {
+  .sources li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+@media (min-width: 720px) {
   .grid {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--s-9);
