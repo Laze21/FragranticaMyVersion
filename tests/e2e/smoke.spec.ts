@@ -42,7 +42,7 @@ test.describe('fragrance page', () => {
     await expect(page.getByText(/lasts/i).first()).toBeVisible();
     await expect(page.getByText(/projection/i).first()).toBeVisible();
     // Listed vs smelled is the differentiator; both columns are present.
-    await expect(page.getByText(/listed by the house/i).first()).toBeVisible();
+    await expect(page.getByText(/^listed (by |\(per )/i).first()).toBeVisible();
     await expect(page.getByText(/what people smell/i).first()).toBeVisible();
     // Sources section names where facts come from.
     await expect(page.getByText(/where this page.s facts come from/i).first()).toBeVisible();
