@@ -49,7 +49,7 @@ test.describe('account flows', () => {
     await page.locator('textarea[name="body"]').fill('Green fig, milky and a little bitter. Smells like a garden in August, and lasts the afternoon.');
     await page.getByLabel(/i got this free/i).check();
     await page.getByLabel(/how you got it/i).fill('sample from a friend');
-    await page.getByRole('button', { name: /post|publish|save/i }).click();
+    await page.getByRole('button', { name: /publish|update review/i }).click();
     await page.waitForURL(/\/fragrance\/philosykos/);
     await expect(page.getByText(/garden in August/)).toBeVisible();
     await expect(page.getByText(/gift|free/i).first()).toBeVisible();
