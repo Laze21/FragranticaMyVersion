@@ -1,0 +1,39 @@
+.panel {
+  background: var(--paper);
+  padding: var(--s-5);
+  display: grid;
+  gap: var(--s-3);
+  border-radius: var(--r-0);
+}
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+.text {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.rows {
+  margin: 0;
+  padding: 0;
+}
+.rows button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 46px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  font-size: var(--t-small);
+  padding: 0;
+}
+.rows button:hover b {
+  text-decoration: underline;
+}
+.rows b {
+  font-weight: 650;
+}

@@ -1,0 +1,332 @@
+.wrap {
+  display: grid;
+  gap: var(--s-4);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--s-4);
+}
+.title {
+  font-size: var(--t-title-l);
+  font-weight: 680;
+  font-stretch: 118%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.sub {
+  margin-top: 8px;
+  color: var(--fg-2);
+  font-size: var(--t-small);
+}
+.tools {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.views {
+  display: flex;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  overflow: hidden;
+}
+.views button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  background: var(--paper);
+  font-size: var(--t-small);
+  font-weight: 560;
+}
+.views button + button {
+  border-left: 1px solid var(--line);
+}
+.views [aria-checked='true'] {
+  background: var(--ink);
+  color: var(--porcelain);
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.count {
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+.layout {
+  display: grid;
+  gap: var(--s-8);
+  margin-top: var(--s-4);
+}
+.main {
+  min-width: 0;
+}
+/* Shelf view: bottles stand on a ledge, the way a real collection lives. */
+.ledges {
+  padding: var(--s-4) 0;
+}
+.ledge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--s-5) var(--s-3);
+  margin: 0;
+  padding: 0 4px;
+  background: linear-gradient(to bottom, transparent calc(100% - 0px), transparent);
+}
+.bottle {
+  position: relative;
+  width: 118px;
+  animation: settle var(--d-slow) var(--ease-settle) both;
+  animation-delay: calc(var(--i) * 30ms);
+}
+.bottle::after {
+  content: '';
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 164px;
+  height: 10px;
+  background: linear-gradient(to bottom, #b9ab93, #9c8e77);
+  box-shadow: 0 6px 10px -6px rgb(28 26 23 / 0.45);
+}
+@keyframes settle {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+}
+.bottleLink {
+  display: grid;
+  text-decoration: none;
+}
+.bottleImg {
+  position: relative;
+  display: block;
+  height: 164px;
+}
+.bottleImg img {
+  object-fit: contain;
+  object-position: bottom;
+}
+.noImg {
+  position: absolute;
+  inset: 30% 25% 0;
+  border: 1px dashed var(--line-strong);
+}
+.bottleName {
+  margin-top: 18px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.bottleLink:hover .bottleName {
+  text-decoration: underline;
+}
+.bottleHouse {
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.fav {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  color: var(--oxblood);
+}
+.format {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  font-size: 10px;
+  font-weight: 650;
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  background: var(--paper);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6) var(--s-4);
+  margin: 0;
+}
+.editBtn {
+  margin-top: 6px;
+  border: 0;
+  background: none;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-decoration: underline;
+  min-height: 36px;
+  position: relative;
+  z-index: 1;
+}
+.tableWrap {
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-small);
+  min-width: 720px;
+}
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.table thead th {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  font-weight: 600;
+}
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+.tName {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.02rem;
+}
+.tHouse {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-3);
+  font-weight: 400;
+}
+.insights {
+  background: var(--paper);
+  padding: var(--s-5);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.iTitle {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+.iHead {
+  font-size: var(--t-micro);
+  font-weight: 650;
+  color: var(--fg-3);
+  margin-top: 8px;
+}
+.sentences {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  font-size: var(--t-small);
+}
+.sentences li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bergamot);
+  margin-right: 8px;
+  vertical-align: 2px;
+}
+.seasons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  height: 80px;
+  align-items: end;
+}
+.seasons span {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  height: 100%;
+}
+.seasons i {
+  background: var(--ink);
+}
+.seasons small {
+  font-size: 11px;
+  color: var(--fg-3);
+  margin-top: 4px;
+}
+.small {
+  font-size: var(--t-small);
+}
+.stats {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+}
+.stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--t-small);
+  border-top: 1px solid var(--line);
+  padding-top: 6px;
+}
+.stats dt {
+  color: var(--fg-3);
+}
+.stats dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+.empty {
+  padding: var(--s-8) var(--s-6);
+  background: var(--paper);
+}
+.emptyTitle {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.form {
+  display: grid;
+  gap: var(--s-4);
+}
+.form input[type='range'] {
+  accent-color: var(--ink);
+  min-height: 32px;
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .bottle {
+    width: 132px;
+  }
+}
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+}
+@media (max-width: 719px) {
+  .views span {
+    display: none;
+  }
+  .bottle {
+    width: calc(33.3% - 10px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bottle {
+    animation: none;
+  }
+}

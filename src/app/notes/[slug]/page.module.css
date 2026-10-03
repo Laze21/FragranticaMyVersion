@@ -1,0 +1,183 @@
+.hero {
+  background: var(--scent-wash);
+  padding: var(--s-8) 0 var(--s-9);
+  overflow: hidden;
+}
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-6);
+  align-items: end;
+}
+.crumbs {
+  font-size: var(--t-small);
+  color: var(--fg-3);
+  margin-bottom: var(--s-3);
+}
+.crumbs a {
+  color: var(--fg-2);
+}
+.name {
+  font-size: var(--t-title-xl);
+}
+.kind {
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.aka {
+  margin-top: 4px;
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+/* A dipped blotter strip: the note's colour climbs the paper. */
+.blotter {
+  width: 46px;
+  height: 220px;
+  background: var(--paper);
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 50% 100%, 0 88%);
+  position: relative;
+  transform: rotate(6deg);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.blotter span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  background: linear-gradient(to top, color-mix(in oklab, var(--scent) 85%, transparent), color-mix(in oklab, var(--scent) 30%, transparent) 70%, transparent);
+}
+.body {
+  padding-top: var(--s-8);
+}
+.lead {
+  max-width: 46ch;
+}
+.kicker {
+  font-size: var(--t-label);
+  font-weight: 650;
+  color: var(--fg-3);
+}
+.smells {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem);
+  line-height: 1.25;
+}
+.two {
+  display: grid;
+  gap: var(--s-8);
+  margin-top: var(--s-9);
+}
+.h2 {
+  font-size: var(--t-head);
+  font-weight: 650;
+  font-stretch: 112%;
+  margin-bottom: var(--s-3);
+}
+.dims {
+  display: grid;
+  gap: 8px;
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  max-width: 420px;
+}
+.dims li {
+  display: grid;
+  grid-template-columns: auto 1fr 120px;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-small);
+}
+.dims i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dimBar {
+  height: 6px;
+  background: var(--bg-sunk);
+  position: relative;
+}
+.dimBar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ink);
+}
+.section {
+  margin-top: var(--s-10);
+}
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.paired {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 0;
+}
+.paired li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.paired a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  font-weight: 560;
+}
+.paired i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.perceived {
+  display: grid;
+  gap: 0 var(--s-7);
+  margin: 0;
+  padding: 0;
+}
+.callout {
+  margin-top: var(--s-4);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 60ch;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-7) var(--s-4);
+  margin: 0;
+  padding: 0;
+}
+.more {
+  margin-top: var(--s-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .perceived {
+    grid-template-columns: 1fr 1fr;
+  }
+  .two {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-10);
+  }
+}
+@media (max-width: 480px) {
+  .blotter {
+    width: 30px;
+    height: 150px;
+  }
+}

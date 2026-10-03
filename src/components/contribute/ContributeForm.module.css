@@ -1,0 +1,59 @@
+.form {
+  display: grid;
+  gap: var(--s-5);
+}
+.error {
+  padding: 10px 14px;
+  background: color-mix(in oklab, var(--oxblood) 12%, var(--paper));
+  color: var(--oxblood);
+  font-weight: 600;
+  font-size: var(--t-small);
+}
+.fs {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.fs legend {
+  font-weight: 600;
+  font-size: var(--t-small);
+  margin-bottom: 10px;
+  padding: 0;
+}
+.kind {
+  cursor: pointer;
+}
+.kind:focus-within {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.two {
+  display: grid;
+  gap: var(--s-4);
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--t-small);
+  min-height: 40px;
+}
+.check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--ink);
+  flex: none;
+}
+.dupe {
+  padding: 14px 16px;
+  background: color-mix(in oklab, var(--bergamot) 22%, var(--paper));
+  display: grid;
+  gap: 8px;
+  font-size: var(--t-small);
+}
+@media (min-width: 720px) {
+  .two {
+    grid-template-columns: 1fr 1fr;
+  }
+}

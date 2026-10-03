@@ -1,0 +1,31 @@
+.term {
+  all: unset;
+  cursor: help;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, currentColor 55%, transparent);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1.5px;
+}
+.term:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.head {
+  display: block;
+  font-weight: 650;
+  font-size: var(--t-small);
+  margin-bottom: 4px;
+}
+.body {
+  display: block;
+  color: var(--fg-2);
+}
+.more {
+  display: inline-flex;
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: var(--t-micro);
+  min-height: 32px;
+  align-items: center;
+}

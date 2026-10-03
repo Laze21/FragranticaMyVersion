@@ -1,0 +1,54 @@
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.selects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.select select {
+  min-height: 40px;
+  padding: 0 10px;
+  width: auto;
+  font-size: var(--t-small);
+}
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-small);
+  min-height: 44px;
+}
+.check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ink);
+}
+.none {
+  padding: var(--s-6) 0;
+  color: var(--fg-2);
+  font-size: var(--t-small);
+}
+.moreBtn {
+  margin-top: var(--s-4);
+}
+.empty {
+  padding: var(--s-7) var(--s-6);
+  background: var(--paper);
+  max-width: 60ch;
+}
+.emptyTitle {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+}

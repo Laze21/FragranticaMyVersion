@@ -1,0 +1,23 @@
+.mark {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 650;
+  font-stretch: 88%;
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--porcelain);
+  pointer-events: none;
+}
+.mark[data-status='own'] {
+  background: var(--juniper-ink);
+}
+.mark[data-status='want'],
+.mark[data-status='want_sample'] {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}

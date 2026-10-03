@@ -1,0 +1,56 @@
+.box {
+  display: grid;
+  gap: var(--s-6);
+}
+.form {
+  display: grid;
+  gap: var(--s-4);
+}
+.error {
+  padding: 10px 14px;
+  background: color-mix(in oklab, var(--oxblood) 12%, var(--paper));
+  color: var(--oxblood);
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+.demo {
+  padding: var(--s-5);
+  background: var(--paper);
+  display: grid;
+  gap: var(--s-3);
+  font-size: var(--t-small);
+}
+.demo code {
+  font-family: inherit;
+  font-weight: 650;
+  background: var(--bg-sunk);
+  padding: 1px 5px;
+}
+.switch {
+  font-size: var(--t-small);
+}
+.exp {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.exp legend {
+  font-size: var(--t-small);
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding: 0;
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  font-size: var(--t-small);
+}
+.radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ink);
+}

@@ -1,0 +1,98 @@
+.figure {
+  margin: 0;
+}
+.plot {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+.band {
+  transition: opacity var(--d-standard) var(--ease-standard);
+}
+.plot:hover .band {
+  opacity: 0.94;
+}
+.phaseLabel {
+  font: 600 11.5px var(--font-sans);
+  font-stretch: 88%;
+  fill: var(--fg-3);
+}
+.bandLabel {
+  font: 600 11px var(--font-sans);
+  font-stretch: 88%;
+  fill: rgb(28 26 23 / 0.78);
+  pointer-events: none;
+}
+.bandLabel[data-dark] {
+  fill: rgb(251 250 247 / 0.92);
+}
+.endLine {
+  stroke: var(--ink);
+  stroke-dasharray: 2 4;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+.endLabel {
+  font: 500 11px var(--font-sans);
+  fill: var(--fg-3);
+}
+.scrub {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+.axis line {
+  stroke: var(--line-strong);
+}
+.axis text {
+  font: 500 11px var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--fg-3);
+}
+.tip {
+  position: absolute;
+  top: 18px;
+  width: 180px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-pop);
+  padding: 10px 12px;
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-micro);
+  pointer-events: none;
+}
+.tip strong {
+  font-size: var(--t-small);
+}
+.tipProj {
+  color: var(--fg-3);
+  margin-bottom: 2px;
+}
+.tipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tipRow i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.tipRow b {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.slider {
+  margin-top: 6px;
+  min-height: 28px;
+  border-radius: var(--r-1);
+}
+@media (pointer: coarse) {
+  .slider {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}

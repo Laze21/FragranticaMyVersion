@@ -1,0 +1,35 @@
+.wrap {
+  display: inline;
+}
+.pop {
+  position: fixed;
+  z-index: 70;
+  width: min(320px, calc(100vw - 16px));
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-pop);
+  padding: 14px 16px;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--t-small);
+  line-height: 1.45;
+  text-align: left;
+  animation: drift var(--d-standard) var(--ease-evaporate);
+}
+.pop[data-above] {
+  animation-name: driftDown;
+}
+@keyframes drift {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes driftDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

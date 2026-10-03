@@ -1,0 +1,233 @@
+.page {
+  padding-top: var(--s-7);
+}
+.headRow {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: var(--s-5);
+}
+.title {
+  font-size: var(--t-title-l);
+  font-weight: 680;
+  font-stretch: 118%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.lede {
+  margin-top: 12px;
+  max-width: 60ch;
+  color: var(--fg-2);
+  font-size: var(--t-sub);
+}
+.startPicker {
+  margin-top: var(--s-6);
+  max-width: 520px;
+}
+.try {
+  margin-top: var(--s-5);
+  font-size: var(--t-small);
+}
+.table {
+  --label-w: 170px;
+}
+.sticky {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  background: var(--porcelain);
+  display: grid;
+  grid-template-columns: var(--label-w) repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--s-4);
+  padding: 12px 0;
+  border-bottom: 2px solid var(--ink);
+}
+.corner {
+  align-self: center;
+}
+.colHead {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-right: 28px;
+}
+.letter,
+.cellLetter {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--porcelain);
+  font-size: 11px;
+  font-weight: 700;
+  flex: none;
+}
+.thumb {
+  position: relative;
+  width: 52px;
+  height: 64px;
+  background: var(--scent-wash);
+}
+.thumb img {
+  object-fit: contain;
+}
+.colName {
+  display: grid;
+  min-width: 0;
+}
+.nameLink {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.12rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.remove {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: var(--fg-3);
+}
+.remove:hover {
+  color: var(--ink);
+}
+.row {
+  display: grid;
+  grid-template-columns: var(--label-w) repeat(var(--cols), minmax(0, 1fr));
+  gap: var(--s-4);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.label {
+  font-size: var(--t-small);
+  font-weight: 650;
+}
+.labelNote {
+  display: block;
+  font-weight: 400;
+  color: var(--fg-3);
+  font-size: var(--t-micro);
+  margin-top: 4px;
+}
+.cell {
+  min-width: 0;
+  font-size: var(--t-small);
+  display: flex;
+  gap: 8px;
+}
+.cellLetter {
+  display: none;
+}
+.cellBody {
+  min-width: 0;
+  flex: 1;
+}
+.summary {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+.trail {
+  width: 100%;
+  height: auto;
+}
+.dims {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+.dims li {
+  display: grid;
+  grid-template-columns: 10px 6.5em 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.dims i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dimBar {
+  height: 6px;
+  background: var(--bg-sunk);
+  position: relative;
+}
+.dimBar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ink);
+}
+.notes b {
+  font-weight: 700;
+  background: color-mix(in oklab, var(--bergamot) 28%, transparent);
+}
+.seasons {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 52px;
+}
+.seasons span {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  width: 36px;
+  height: 100%;
+}
+.seasons i {
+  display: block;
+  background: var(--ink);
+  opacity: 0.75;
+}
+.seasons small {
+  font-size: 10px;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.big {
+  font-size: 1.15rem;
+}
+/* Phones: one attribute at a time, each fragrance on its own line, keyed by letter. */
+@media (max-width: 839px) {
+  .sticky {
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 8px;
+  }
+  .corner {
+    grid-column: 1 / -1;
+    order: 2;
+  }
+  .colHead {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding-right: 24px;
+  }
+  .thumb {
+    display: none;
+  }
+  .nameLink {
+    font-size: 0.98rem;
+  }
+  .colName :global(.t-meta) {
+    display: none;
+  }
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .cellLetter {
+    display: inline-grid;
+  }
+}

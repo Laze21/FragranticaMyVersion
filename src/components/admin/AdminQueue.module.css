@@ -1,0 +1,43 @@
+.list {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+}
+.item {
+  background: var(--paper);
+  padding: var(--s-5);
+  display: grid;
+  gap: 10px;
+}
+.meta {
+  font-size: var(--t-small);
+}
+.payload {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--t-small);
+}
+.payload div {
+  display: grid;
+  grid-template-columns: 7em minmax(0, 1fr);
+  gap: 10px;
+}
+.payload dt {
+  color: var(--fg-3);
+}
+.payload dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.warn {
+  padding: 8px 12px;
+  background: color-mix(in oklab, var(--bergamot) 22%, var(--paper));
+  font-size: var(--t-small);
+}
+.quote {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--line-strong);
+  font-family: var(--font-serif);
+}

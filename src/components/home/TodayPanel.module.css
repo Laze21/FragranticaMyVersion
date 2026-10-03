@@ -1,0 +1,49 @@
+.panel {
+  margin-top: var(--s-6);
+  padding: var(--s-4) var(--s-5);
+  background: var(--paper);
+  display: grid;
+  gap: 10px;
+}
+.line {
+  font-size: var(--t-small);
+}
+.picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+.picks button,
+.other {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px 0 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: var(--porcelain);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.other {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: var(--t-small);
+  padding: 0 12px;
+}
+.picks button:hover,
+.other:hover {
+  background: var(--white);
+}
+.thumb {
+  position: relative;
+  width: 26px;
+  height: 34px;
+}
+.thumb img {
+  object-fit: contain;
+}

@@ -1,0 +1,149 @@
+/* Shared styles for fragrance-page sections. Sections are separated by space and type, not
+   boxes: no cards around content that is not an object. */
+.section {
+  padding: var(--s-9) 0 0;
+  scroll-margin-top: calc(var(--header-h) + 56px);
+}
+.section + .section {
+  margin-top: var(--s-4);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-5);
+  margin-bottom: var(--s-5);
+}
+.headText {
+  max-width: 62ch;
+}
+.title {
+  font-size: var(--t-title-m);
+  font-weight: 650;
+  font-stretch: 115%;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+.lede {
+  margin-top: 6px;
+  color: var(--fg-2);
+  font-size: var(--t-sub);
+  line-height: 1.45;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.conf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.confBars {
+  display: inline-flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+.confBars i {
+  width: 3px;
+  background: var(--stone-2);
+  border-radius: 1px;
+}
+.confBars i:nth-child(1) {
+  height: 5px;
+}
+.confBars i:nth-child(2) {
+  height: 8px;
+}
+.confBars i:nth-child(3) {
+  height: 11px;
+}
+.confBars i[data-on] {
+  background: var(--ink);
+}
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--s-5);
+}
+
+/* Horizontal data bars (perceived notes, occasions). */
+.bars {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+}
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(96px, 30%) 1fr 3.4em;
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
+}
+.barLabel {
+  font-size: var(--t-small);
+  font-weight: 540;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.barTrack {
+  position: relative;
+  height: 10px;
+  background: var(--bg-sunk);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.barFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--scent-ink);
+  transform-origin: left;
+  animation: grow var(--d-slow) var(--ease-evaporate);
+}
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+.barValue {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-align: right;
+}
+.tag {
+  margin-left: 6px;
+  font-size: 10.5px;
+  font-weight: 650;
+  font-stretch: 88%;
+  color: var(--oxblood);
+  white-space: nowrap;
+}
+.empty {
+  padding: var(--s-6);
+  background: var(--paper);
+  color: var(--fg-2);
+  font-size: var(--t-small);
+  max-width: 60ch;
+}
+.empty strong {
+  display: block;
+  color: var(--ink);
+  font-size: var(--t-sub);
+  margin-bottom: 4px;
+}
+.prose {
+  font-family: var(--font-serif);
+  font-size: var(--t-prose);
+  line-height: 1.6;
+  max-width: 62ch;
+}

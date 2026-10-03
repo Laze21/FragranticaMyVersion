@@ -1,0 +1,70 @@
+.badge {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+@media (pointer: coarse) {
+  .badge {
+    min-height: 40px;
+  }
+}
+.badge:hover {
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+}
+.badge:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.demo {
+  color: var(--bergamot-ink);
+}
+.date {
+  color: var(--fg-3);
+  font-weight: 500;
+}
+.popTitle {
+  display: block;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+.dl {
+  display: grid;
+  gap: 4px;
+  margin: 0 0 8px;
+}
+.dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dl dt {
+  color: var(--fg-3);
+}
+.dl dd {
+  margin: 0;
+  font-weight: 600;
+}
+.note {
+  display: block;
+  color: var(--fg-2);
+  font-size: var(--t-micro);
+  margin-top: 6px;
+}
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  font-weight: 600;
+  font-size: var(--t-micro);
+}

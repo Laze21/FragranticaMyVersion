@@ -1,0 +1,33 @@
+.bar {
+  display: none;
+}
+@media (max-width: 719px) {
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    z-index: 44;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+  }
+  .bar button,
+  .bar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 48px;
+    border: 0;
+    background: none;
+    font-size: var(--t-small);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .bar > * + * {
+    border-left: 1px solid var(--line) !important;
+  }
+}

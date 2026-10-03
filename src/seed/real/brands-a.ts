@@ -1,0 +1,178 @@
+import type { SeedBrand } from '../types';
+
+/**
+ * Houses used by the Group A real fragrances.
+ * Research note: house sites, retailers and Wikipedia/Wikidata were not reachable from the research
+ * environment (network policy), so founding facts below are from general knowledge of widely
+ * published company history and carry no wikidataQid. sourceUrl points at the house site to verify.
+ */
+export const BRANDS_A: SeedBrand[] = [
+  {
+    slug: 'dior',
+    name: 'Dior',
+    website: 'https://www.dior.com',
+    parentCompany: 'LVMH',
+    sourceUrl: 'https://www.dior.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1946,
+    description:
+      'The couture house Christian Dior opened in Paris in 1946 and launched its perfume arm, Parfums Christian Dior, the following year with Miss Dior. Today the fragrance business sits inside LVMH and runs one of the biggest masculine lines in the world. It also keeps an archive of classics that are reworked from time to time.',
+    knownFor: 'Polished blockbusters and long-running classics',
+  },
+  {
+    slug: 'chanel',
+    name: 'Chanel',
+    website: 'https://www.chanel.com',
+    parentCompany: 'Chanel Limited (privately held)',
+    sourceUrl: 'https://www.chanel.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1910,
+    description:
+      'Gabrielle Chanel opened her first Paris shop in 1910 and launched N°5, her first perfume, in 1921. The company is privately held and makes its fragrances in-house, with a small line of in-house perfumers that has passed from Ernest Beaux to Henri Robert, Jacques Polge and Olivier Polge.',
+    knownFor: 'Aldehydic florals, clean woods, in-house perfumers',
+  },
+  {
+    slug: 'giorgio-armani',
+    name: 'Giorgio Armani',
+    website: 'https://www.armani.com',
+    parentCompany: 'Giorgio Armani S.p.A. (fragrances licensed to L\'Oréal)',
+    sourceUrl: 'https://www.armani.com',
+    kind: 'designer',
+    country: 'IT',
+    city: 'Milan',
+    founded: 1975,
+    description:
+      'Giorgio Armani and Sergio Galeotti founded the Milan fashion company in 1975. Its fragrances are made under licence by L\'Oréal, and the Acqua di Giò family has been one of the best-known fresh lines since the 1990s.',
+    knownFor: 'Aquatic freshness and soft, tailored woods',
+  },
+  {
+    slug: 'yves-saint-laurent',
+    name: 'Yves Saint Laurent',
+    website: 'https://www.yslbeauty.com',
+    parentCompany: 'L\'Oréal (YSL Beauté); the fashion house belongs to Kering',
+    sourceUrl: 'https://www.yslbeauty.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1961,
+    description:
+      'Yves Saint Laurent and Pierre Bergé founded the couture house in Paris in 1961. The beauty and fragrance business has been owned by L\'Oréal since 2008, while the fashion side belongs to Kering. Its perfume catalogue runs from Opium and Kouros to modern bestsellers such as Y and Black Opium.',
+    knownFor: 'Big, glossy modern bestsellers',
+  },
+  {
+    slug: 'hermes',
+    name: 'Hermès',
+    website: 'https://www.hermes.com',
+    parentCompany: 'Hermès International',
+    sourceUrl: 'https://www.hermes.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1837,
+    description:
+      'Thierry Hermès opened a harness workshop in Paris in 1837, and the family-controlled company later grew into leather goods, silk and perfume. It has kept an in-house perfumer since 2004, first Jean-Claude Ellena and then Christine Nagel, and its fragrances tend toward transparency rather than volume.',
+    knownFor: 'Airy, understated compositions with an in-house nose',
+  },
+  {
+    slug: 'versace',
+    name: 'Versace',
+    website: 'https://www.versace.com',
+    parentCompany: 'Prada Group (since 2025); fragrances made under licence by EuroItalia',
+    sourceUrl: 'https://www.versace.com',
+    kind: 'designer',
+    country: 'IT',
+    city: 'Milan',
+    founded: 1978,
+    description:
+      'Gianni Versace founded his Milan fashion house in 1978, and the Medusa head logo turns up on almost everything it makes, perfume bottles included. Its fragrances are produced under licence and lean toward bright, sweet, high-energy styles aimed at a young audience.',
+    knownFor: 'Loud, sweet and fresh crowd-pleasers',
+  },
+  {
+    slug: 'jean-paul-gaultier',
+    name: 'Jean Paul Gaultier',
+    website: 'https://www.jeanpaulgaultier.com',
+    parentCompany: 'Puig',
+    sourceUrl: 'https://www.jeanpaulgaultier.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1982,
+    description:
+      'Jean Paul Gaultier showed his first collection in 1976 and set up his own Paris fashion company in 1982. The early fragrances, Le Male included, were launched under Shiseido\'s Beauté Prestige International; Puig bought the brand and later took over the perfumes. The line is known for torso-shaped bottles packed in tins.',
+    knownFor: 'Torso bottles, lavender and vanilla',
+  },
+  {
+    slug: 'rabanne',
+    name: 'Rabanne',
+    website: 'https://www.rabanne.com',
+    parentCompany: 'Puig',
+    sourceUrl: 'https://www.rabanne.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1966,
+    description:
+      'Paco Rabanne launched his Paris house in 1966 with dresses made of metal and plastic discs, and Puig has made the fragrances since the late 1960s and owns the brand. The house dropped "Paco" from its name in 2023. Its bestsellers come in bottles shaped like objects, from gold ingots to robots.',
+    knownFor: 'Novelty bottles and sweet, spicy mass hits',
+  },
+  {
+    slug: 'prada',
+    name: 'Prada',
+    website: 'https://www.prada.com',
+    parentCompany: 'Prada S.p.A. (fragrances licensed to L\'Oréal)',
+    sourceUrl: 'https://www.prada.com',
+    kind: 'designer',
+    country: 'IT',
+    city: 'Milan',
+    founded: 1913,
+    description:
+      'Mario Prada opened a leather goods shop in Milan in 1913. Since 2021 its fragrances have been made under licence by L\'Oréal. The perfume line is known for clean, iris-heavy compositions, many of them by Daniela Andrier.',
+    knownFor: 'Powdery iris and soapy cleanliness',
+  },
+  {
+    slug: 'davidoff',
+    name: 'Davidoff',
+    website: 'https://www.davidoff.com',
+    parentCompany: 'Oettinger Davidoff AG (fragrances licensed to Coty)',
+    sourceUrl: 'https://www.davidoff.com',
+    kind: 'mass',
+    country: 'CH',
+    city: 'Geneva',
+    founded: 1911,
+    description:
+      'The Davidoff name goes back to a tobacco shop the Davidoff family opened in Geneva in 1911, later built into a cigar brand by Zino Davidoff. The fragrances are made under licence by Coty. Cool Water, from 1988, is by far the best known.',
+    knownFor: 'Affordable fresh aromatics',
+  },
+  {
+    slug: 'nautica',
+    name: 'Nautica',
+    website: 'https://www.nautica.com',
+    parentCompany: 'Authentic Brands Group',
+    sourceUrl: 'https://www.nautica.com',
+    kind: 'mass',
+    country: 'US',
+    city: 'New York',
+    founded: 1983,
+    description:
+      'Designer David Chu founded Nautica in New York in 1983 as a sailing-inspired outerwear label. It is now owned by Authentic Brands Group, and its fragrances sell mostly through department stores, drugstores and discounters at low prices.',
+    knownFor: 'Cheap, cheerful aquatic freshies',
+  },
+  {
+    slug: 'lancome',
+    name: 'Lancôme',
+    website: 'https://www.lancome-usa.com',
+    parentCompany: 'L\'Oréal',
+    sourceUrl: 'https://www.lancome.com',
+    kind: 'designer',
+    country: 'FR',
+    city: 'Paris',
+    founded: 1935,
+    description:
+      'Armand Petitjean founded Lancôme in 1935, launching it with a set of perfumes, and L\'Oréal bought the company in 1964. Its fragrance line ranges from the 1970s chypre Magie Noire to La Vie Est Belle, one of the best-selling feminine fragrances of the 2010s.',
+    knownFor: 'Gourmand florals and iris',
+  },
+];

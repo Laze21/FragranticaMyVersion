@@ -1,0 +1,156 @@
+/*
+ * Design tokens. Rationale lives in docs/04-design-system.md; short version inline.
+ *
+ * Colour roles
+ *  - The neutral interface is stable and recognisably ours: porcelain paper, ink text.
+ *    Porcelain is pulled toward grey (not cream) on purpose: cream + terracotta is now the
+ *    default "tasteful AI" look, and fragrance sites drift there by gravity.
+ *  - Ink is the primary action colour. No coloured CTA buttons.
+ *  - Oxblood, Bergamot and Juniper are signals, used in small doses with meaning:
+ *      oxblood  = focus, favourite, destructive/attention
+ *      bergamot = selection marks, "you" markers in charts
+ *      juniper  = owned / positive confirmation
+ *  - Each fragrance contributes ONE accent (--scent) that tints its stage and data marks.
+ *    It is mixed into the neutrals at low strength so the UI never becomes the fragrance's brand.
+ */
+:root {
+  /* Neutrals */
+  --ink: #1c1a17;
+  --ink-2: #47423c;        /* secondary text: 9.1:1 on porcelain */
+  --ink-3: #6a645b;        /* meta text: 5.3:1 on porcelain, 4.9:1 on linen */
+  --stone: #a79f93;        /* decorative only, never text */
+  --stone-2: #c9c2b6;
+  --linen: #e6e2da;        /* wells, tracks, skeletons */
+  --porcelain: #f2f0eb;    /* page */
+  --paper: #fbfaf7;        /* raised: sheets, popovers, inputs */
+  --white: #ffffff;
+
+  /* Signals */
+  --oxblood: #7a302c;      /* 8.4:1 on porcelain */
+  --oxblood-2: #9b4a43;
+  --bergamot: #c5a63c;
+  --bergamot-ink: #6f5a12; /* bergamot when it must carry text: 6.0:1 */
+  --juniper: #607165;
+  --juniper-ink: #445249;  /* 7.7:1 */
+
+  /* Per-fragrance accent. Overridden inline on fragrance pages. */
+  --scent: #8a8f8c;
+  --scent-wash: color-mix(in oklab, var(--scent) 14%, var(--porcelain));
+  --scent-wash-2: color-mix(in oklab, var(--scent) 26%, var(--porcelain));
+  --scent-ink: color-mix(in oklab, var(--scent) 55%, var(--ink));
+
+  /* Semantic */
+  --bg: var(--porcelain);
+  --bg-raised: var(--paper);
+  --bg-sunk: var(--linen);
+  --fg: var(--ink);
+  --fg-2: var(--ink-2);
+  --fg-3: var(--ink-3);
+  --line: color-mix(in oklab, var(--ink) 14%, transparent);
+  --line-strong: color-mix(in oklab, var(--ink) 28%, transparent);
+  --focus: var(--oxblood);
+  --danger: var(--oxblood);
+  --positive: var(--juniper-ink);
+
+  /* Type families */
+  --font-sans: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, 'Times New Roman', serif;
+
+  /*
+   * Type scale (fixed steps; components may not invent sizes).
+   * Fragrance names: Newsreader italic, like titles of works.
+   * Section heads & UI: Archivo, widened for headings, narrowed for dense labels.
+   * Prose (reviews, editorial, note pages): Newsreader roman.
+   */
+  --t-title-xl: clamp(2.5rem, 1.6rem + 3.6vw, 5.25rem);
+  --t-title-l: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+  --t-title-m: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  --t-head: clamp(1.25rem, 1.12rem + 0.5vw, 1.5rem);
+  --t-sub: 1.0625rem;
+  --t-body: 1rem;
+  --t-prose: 1.125rem;
+  --t-small: 0.875rem;
+  --t-label: 0.8125rem;
+  --t-micro: 0.75rem;
+  --t-figure-xl: clamp(2.25rem, 1.8rem + 1.8vw, 3.25rem);
+  --t-figure-l: 1.75rem;
+
+  /* Spacing: 4px base. Section rhythm deliberately varies (see layouts), no single padding. */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 48px;
+  --s-10: 64px;
+  --s-11: 88px;
+  --s-12: 120px;
+
+  --gutter: 16px;
+  --page-max: 1360px;
+  --measure: 66ch;
+
+  /*
+   * Radii have hierarchy. Most surfaces are square; softness is reserved.
+   *  0     images, sections, tables, the bottle stage
+   *  2px   buttons, inputs, menus
+   *  4px   popovers, tooltips
+   *  12px  bottom sheet (top corners only), dialogs
+   *  pill  filter chips, status tags, avatars. Nothing else.
+   */
+  --r-0: 0;
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 12px;
+  --r-pill: 999px;
+
+  /* Elevation: only floating layers cast shadows; shadows are warm and low. Bottles get contact shadows in the render, not CSS. */
+  --shadow-pop: 0 1px 2px rgb(28 26 23 / 0.08), 0 8px 24px -6px rgb(28 26 23 / 0.18);
+  --shadow-sheet: 0 -12px 40px -12px rgb(28 26 23 / 0.28);
+
+  /*
+   * Motion. Quiet by default so the few fragrance-specific moments (atomizer press, mist,
+   * notes rising) read as special. "evaporate" eases out like something lifting off skin;
+   * "settle" has a hair of overshoot for objects placed on a shelf.
+   */
+  --ease-evaporate: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-settle: cubic-bezier(0.34, 1.32, 0.5, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-instant: 90ms;
+  --d-quick: 160ms;
+  --d-standard: 240ms;
+  --d-slow: 420ms;
+  --d-signature: 900ms;
+
+  --header-h: 60px;
+  --tabbar-h: 0px;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --gutter: 24px;
+    --header-h: 68px;
+  }
+}
+@media (min-width: 1100px) {
+  :root {
+    --gutter: 40px;
+  }
+}
+@media (max-width: 719px) {
+  :root {
+    --tabbar-h: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-quick: 0ms;
+    --d-standard: 0ms;
+    --d-slow: 0ms;
+    --d-signature: 0ms;
+  }
+}

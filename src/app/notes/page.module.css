@@ -1,0 +1,21 @@
+.page {
+  padding-top: var(--s-8);
+}
+.head {
+  max-width: 62ch;
+  margin-bottom: var(--s-7);
+}
+.title {
+  font-size: var(--t-title-l);
+  font-weight: 680;
+  font-stretch: 118%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.lede {
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.45;
+  color: var(--fg-2);
+}

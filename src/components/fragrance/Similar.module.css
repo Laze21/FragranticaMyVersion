@@ -1,0 +1,48 @@
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+  margin-bottom: var(--s-5);
+}
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+.count {
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(160px, 44%);
+  gap: var(--s-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  margin: 0;
+}
+.item {
+  scroll-snap-align: start;
+  min-width: 0;
+}
+.why {
+  margin-top: 6px;
+  font-size: var(--t-micro);
+  color: var(--fg-2);
+}
+.note {
+  margin-top: var(--s-4);
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  max-width: 70ch;
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    overflow: visible;
+  }
+}

@@ -1,0 +1,102 @@
+.grid {
+  display: grid;
+  gap: var(--s-8);
+}
+.big {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.big :global(.t-figure) {
+  font-size: var(--t-figure-xl);
+}
+.big span:last-child {
+  color: var(--fg-3);
+  font-weight: 600;
+  font-size: var(--t-small);
+}
+.div {
+  margin-top: 6px;
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 44ch;
+}
+.div b {
+  color: var(--ink);
+}
+.hist {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+  height: 110px;
+  margin: var(--s-5) 0 6px;
+}
+.histCol {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  gap: 4px;
+}
+.histBar {
+  background: var(--scent-ink);
+  min-height: 1px;
+  transform-origin: bottom;
+  animation: rise var(--d-slow) var(--ease-evaporate);
+}
+@keyframes rise {
+  from {
+    transform: scaleY(0);
+  }
+}
+.histLabel {
+  font-size: 11px;
+  text-align: center;
+  color: var(--fg-3);
+  font-variant-numeric: tabular-nums;
+}
+.subs {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  align-content: start;
+}
+.subs dt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: baseline;
+  font-weight: 650;
+  font-size: var(--t-small);
+}
+.subs dt span {
+  font-weight: 400;
+  color: var(--fg-3);
+  font-size: var(--t-micro);
+}
+.subs dd {
+  display: grid;
+  grid-template-columns: 1fr 2.6em;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 0;
+}
+.subs dd :global(.t-figure) {
+  font-size: 1.2rem;
+  text-align: right;
+}
+.subTrack {
+  height: 8px;
+  background: var(--bg-sunk);
+  position: relative;
+}
+.subTrack span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--ink);
+}
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-10);
+  }
+}

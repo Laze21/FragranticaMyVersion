@@ -1,0 +1,122 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.menuWrap {
+  position: relative;
+}
+.shelfBtn {
+  min-width: 168px;
+}
+.shelfIcon {
+  display: inline-grid;
+}
+/* Shelf placement: the mark drops onto the shelf and settles. */
+.shelfIcon[data-placed] {
+  animation: place 520ms var(--ease-settle);
+}
+@keyframes place {
+  from {
+    transform: translateY(-9px);
+    opacity: 0.2;
+  }
+}
+.menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 220px;
+  padding: 6px;
+  display: grid;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-pop);
+}
+.menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 10px;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: var(--t-small);
+  border-radius: var(--r-1);
+}
+.menu button:hover {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+.radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-3);
+  flex: none;
+}
+.menu [aria-checked='true'] .radio {
+  border: 4.5px solid var(--ink);
+}
+.remove {
+  border-top: 1px solid var(--line) !important;
+  margin-top: 4px;
+  color: var(--oxblood);
+  border-radius: 0 !important;
+}
+.atomizer {
+  position: relative;
+  display: inline-grid;
+}
+/* Atomizer press: the head dips, a few droplets leave the nozzle. */
+.wear[data-spraying] .atomizer :global(svg) {
+  animation: press 260ms var(--ease-standard);
+}
+@keyframes press {
+  50% {
+    transform: translateY(1.5px) scaleY(0.96);
+  }
+}
+.mist {
+  position: absolute;
+  left: 15px;
+  top: 2px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  opacity: 0;
+}
+.wear[data-spraying] .mist {
+  animation: mist 760ms var(--ease-evaporate) 120ms;
+  box-shadow: 3px -1px 0 0 currentColor, 6px 1px 0 -0.3px currentColor, 8px -3px 0 -0.4px currentColor, 5px -4px 0 -0.3px currentColor;
+}
+@keyframes mist {
+  0% {
+    opacity: 0.9;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(9px, -7px) scale(1.6);
+  }
+}
+.fav {
+  width: 44px;
+  padding: 0;
+}
+.fav[aria-pressed='true'] {
+  color: var(--oxblood);
+  --btn-line: color-mix(in oklab, var(--oxblood) 40%, transparent);
+}
+.fav[aria-pressed='true'] :global(svg) {
+  fill: var(--oxblood);
+}
+@media (prefers-reduced-motion: reduce) {
+  .shelfIcon[data-placed],
+  .wear[data-spraying] .atomizer :global(svg),
+  .wear[data-spraying] .mist {
+    animation: none;
+  }
+}

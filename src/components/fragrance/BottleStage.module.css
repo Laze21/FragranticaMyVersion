@@ -1,0 +1,62 @@
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-4);
+}
+.frame {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 3 / 4;
+}
+.frame canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-evaporate);
+  cursor: grab;
+}
+.frame canvas:active {
+  cursor: grabbing;
+}
+.stage[data-mode='3d'] .frame canvas {
+  opacity: 1;
+}
+.poster {
+  object-fit: contain;
+  transition: opacity 600ms var(--ease-evaporate);
+}
+/* Keep the poster in the accessibility tree; just let the canvas cover it. */
+.stage[data-mode='3d'] .poster {
+  opacity: 0;
+}
+.noImage {
+  position: absolute;
+  inset: 12% 18%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+  border: 1px dashed var(--line-strong);
+  color: var(--fg-3);
+  font-size: var(--t-small);
+  padding: var(--s-4);
+}
+.noImage a {
+  font-weight: 600;
+  color: var(--ink);
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2) var(--s-4);
+  min-height: 44px;
+}
+.hint {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}

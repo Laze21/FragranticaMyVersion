@@ -1,0 +1,23 @@
+.page {
+  padding-top: var(--s-7);
+  max-width: 780px;
+}
+.head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: var(--s-6);
+}
+.thumb {
+  position: relative;
+  width: 72px;
+  height: 92px;
+  background: var(--scent-wash);
+  flex: none;
+}
+.thumb img {
+  object-fit: contain;
+}
+.name {
+  font-size: var(--t-title-m);
+}

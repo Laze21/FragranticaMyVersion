@@ -1,0 +1,29 @@
+/**
+ * The real catalogue, assembled from the three research batches.
+ * Brands, perfumers and extra notes may repeat across batches; first definition wins.
+ */
+import type { SeedBrand, SeedFragrance, SeedNote, SeedPerfumer } from '../types';
+import { BRANDS_A } from './brands-a';
+import { BRANDS_B } from './brands-b';
+import { BRANDS_C } from './brands-c';
+import { FRAGRANCES_A } from './fragrances-a';
+import { FRAGRANCES_B } from './fragrances-b';
+import { FRAGRANCES_C } from './fragrances-c';
+import { NOTES_EXTRA_A } from './notes-extra-a';
+import { NOTES_EXTRA_B } from './notes-extra-b';
+import { NOTES_EXTRA_C } from './notes-extra-c';
+import { PERFUMERS_A } from './perfumers-a';
+import { PERFUMERS_B } from './perfumers-b';
+import { PERFUMERS_C } from './perfumers-c';
+
+function dedupe<T extends { slug: string }>(xs: T[]): T[] {
+  const seen = new Set<string>();
+  return xs.filter((x) => (seen.has(x.slug) ? false : (seen.add(x.slug), true)));
+}
+
+export const CATALOG: { fragrances: SeedFragrance[]; brands: SeedBrand[]; perfumers: SeedPerfumer[]; notesExtra: SeedNote[] } = {
+  fragrances: [...FRAGRANCES_A, ...FRAGRANCES_B, ...FRAGRANCES_C],
+  brands: dedupe([...BRANDS_A, ...BRANDS_B, ...BRANDS_C]),
+  perfumers: dedupe([...PERFUMERS_A, ...PERFUMERS_B, ...PERFUMERS_C]),
+  notesExtra: dedupe([...NOTES_EXTRA_A, ...NOTES_EXTRA_B, ...NOTES_EXTRA_C]),
+};

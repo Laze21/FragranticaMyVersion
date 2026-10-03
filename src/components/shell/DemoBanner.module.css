@@ -1,0 +1,24 @@
+.banner {
+  background: var(--linen);
+  font-size: var(--t-micro);
+  color: var(--fg-2);
+}
+.banner p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+}
+.banner button {
+  border: 0;
+  background: none;
+  font-weight: 600;
+  font-size: var(--t-micro);
+  min-height: 34px;
+  padding: 0 4px;
+  color: var(--fg-2);
+}
+.banner a {
+  font-weight: 600;
+}

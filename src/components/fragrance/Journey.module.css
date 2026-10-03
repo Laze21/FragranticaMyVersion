@@ -1,0 +1,91 @@
+.take {
+  display: grid;
+  gap: 4px;
+  margin: var(--s-7) 0 0;
+  padding-left: var(--s-5);
+  max-width: 70ch;
+}
+.takeLabel {
+  font-size: var(--t-label);
+  font-weight: 650;
+  font-stretch: 88%;
+  color: var(--fg-3);
+}
+.phases {
+  list-style: none;
+  display: grid;
+  gap: var(--s-6);
+  padding: 0;
+  margin: var(--s-7) 0 0;
+  scroll-margin-top: calc(var(--header-h) + 80px);
+}
+.phase {
+  display: grid;
+  align-content: start;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-strong);
+}
+.when {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--t-sub);
+  font-weight: 650;
+}
+.when span {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.reads {
+  font-family: var(--font-serif);
+  font-size: 1.06rem;
+  color: var(--fg-2);
+}
+.reads b {
+  font-weight: 500;
+  color: var(--ink);
+  background: linear-gradient(transparent 62%, color-mix(in oklab, var(--hue) 45%, transparent) 62%);
+}
+.group {
+  display: grid;
+  gap: 6px;
+}
+.groupLabel {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--fg-3);
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.none {
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+/* Mist transition: notes wait, then rise as the spray reaches them. */
+.target {
+  display: inline-flex;
+  transition: opacity 520ms var(--ease-evaporate), transform 620ms var(--ease-evaporate), filter 520ms;
+}
+[data-mist-state='waiting'] .target[data-mist-target] {
+  opacity: 0.08;
+  transform: translateY(10px);
+  filter: blur(2px);
+}
+[data-mist-state='waiting'] .target[data-arrived] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+@media (min-width: 840px) {
+  .phases {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-7);
+  }
+}

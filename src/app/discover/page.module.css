@@ -1,0 +1,51 @@
+.page {
+  padding-top: var(--s-7);
+}
+.head {
+  margin-bottom: var(--s-5);
+  max-width: 70ch;
+}
+.title {
+  font-size: var(--t-title-l);
+  font-weight: 680;
+  font-stretch: 118%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.lede {
+  margin-top: 10px;
+  color: var(--fg-2);
+  font-size: var(--t-sub);
+}
+.count {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  margin-bottom: var(--s-4);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-7) var(--s-4);
+  margin: 0;
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-8) var(--s-5);
+  }
+}
+@media (min-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.empty {
+  padding: var(--s-8) var(--s-6);
+  background: var(--paper);
+  display: grid;
+  gap: var(--s-3);
+}
+.emptyTitle {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+}

@@ -1,0 +1,45 @@
+.grid {
+  display: grid;
+  gap: var(--s-7) var(--s-6);
+  margin: 0;
+}
+.item {
+  display: grid;
+  gap: 6px;
+  text-decoration: none;
+}
+.fan {
+  position: relative;
+  height: 120px;
+  background: var(--paper);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.fan > span {
+  position: absolute;
+  bottom: 6px;
+  left: calc(14px + var(--i) * 17%);
+  width: 70px;
+  height: 104px;
+}
+.fan img {
+  object-fit: contain;
+  object-position: bottom;
+}
+.title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.item:hover .title {
+  text-decoration: underline;
+}
+.desc {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
