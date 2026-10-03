@@ -2,8 +2,12 @@
  * Turning numbers into plain language. Every function here prefers ranges and words over
  * false precision: community data about skin and noses is soft, and we say so.
  */
-import { DIMENSION_META, LONGEVITY_BUCKETS, PROJECTION_LEVELS, type Dimension } from './vocab';
+import { DIMENSION_META, PROJECTION_LEVELS, type Dimension } from './vocab';
+import { longevityPercentile } from './trail';
 import type { Vec } from '@/lib/data/types';
+
+// The percentile lives with the Trail's geometry; re-exported so the readers keep one import.
+export { longevityPercentile };
 
 export function topDims(v: Vec, k = 3, min = 0.12): Dimension[] {
   return (Object.entries(v) as Array<[Dimension, number]>)
@@ -15,23 +19,6 @@ export function topDims(v: Vec, k = 3, min = 0.12): Dimension[] {
 
 export function dimLabels(ds: Dimension[]) {
   return ds.map((d) => DIMENSION_META[d].label);
-}
-
-/** Percentile (0..1) in hours from bucketed longevity counts. */
-export function longevityPercentile(hist: number[], p: number): number | null {
-  const total = hist.reduce((a, b) => a + b, 0);
-  if (!total) return null;
-  let acc = 0;
-  for (let i = 0; i < hist.length; i++) {
-    const next = acc + hist[i];
-    if (next >= total * p) {
-      const b = LONGEVITY_BUCKETS[i];
-      const within = hist[i] ? (total * p - acc) / hist[i] : 0.5;
-      return b.lo + (b.hi - b.lo) * within;
-    }
-    acc = next;
-  }
-  return LONGEVITY_BUCKETS[LONGEVITY_BUCKETS.length - 1].hi;
 }
 
 /** "7–10 hours": the middle half of what people report, rounded so it never looks precise. */
