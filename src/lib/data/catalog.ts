@@ -244,6 +244,35 @@ export const getFragrance = cache(async (slug: string): Promise<FragranceDetail 
   };
 });
 
+export interface NoteExample {
+  card: FragranceCard;
+  /** Share of perceived-note voters who smell it; null when the fragrance only lists it. */
+  share: number | null;
+}
+
+/*
+ * The home page's note of the week asks for the fragrances where people most strongly smell the
+ * note, listed or not, so Cool Water can never head the Amber band on the strength of a base
+ * note nobody notices. Only when fewer than `limit` fragrances have votes above the floor does it
+ * fall back to the house's own base-note listing, and even then those arrive after the voted ones.
+ */
+export async function noteOfWeekCards(noteSlug: string, noteId: string, limit = 3, minShare = 0.4): Promise<NoteExample[]> {
+  const voted = await getCards(`coalesce((s.perceived ->> $1)::numeric, 0) >= $2`, [noteSlug, minShare], `(s.perceived ->> $1)::numeric desc, s.popularity desc nulls last`, limit);
+  const shares = voted.length
+    ? await sql<{ id: string; share: string }>(`select fragrance_id id, (perceived ->> $1) share from public.fragrance_stats where fragrance_id = any($2::uuid[])`, [noteSlug, voted.map((c) => c.id)])
+    : [];
+  const shareOf = new Map(shares.map((s) => [s.id, Number(s.share)]));
+  const out: NoteExample[] = voted.map((card) => ({ card, share: shareOf.get(card.id) ?? null }));
+  if (out.length >= limit) return out;
+  const listed = await getCards(
+    `exists (select 1 from public.fragrance_notes fn where fn.fragrance_id = f.id and fn.note_id = $1 and fn.layer = 'base') and not (f.id = any($2::uuid[]))`,
+    [noteId, voted.map((c) => c.id)],
+    's.popularity desc nulls last',
+    limit - out.length,
+  );
+  return [...out, ...listed.map((card) => ({ card, share: null }))];
+}
+
 export async function getAllFragranceSlugs(): Promise<string[]> {
   const rows = await sql<{ slug: string }>(`select slug from public.fragrances where visibility = 'public' order by slug`);
   return rows.map((r) => r.slug);

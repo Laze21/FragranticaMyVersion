@@ -1,10 +1,13 @@
 .wrap {
   display: grid;
-  gap: var(--s-4);
+  gap: var(--s-3);
 }
+/* The one loud element on the page: a 3px ink rule under a serif line, the arrow as an ink square. */
 .form {
   display: flex;
-  border-bottom: 2px solid var(--ink);
+  align-items: stretch;
+  border-bottom: 3px solid var(--ink);
+  min-height: 64px;
 }
 .input {
   flex: 1;
@@ -12,12 +15,15 @@
   border: 0;
   background: transparent;
   font-family: var(--font-serif);
-  font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.75rem);
-  padding: 10px 0;
-  min-height: 56px;
+  font-size: var(--t-title-m);
+  line-height: 1.2;
+  padding: 8px 0;
+  font-variation-settings: 'opsz' 72;
 }
 .input::placeholder {
+  font-style: italic;
   color: var(--fg-3);
+  opacity: 1;
 }
 .input:focus-visible {
   outline: none;
@@ -27,24 +33,53 @@
 }
 .go {
   border: 0;
-  background: none;
-  width: 52px;
+  width: 44px;
+  height: 44px;
+  margin: auto 0 10px;
   display: grid;
   place-items: center;
+  background: var(--ink);
+  color: var(--porcelain);
+  border-radius: var(--r-1);
+  flex: none;
+}
+.go:hover {
+  background: #34302b;
 }
 .examples {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px 16px;
-  margin: 0;
-}
-.examples a {
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 0;
   font-size: var(--t-small);
   color: var(--fg-2);
-  min-height: 36px;
+}
+.try {
+  font-weight: 600;
+  color: var(--fg-3);
+}
+.example {
   display: inline-flex;
   align-items: center;
+  min-height: 36px;
+  text-decoration-color: color-mix(in oklab, currentColor 50%, transparent);
 }
-.examples a:hover {
+.example:hover {
   color: var(--ink);
+  text-decoration-color: currentColor;
+}
+@media (max-width: 719px) {
+  .form {
+    min-height: 56px;
+  }
+  .input {
+    font-size: var(--t-h3);
+  }
+  .go {
+    margin-bottom: 6px;
+  }
+  .example[data-extra] {
+    display: none;
+  }
 }

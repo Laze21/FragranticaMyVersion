@@ -6,6 +6,8 @@ import type { Dimension } from '@/lib/scent/vocab';
 
 export type NoteMatch = 'any' | 'listed' | 'perceived';
 export type SortKey = 'relevance' | 'popular' | 'rating' | 'newest' | 'trending' | 'lesser-known' | 'longest';
+/** Result density. Not a filter: it never counts toward "Filters · 2". */
+export type ViewKey = 'floor' | 'row';
 
 export interface Filters {
   q: string;
@@ -23,16 +25,20 @@ export interface Filters {
   projectionMin: number | null;
   projectionMax: number | null;
   decades: number[];
+  yearMin: number | null; // "from 2015"
+  yearMax: number | null; // "before 2000"
   ratingMin: number | null;
   reviewsMin: number | null;
   priceBands: string[];
   priceMax: number | null;
   brandKinds: string[];
   brands: string[];
+  perfumers: string[]; // perfumer slugs
   concentrations: string[];
-  available: boolean; // hide discontinued and unreleased
+  available: boolean; // in production only: hides discontinued and unreleased
   similarTo: string | null;
   sort: SortKey;
+  view: ViewKey;
 }
 
 export const EMPTY_FILTERS: Filters = {
@@ -51,16 +57,20 @@ export const EMPTY_FILTERS: Filters = {
   projectionMin: null,
   projectionMax: null,
   decades: [],
+  yearMin: null,
+  yearMax: null,
   ratingMin: null,
   reviewsMin: null,
   priceBands: [],
   priceMax: null,
   brandKinds: [],
   brands: [],
+  perfumers: [],
   concentrations: [],
   available: false,
   similarTo: null,
   sort: 'relevance',
+  view: 'floor',
 };
 
 const LIST_KEYS = [
@@ -76,9 +86,11 @@ const LIST_KEYS = [
   'priceBands',
   'brandKinds',
   'brands',
+  'perfumers',
   'concentrations',
 ] as const;
-const NUM_KEYS = ['longevityMin', 'projectionMin', 'projectionMax', 'ratingMin', 'reviewsMin', 'priceMax'] as const;
+const NUM_KEYS = ['longevityMin', 'projectionMin', 'projectionMax', 'ratingMin', 'reviewsMin', 'priceMax', 'yearMin', 'yearMax'] as const;
+const SORTS: SortKey[] = ['relevance', 'popular', 'rating', 'newest', 'trending', 'lesser-known', 'longest'];
 const URL_NAMES: Record<string, string> = {
   include: 'with',
   exclude: 'without',
@@ -92,6 +104,7 @@ const URL_NAMES: Record<string, string> = {
   priceBands: 'price',
   brandKinds: 'house-type',
   brands: 'house',
+  perfumers: 'nose',
   concentrations: 'conc',
   longevityMin: 'lasts',
   projectionMin: 'proj-min',
@@ -99,11 +112,14 @@ const URL_NAMES: Record<string, string> = {
   ratingMin: 'rating',
   reviewsMin: 'reviews',
   priceMax: 'under',
+  yearMin: 'from',
+  yearMax: 'before',
   decades: 'decade',
   noteMatch: 'match',
   available: 'available',
   similarTo: 'like',
   sort: 'sort',
+  view: 'view',
   q: 'q',
 };
 
@@ -127,6 +143,8 @@ export function parseFilters(sp: Record<string, string | string[] | undefined>):
     const v = Number.parseFloat(get(k));
     f[k] = Number.isFinite(v) ? v : null;
   }
+  // Years outside the catalogue's possible range are typos, not filters.
+  for (const k of ['yearMin', 'yearMax'] as const) if (f[k] !== null && (f[k]! < 1700 || f[k]! > 2100)) f[k] = null;
   f.decades = get('decades')
     .split(',')
     .map((d) => Number.parseInt(d, 10))
@@ -136,7 +154,8 @@ export function parseFilters(sp: Record<string, string | string[] | undefined>):
   f.available = get('available') === '1';
   f.similarTo = clean(get('similarTo')) || null;
   const s = get('sort') as SortKey;
-  f.sort = ['relevance', 'popular', 'rating', 'newest', 'trending', 'lesser-known', 'longest'].includes(s) ? s : 'relevance';
+  f.sort = SORTS.includes(s) ? s : 'relevance';
+  f.view = get('view') === 'row' ? 'row' : 'floor';
   return f;
 }
 
@@ -150,6 +169,7 @@ export function filtersToSearch(f: Filters): string {
   if (f.available) p.set('available', '1');
   if (f.similarTo) p.set('like', f.similarTo);
   if (f.sort !== 'relevance') p.set('sort', f.sort);
+  if (f.view !== 'floor') p.set('view', f.view);
   const s = p.toString();
   return s ? `?${s}` : '';
 }
@@ -161,3 +181,21 @@ export function activeFilterCount(f: Filters): number {
   n += f.decades.length + (f.available ? 1 : 0) + (f.similarTo ? 1 : 0) + (f.noteMatch !== 'any' ? 1 : 0);
   return n;
 }
+
+/**
+ * The rail's groups, in rail order. interpret() tags what it could not read with one of these
+ * so the "Couldn't read" fragment can point at the control that would have taken it.
+ */
+export type FilterGroup = 'notes' | 'longevity' | 'price' | 'character' | 'wear' | 'projection' | 'house' | 'concentration' | 'released' | 'rating';
+export const FILTER_GROUP_LABEL: Record<FilterGroup, string> = {
+  notes: 'pick a note',
+  longevity: 'set a longevity',
+  price: 'set a price',
+  character: 'pick a character',
+  wear: 'pick a season or occasion',
+  projection: 'set a projection',
+  house: 'pick a house',
+  concentration: 'pick a concentration',
+  released: 'set a release date',
+  rating: 'set a rating',
+};

@@ -6,8 +6,10 @@ import { useState } from 'react';
 import { Icon } from '@/components/Icon';
 import styles from './HomeSearch.module.css';
 
+/* The first two are the phone's pair; the rest show from tablet up. */
 const EXAMPLES = ['vanilla without tobacco', 'fresh that lasts 8 hours', 'woody date night under $100', 'like Sauvage but less common', 'summer, not citrus-heavy'];
 
+/** The loud element of the front page: one serif line to type into, and the arrow that sends it. */
 export function HomeSearch() {
   const router = useRouter();
   const [q, setQ] = useState('');
@@ -24,18 +26,19 @@ export function HomeSearch() {
         <label htmlFor="home-q" className="visually-hidden">
           Describe a fragrance or search by name
         </label>
-        <input id="home-q" className={styles.input} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Describe it, or type a name" enterKeyHint="search" />
+        <input id="home-q" className={styles.input} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Describe it, or type a name" enterKeyHint="search" autoComplete="off" />
         <button type="submit" className={styles.go} aria-label="Search">
           <Icon name="arrow-right" size={22} />
         </button>
       </form>
-      <ul role="list" className={styles.examples} aria-label="Try one of these">
-        {EXAMPLES.map((ex) => (
-          <li key={ex}>
-            <Link href={`/discover?q=${encodeURIComponent(ex)}`}>{ex}</Link>
-          </li>
+      <p className={styles.examples}>
+        <span className={styles.try}>Try:</span>
+        {EXAMPLES.map((ex, i) => (
+          <Link key={ex} href={`/discover?q=${encodeURIComponent(ex)}`} className={styles.example} data-extra={i >= 2 || undefined}>
+            {ex}
+          </Link>
         ))}
-      </ul>
+      </p>
     </div>
   );
 }

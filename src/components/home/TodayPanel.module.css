@@ -1,49 +1,50 @@
-.panel {
-  margin-top: var(--s-6);
-  padding: var(--s-4) var(--s-5);
-  background: var(--paper);
-  display: grid;
-  gap: 10px;
-}
+/* One sentence on the hero's baseline, no box. */
 .line {
-  font-size: var(--t-small);
-}
-.picks {
+  margin-top: var(--s-5);
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-}
-.picks button,
-.other {
-  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 12px 0 6px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-1);
-  background: var(--porcelain);
+  column-gap: 6px;
+  row-gap: 2px;
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.ask {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 8px;
+}
+.name {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
-  text-decoration: none;
+  font-weight: 400;
+  font-size: var(--t-sub);
+  color: var(--ink);
 }
-.other {
-  font-family: var(--font-sans);
-  font-style: normal;
-  font-size: var(--t-small);
-  padding: 0 12px;
+/* The atomizer button stripped to a text button: the press and the mist stay, the box goes. */
+.pick {
+  min-height: 44px;
+  padding-inline: 4px;
+  margin-inline: -4px;
+  gap: 6px;
+  color: var(--ink);
 }
-.picks button:hover,
-.other:hover {
-  background: var(--white);
+.pick:hover .name {
+  text-decoration: underline;
 }
-.thumb {
-  position: relative;
-  width: 26px;
-  height: 34px;
+.dot {
+  color: var(--fg-3);
 }
-.thumb img {
-  object-fit: contain;
+.dot:last-of-type {
+  display: inline;
+}
+.link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  text-decoration-color: color-mix(in oklab, currentColor 50%, transparent);
+}
+.link:hover {
+  text-decoration-color: currentColor;
 }

@@ -99,6 +99,70 @@ export async function recentReviews(limit = 6, opts: { minLength?: number } = {}
   return rows.map(mapReview);
 }
 
+/** A review cut down to a pull quote: what the home page reads from "What people are saying". */
+export interface ReviewExcerpt {
+  id: string;
+  kind: 'quick' | 'full';
+  /** The first `chars` of the body, cut at a word and ended with an ellipsis when it was cut. */
+  excerpt: string;
+  rating: number | null;
+  createdAt: string;
+  author: { handle: string; displayName: string; avatarHue: string | null };
+  fragrance: { slug: string; name: string; brandName: string; accent: string; poster: string | null; posterAlt: string | null };
+  isDemo: boolean;
+}
+
+/** Cut at the last word boundary before `max`, so a quote never ends mid-word. */
+export function excerptOf(body: string, max = 180): string {
+  const text = body.replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max + 1);
+  const at = cut.lastIndexOf(' ');
+  return `${cut.slice(0, at > max * 0.6 ? at : max).replace(/[,;:.!?]$/, '')}…`;
+}
+
+/**
+ * The newest substantial reviews as excerpts. Only reviews long enough to have said something
+ * (`minLength`, 300 characters by default) qualify, one per fragrance, so three quotes are three
+ * fragrances. The caller decides what to do with fewer than it asked for; the home page renders
+ * nothing below three.
+ */
+export async function recentReviewExcerpts(limit = 3, opts: { minLength?: number; chars?: number } = {}): Promise<ReviewExcerpt[]> {
+  const rows = await sql<Record<string, unknown>>(
+    `select distinct on (r.fragrance_id) r.id, r.kind, r.body, r.rating_overall, r.created_at, r.is_demo,
+            p.handle, p.display_name, p.avatar_hue,
+            f.slug as fragrance_slug, f.name as fragrance_name, f.accent_hex, b.name as brand_name, a.url as poster, a.alt as poster_alt
+       from public.reviews r
+       join public.profiles p on p.id = r.user_id
+       join public.fragrances f on f.id = r.fragrance_id
+       join public.brands b on b.id = f.brand_id
+       left join public.fragrance_primary_image a on a.fragrance_id = f.id
+      where r.status = 'published' and f.visibility = 'public' and char_length(r.body) >= $1
+      order by r.fragrance_id, r.created_at desc`,
+    [opts.minLength ?? 300],
+  );
+  return rows
+    .sort((x, y) => new Date(y.created_at as string).getTime() - new Date(x.created_at as string).getTime())
+    .slice(0, limit)
+    .map((r) => ({
+      id: r.id as string,
+      kind: r.kind as 'quick' | 'full',
+      excerpt: excerptOf(r.body as string, opts.chars ?? 180),
+      rating: r.rating_overall === null || r.rating_overall === undefined ? null : Number(r.rating_overall),
+      createdAt: new Date(r.created_at as string).toISOString(),
+      author: { handle: r.handle as string, displayName: r.display_name as string, avatarHue: (r.avatar_hue as string) ?? null },
+      fragrance: {
+        slug: r.fragrance_slug as string,
+        name: r.fragrance_name as string,
+        brandName: r.brand_name as string,
+        accent: (r.accent_hex as string) ?? '#9a8f80',
+        poster: (r.poster as string) ?? null,
+        posterAlt: (r.poster_alt as string) ?? null,
+      },
+      isDemo: Boolean(r.is_demo),
+    }));
+}
+
 export async function reviewsByUser(userId: string, limit = 20) {
   const rows = await sql<Record<string, unknown>>(`${SELECT} where r.user_id = $1 and r.status = 'published' order by r.created_at desc limit $2`, [userId, limit]);
   return rows.map(mapReview);
