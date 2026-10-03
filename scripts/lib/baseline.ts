@@ -2,11 +2,17 @@ import type { BaselinePayload } from '../../src/lib/data/baseline';
 import type { SeedFragrance } from '../../src/seed/types';
 import { gaussian, rng } from './ids';
 
+/**
+ * Demo community sizes. Deliberately early-community numbers (hundreds, not thousands): the
+ * figures are generated so the charts can be explored, and they should look like a young site,
+ * not a mature one. "Settled" (250+) only appears on the biggest names; most pages read
+ * "Taking shape" or "Early read", which exercises the honesty mechanics the product is built on.
+ */
 const TIER_SIZE = {
-  huge: { ratings: 6200, perf: 2400 },
-  large: { ratings: 1900, perf: 780 },
-  medium: { ratings: 520, perf: 210 },
-  small: { ratings: 110, perf: 46 },
+  huge: { ratings: 440, perf: 190 },
+  large: { ratings: 260, perf: 110 },
+  medium: { ratings: 120, perf: 52 },
+  small: { ratings: 48, perf: 21 },
   new: { ratings: 7, perf: 4 },
 } as const;
 
