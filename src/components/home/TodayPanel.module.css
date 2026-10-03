@@ -9,6 +9,12 @@
   font-size: var(--t-small);
   color: var(--fg-2);
 }
+.today {
+  margin-top: var(--s-5);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  line-height: 1.6;
+}
 .ask {
   font-weight: 600;
   color: var(--ink);

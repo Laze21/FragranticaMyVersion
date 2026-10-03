@@ -85,8 +85,10 @@ export default async function Home() {
         where l.is_public group by l.id, p.handle, p.display_name order by l.created_at desc limit 4`,
     ),
     recentReviewExcerpts(3, { minLength: 300, chars: 180 }),
-    withFeelingCounts(feelings.lead, async (f) => (await discover(f, 0)).total),
-    withFeelingCounts(feelings.rest, async (f) => (await discover(f, 0)).total),
+    // Counted under relevance order: the dims a feeling sets are bound into that order clause, and
+    // the count is the same whichever way the rows are sorted.
+    withFeelingCounts(feelings.lead, async (f) => (await discover({ ...f, sort: 'relevance' }, 0)).total),
+    withFeelingCounts(feelings.rest, async (f) => (await discover({ ...f, sort: 'relevance' }, 0)).total),
   ]);
 
   const feature = trending[0];
@@ -275,7 +277,7 @@ export default async function Home() {
           <DemoFlag label="Demo activity" />
         </div>
         <p className={styles.colHead}>
-          <span>Rating /10 in the line</span>
+          <span>No. · fragrance · rating /10</span>
           <span>Wears, 30 days</span>
         </p>
         <ol role="list" className={styles.ranked}>

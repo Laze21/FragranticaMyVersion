@@ -1,67 +1,94 @@
+/*
+ * Front page. One grid so the phone can reorder sections (feature, then Trending, then the
+ * feelings) without a second DOM, and so Trending and the seasonal picks share a 5/7 row from
+ * 1100px up. Intervals are deliberate and vary: 56 after the hero, 88 before the ranked split,
+ * 88 before the quotes, 120 before the full-bleed note band, 48 between the shelf modules.
+ */
 .home {
-  padding-bottom: var(--s-6);
-}
-/* Front page: asymmetric split. The question on the left, the week's object on the right. */
-.top {
   display: grid;
-  gap: var(--s-8);
-  padding-top: var(--s-8);
+  grid-template-columns: minmax(0, 1fr);
+  padding-bottom: var(--s-10);
 }
-.ask {
-  align-self: center;
+.home > * {
+  grid-column: 1 / -1;
   min-width: 0;
 }
+
+/* ---------- The top split: the question, and the week's object ---------- */
+.top {
+  display: grid;
+  gap: var(--s-7);
+  padding-top: var(--s-7);
+}
+.ask {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+}
 .dateline {
-  font-size: var(--t-small);
-  color: var(--fg-3);
-  font-weight: 560;
   margin-bottom: var(--s-4);
 }
 .askTitle {
-  font-size: clamp(2.3rem, 1.4rem + 3.4vw, 4.4rem);
-  font-weight: 700;
-  font-stretch: 112%;
-  letter-spacing: -0.04em;
-  line-height: 0.98;
+  font-size: var(--t-title-l);
+  max-width: 16ch;
   margin-bottom: var(--s-6);
-  max-width: 13ch;
 }
+/* The plate idiom: the fragrance's wash with a counter at the foot, so the bottle stands on something. */
 .feature {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  background: var(--scent-wash);
   position: relative;
-}
-.featureKicker {
-  position: absolute;
-  top: 16px;
-  left: 18px;
-  z-index: 1;
-  font-size: var(--t-micro);
-  font-weight: 650;
-  color: var(--fg-2);
+  display: grid;
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+  background: linear-gradient(var(--scent-wash) 0 60%, var(--scent-wash-2));
+  min-width: 0;
 }
 .featureStage {
   position: relative;
-  aspect-ratio: 5 / 4;
+  min-height: 240px;
+}
+/* The poster is a 3:4 frame with the bottle at ~79% of its height; the box is sized so the bottle itself crosses the top edge. */
+.featureObject {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  height: calc(100% + 40px);
+  aspect-ratio: 3 / 4;
+  translate: -50% 0;
+  z-index: 1;
 }
 .featureImg {
   object-fit: contain;
-  object-position: center 70%;
+  object-position: center bottom;
+}
+.featureIll {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  font-stretch: 88%;
+  color: var(--fg-3);
 }
 .featureText {
-  padding: var(--s-4) var(--s-6) var(--s-6);
   display: grid;
-  gap: 8px;
+  gap: 10px;
+  align-content: start;
   justify-items: start;
+  padding: var(--s-5) var(--s-5) var(--s-5) var(--s-3);
+  min-width: 0;
+}
+.featureKicker {
+  color: var(--scent-ink);
 }
 .featureHouse {
-  font-size: var(--t-small);
+  font-size: var(--t-label);
   font-weight: 600;
   color: var(--fg-2);
+  margin-top: 4px;
 }
+/* 64px at most: the band's text column is a third of the viewport, and the name has to sit on one or two lines. */
 .featureName {
-  font-size: var(--t-title-l);
+  font-size: min(var(--t-title-xl), 4rem);
+  margin-top: -6px;
 }
 .featureName a {
   text-decoration: none;
@@ -70,74 +97,174 @@
   text-decoration: underline;
   text-decoration-thickness: 2px;
 }
-.featureTrail {
-  margin-top: 4px;
-  --trail-gap: color-mix(in oklab, var(--scent) 14%, var(--porcelain));
+.featureSummary {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.35;
+  max-width: 30ch;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
 }
-.featureDims {
+.featureTrail {
+  margin: 4px 0 0;
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  max-width: 420px;
+  --trail-gap: var(--scent-wash);
+}
+.featureTrail > svg {
+  width: 100%;
+  height: auto;
+}
+/* The one caption that teaches the glyph. */
+.featureCaption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.mark {
+  width: 18px;
+  height: 8px;
+  color: var(--ink);
+  flex: none;
+}
+.featureLink {
+  font-weight: 600;
+  font-size: var(--t-small);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ---------- Explore by feeling: three for the season, nine in columns ---------- */
+.feelings {
+  margin-top: var(--s-9);
+}
+.feelingsHead {
+  margin-bottom: var(--s-4);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+.feelingSplit {
+  display: grid;
+  gap: var(--s-6) var(--s-8);
+}
+.feelingLead {
+  display: none;
+  margin: 0;
+}
+.leadLink {
+  display: grid;
+  gap: 6px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+.leadWord {
+  font-size: var(--t-title-m);
+}
+.leadCount {
+  font-family: var(--font-sans);
   font-size: var(--t-small);
   font-weight: 600;
-}
-.feelings {
-  margin-top: var(--s-11);
-}
-.sectionLabel {
-  font-size: var(--t-label);
-  font-weight: 650;
-  font-stretch: 88%;
   color: var(--fg-3);
-  margin-bottom: var(--s-4);
+  letter-spacing: 0;
 }
-/* A contents page, not a card grid. */
+.leadLine {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+.leadLink:hover .leadWord {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+}
+/* Phone: twelve words in two columns of 44px rows, a gloss on the first four only. */
 .feelingList {
   display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--s-6);
   margin: 0;
-  border-top: 2px solid var(--ink);
 }
-.feelingList a {
+.feelingLink {
   display: grid;
-  gap: 2px 24px;
-  padding: 14px 0;
+  gap: 2px;
+  min-height: 44px;
+  align-content: center;
+  padding: 6px 0;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
 }
 .feelingWord {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
-  line-height: 1.1;
-  font-style: italic;
+  font-size: var(--t-h3);
+  line-height: 1.15;
+  font-variation-settings: 'opsz' 24;
+}
+.feelingCount {
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-3);
 }
 .feelingLine {
-  font-size: var(--t-small);
+  font-size: var(--t-label);
   color: var(--fg-2);
-  align-self: center;
+  text-wrap: pretty;
+  line-height: 1.3;
 }
-.feelingList a:hover .feelingWord {
+.feelingLine[data-later] {
+  display: none;
+}
+.feelingLink:hover .feelingWord {
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
 }
-.split {
-  display: grid;
-  gap: var(--s-10);
-  margin-top: var(--s-11);
-}
+
+/* ---------- Data modules: a 20px sans head with its line on the same baseline ---------- */
 .headRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-.h2 {
-  font-size: var(--t-title-m);
-  font-weight: 650;
-  font-stretch: 115%;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  column-gap: 14px;
+  row-gap: 2px;
+  margin-bottom: var(--s-4);
 }
 .sub {
-  margin: 6px 0 var(--s-4);
   font-size: var(--t-small);
   color: var(--fg-2);
+  text-wrap: pretty;
+}
+.more {
+  font-weight: 600;
+  font-size: var(--t-small);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ---------- Trending rows and the seasonal floor ---------- */
+.trending {
+  margin-top: var(--s-11);
+}
+.colHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-strong);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  font-stretch: 88%;
+  letter-spacing: 0.02em;
+  color: var(--fg-3);
 }
 .ranked {
   margin: 0;
@@ -145,16 +272,89 @@
 .ranked li + li {
   border-top: 1px solid var(--line);
 }
-.plates {
+.seasonal {
+  margin-top: var(--s-11);
+}
+.floorGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s-6) var(--s-4);
-  margin: 0 0 var(--s-4);
+  gap: var(--s-7) var(--s-4);
+  margin: 0 0 var(--s-2);
 }
-.note {
+
+/* ---------- What people are saying: one wide quote beside two stacked ---------- */
+.saying {
   margin-top: var(--s-11);
+}
+.sayingTitle {
+  font-size: var(--t-title-m);
+  margin: 6px 0 4px;
+}
+.quotes {
+  display: grid;
+  gap: var(--s-6);
+  margin: var(--s-6) 0 0;
+}
+.quote {
+  display: grid;
+  gap: 14px;
+  align-content: space-between;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+.quoteBody {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.35;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
+  hanging-punctuation: first;
+}
+.quote[data-wide] .quoteBody {
+  font-size: var(--t-serif-l);
+  max-width: 34ch;
+}
+.quoteFoot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.quoteThumb {
+  position: relative;
+  width: 44px;
+  height: 56px;
+  flex: none;
+}
+.quoteThumb img {
+  object-fit: contain;
+  object-position: center bottom;
+}
+.quoteMeta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.quoteName {
+  font-size: var(--t-name-s);
+  text-decoration: none;
+}
+.quoteName:hover {
+  text-decoration: underline;
+}
+.quoteBy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* ---------- Note of the week: the one full-bleed band, tinted by the note ---------- */
+.note {
+  margin-top: var(--s-12);
   background: var(--scent-wash);
-  padding: var(--s-9) 0;
+  padding-block: var(--s-9);
 }
 .noteGrid {
   display: grid;
@@ -167,43 +367,92 @@
   justify-items: start;
 }
 .noteName {
-  font-size: var(--t-title-xl);
+  font-size: var(--t-title-l);
+  color: var(--scent-ink);
 }
 .noteName a {
   text-decoration: none;
 }
+.noteName a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
 .noteSmells {
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: var(--t-serif-l);
   line-height: 1.4;
   max-width: 34ch;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 18;
+}
+.noteOrigin {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 48ch;
+  text-wrap: pretty;
+}
+.noteLink {
+  font-weight: 600;
+  font-size: var(--t-small);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration-thickness: 1.5px;
 }
 .noteFrags {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-5) var(--s-4);
   margin: 0;
-  --porcelain: color-mix(in oklab, var(--scent) 14%, #f2f0eb);
+  align-items: end;
 }
-.newest {
-  margin-top: var(--s-11);
+/* Plates inside the band sit a step darker than it, and their Trail gaps take the band's wash. */
+.noteFrags > li {
+  --trail-gap: var(--scent-wash-2);
 }
-/* An intentional sideways shelf: the one horizontal scroller on the page. */
-.shelfRow {
+.noteStrip {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(150px, 40%);
-  gap: var(--s-4);
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  margin: var(--s-4) 0 0;
-  padding-bottom: 10px;
+  gap: 10px;
+  justify-items: start;
+  align-self: end;
+  padding-bottom: var(--s-6);
 }
-.shelfRow > li {
+.noteFamily {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+  text-transform: capitalize;
+}
+
+/* ---------- New releases: the one intentional sideways shelf, on a plank ---------- */
+.newest {
+  margin-top: var(--s-9);
+}
+.shelfScroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--gutter);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 0 var(--gutter) 12px;
+  scrollbar-width: thin;
+}
+.ledge {
+  min-width: calc(7 * 168px + 6 * var(--s-3));
+  --card-name-lines: 2;
+}
+.ledge > div:first-child > * {
   scroll-snap-align: start;
 }
+
+/* ---------- Lists and the glossary ---------- */
+.foot {
+  display: grid;
+  gap: var(--s-9);
+  margin-top: var(--s-9);
+}
 .lists {
-  margin: var(--s-4) 0 0;
+  margin: 0;
 }
 .listLink {
   display: flex;
@@ -213,32 +462,55 @@
   border-bottom: 1px solid var(--line);
   text-decoration: none;
 }
+/* Shingled: four bottles overlapping by two thirds, leaning alternately, on a 6px plank. */
 .listFan {
   position: relative;
-  width: 110px;
-  height: 64px;
+  width: 124px;
+  height: 84px;
   flex: none;
 }
-.listFan > span {
+.listFan > span:not(.listPlank) {
   position: absolute;
-  bottom: 0;
-  left: calc(var(--i) * 22px);
-  width: 44px;
-  height: 60px;
+  bottom: 6px;
+  left: calc(10px + var(--i) * 14%);
+  width: 46px;
+  height: 66px;
+  z-index: calc(5 - var(--i));
+  rotate: 1.5deg;
+  transform-origin: bottom center;
+}
+.listFan > span:not(.listPlank):nth-child(even) {
+  rotate: -1.5deg;
 }
 .listFan img {
   object-fit: contain;
   object-position: bottom;
 }
+.listPlank {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: var(--ledge-top);
+  box-shadow: 0 1px 0 var(--ledge-front);
+}
 .listText {
   display: grid;
-  gap: 2px;
+  gap: 3px;
   min-width: 0;
 }
 .listTitle {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--t-name);
   line-height: 1.2;
+}
+.listDesc {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-s);
+  color: var(--fg-2);
+  line-height: 1.35;
+  text-wrap: pretty;
 }
 .listLink:hover .listTitle {
   text-decoration: underline;
@@ -246,7 +518,7 @@
 .terms {
   display: grid;
   gap: var(--s-4);
-  margin: var(--s-4) 0 var(--s-4);
+  margin: 0 0 var(--s-2);
 }
 .terms dt {
   font-weight: 650;
@@ -255,50 +527,191 @@
   margin: 2px 0 0;
   font-size: var(--t-small);
   color: var(--fg-2);
+  text-wrap: pretty;
 }
-@media (min-width: 720px) {
-  .plates {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+/* ---------- Phone: the object second, the ranked list right under it ---------- */
+@media (max-width: 719px) {
+  .top {
+    order: 1;
+    gap: var(--s-6);
+    padding-top: var(--s-6);
   }
-  .shelfRow {
-    grid-auto-columns: minmax(180px, 22%);
+  .trending {
+    order: 2;
+    margin-top: var(--s-9);
+  }
+  .feelings {
+    order: 3;
+    margin-top: var(--s-9);
+  }
+  .seasonal {
+    order: 4;
+  }
+  .saying {
+    order: 5;
+  }
+  .note {
+    order: 6;
+  }
+  .newest {
+    order: 7;
+  }
+  .foot {
+    order: 8;
+  }
+  .askTitle {
+    margin-bottom: var(--s-5);
+  }
+  /* A full-bleed band: the stage left, the text beside it. */
+  .feature {
+    margin-inline: calc(-1 * var(--gutter));
+    grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
+    padding: var(--s-6) var(--gutter) var(--s-5) 0;
+  }
+  .featureStage {
+    min-height: 236px;
+  }
+  .featureObject {
+    top: 16px;
+    bottom: auto;
+    height: 250px;
+    max-width: 100%;
+  }
+  .featureText {
+    padding: 0 0 0 var(--s-3);
+    gap: 8px;
+  }
+  .featureName {
+    font-size: var(--t-title-m);
+    margin-top: -2px;
+  }
+  .featureSummary {
+    font-size: var(--t-serif);
+    line-height: 1.3;
+  }
+  .featureTrail {
+    max-width: 240px;
+  }
+  .featureLink {
+    min-height: 36px;
+  }
+  .ledge {
+    min-width: calc(7 * 150px + 6 * var(--s-3));
+  }
+}
+
+/* ---------- Tablet: one column, the feature as a band, three columns of floor cards ---------- */
+@media (min-width: 720px) {
+  .top {
+    padding-top: var(--s-8);
+    gap: var(--s-8);
+  }
+  .feature {
+    min-height: 400px;
+    grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+  }
+  .featureText {
+    padding: var(--s-6) var(--s-7) var(--s-6) var(--s-4);
+  }
+  .feelingSplit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .feelingLead {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-6);
   }
   .feelingList {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--s-6);
+  }
+  .feelingList > li[data-lead] {
+    display: none;
+  }
+  .feelingLink {
+    height: 72px;
+    padding: 0;
+  }
+  .feelingLine[data-later] {
+    display: block;
+  }
+  .floorGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-7) var(--s-5);
+  }
+  .quotes {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     column-gap: var(--s-8);
   }
-  .feelingList a {
-    grid-template-columns: minmax(8ch, auto) 1fr;
+  .quote[data-wide] {
+    grid-row: span 2;
+    grid-column: 1;
+  }
+  .quote[data-wide] .quoteBody {
+    font-size: var(--t-title-m);
+    line-height: 1.3;
+    max-width: 28ch;
   }
   .noteFrags {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--s-5);
+  }
+  .foot {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--s-10);
   }
 }
-@media (min-width: 960px) {
+
+/* ---------- Desktop: the 5/6 split with the feature bleeding right, 5/7 rows below ---------- */
+@media (min-width: 1100px) {
+  .home {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--s-10);
+  }
   .top {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: var(--s-10);
+    column-gap: var(--s-10);
+    align-items: center;
+    padding-top: var(--s-8);
   }
   .feature {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    align-items: end;
-  }
-  .featureStage {
-    aspect-ratio: 3 / 4;
+    min-height: 560px;
+    grid-template-columns: minmax(0, 56fr) minmax(0, 44fr);
+    /* To the viewport's right edge: past the page gutter, or past the centring margin above 1360. */
+    margin-right: calc(-1 * max(var(--gutter), (100vw - var(--content-max)) / 2));
   }
   .featureText {
-    padding: var(--s-6) var(--s-6) var(--s-7) 0;
+    padding: var(--s-7) var(--s-8) var(--s-7) var(--s-2);
   }
-  .split {
+  .feelings {
+    margin-top: var(--s-9);
+  }
+  .feelingSplit {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--s-10);
+    align-items: start;
+  }
+  .feelingLead {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+  }
+  .trending {
+    grid-column: 1;
+  }
+  .seasonal {
+    grid-column: 2;
+  }
+  .ledge {
+    min-width: 0;
+  }
+  /* The poster's own top margin is ~9% of its height, so the box starts 88px above the band for the cap to cross by ~30px. */
+  .featureObject {
+    height: calc(100% + 80px);
   }
   .noteGrid {
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    align-items: center;
-  }
-}
-@media (min-width: 1200px) {
-  .feelingList {
-    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: var(--s-8);
+    align-items: end;
   }
 }

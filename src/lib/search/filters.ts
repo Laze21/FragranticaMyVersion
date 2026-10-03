@@ -199,3 +199,114 @@ export const FILTER_GROUP_LABEL: Record<FilterGroup, string> = {
   released: 'set a release date',
   rating: 'set a rating',
 };
+
+export interface FilterChip {
+  key: string;
+  /** The chip text: "No tobacco", "Lasts 8h+". Reuses the rail's own phrases. */
+  label: string;
+  /** The same thing inside a sentence: "without tobacco", "lasting 8h or more". */
+  phrase: string;
+  exclude: boolean;
+  /** The filters with this one removed. */
+  remove: Filters;
+  group: FilterGroup;
+}
+
+export interface FilterNames {
+  notes: Record<string, string>;
+  brands: Record<string, string>;
+  perfumers: Record<string, string>;
+  similar: string | null;
+}
+
+const CONTEXT_PHRASE: Record<string, string> = {
+  spring: 'for spring',
+  summer: 'for summer',
+  autumn: 'for autumn',
+  winter: 'for winter',
+  day: 'for daytime',
+  night: 'for nights',
+  hot: 'for hot days',
+  mild: 'for mild days',
+  cold: 'for cold days',
+  rain: 'for rainy days',
+  humid: 'for humid days',
+  office: 'for the office',
+  school: 'for school',
+  date: 'for a date',
+  formal: 'for formal occasions',
+  casual: 'for every day',
+  nightlife: 'for nights out',
+  special: 'for a special occasion',
+  outdoors: 'for outdoors',
+};
+const KIND_LABEL: Record<string, [string, string]> = {
+  designer: ['Designer', 'from designer houses'],
+  niche: ['Niche', 'from niche houses'],
+  heritage: ['Heritage', 'from heritage houses'],
+  regional: ['Middle Eastern & regional', 'from Middle Eastern houses'],
+  indie: ['Independent', 'from independent houses'],
+  mass: ['High street', 'from the high street'],
+};
+const CONC_SHORT: Record<string, string> = { cologne: 'Cologne', edc: 'EDC', edt: 'EDT', edp: 'EDP', parfum: 'Parfum', extrait: 'Extrait', oil: 'Oil', body_mist: 'Body mist' };
+const PRICE_LABEL: Record<string, string> = { budget: 'Budget', accessible: 'Accessible', premium: 'Premium', luxury: 'Luxury', ultra: 'Rarefied' };
+const DIM_LABEL = (d: string) => d[0].toUpperCase() + d.slice(1);
+const CONTEXT_LABEL: Record<string, string> = { special: 'Special occasion' };
+const titleCase = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+/**
+ * Every active filter as a removable chip with the phrase the page title is built from. One
+ * function, so the chip row, the H1 and the sheet's count never disagree about what is set.
+ * Order: the reference fragrance, the notes, the exclusions, then everything else in rail order.
+ */
+export function describeFilters(f: Filters, names: FilterNames): FilterChip[] {
+  const out: FilterChip[] = [];
+  const drop = <K extends keyof Filters>(k: K, v: Filters[K]): Filters => ({ ...f, [k]: v });
+  const without = <K extends 'include' | 'exclude' | 'excludeFamilies' | 'dims' | 'avoidDims' | 'seasons' | 'times' | 'weather' | 'occasions' | 'priceBands' | 'brandKinds' | 'brands' | 'perfumers' | 'concentrations'>(k: K, v: string) =>
+    drop(k, (f[k] as string[]).filter((x) => x !== v) as Filters[K]);
+  const push = (key: string, label: string, phrase: string, remove: Filters, group: FilterGroup, exclude = false) => out.push({ key, label, phrase, exclude, remove, group });
+
+  if (f.q) push('q', `“${f.q}”`, `“${f.q}”`, drop('q', ''), 'notes');
+  if (f.similarTo) {
+    const n = names.similar ?? f.similarTo;
+    push('like', `Like ${n}`, `like ${n}`, drop('similarTo', null), 'notes');
+  }
+  for (const s of f.include) push(`with:${s}`, names.notes[s] ?? s, (names.notes[s] ?? s).toLowerCase(), without('include', s), 'notes');
+  for (const s of f.exclude) {
+    const n = (names.notes[s] ?? s).toLowerCase();
+    push(`without:${s}`, `No ${n}`, `without ${n}`, without('exclude', s), 'notes', true);
+  }
+  for (const s of f.excludeFamilies) push(`not-family:${s}`, `Not ${s}-heavy`, `not ${s}-heavy`, without('excludeFamilies', s), 'notes', true);
+  for (const d of f.dims) push(`feels:${d}`, DIM_LABEL(d), d, without('dims', d), 'character');
+  for (const d of f.avoidDims) push(`not-feels:${d}`, `Not too ${d}`, `not too ${d}`, without('avoidDims', d), 'character', true);
+  for (const k of ['seasons', 'weather', 'times', 'occasions'] as const) {
+    for (const s of f[k]) push(`${k}:${s}`, CONTEXT_LABEL[s] ?? titleCase(s), CONTEXT_PHRASE[s] ?? `for ${s}`, without(k, s), 'wear');
+  }
+  if (f.longevityMin !== null) push('lasts', `Lasts ${f.longevityMin}h+`, `lasting ${f.longevityMin}h or more`, drop('longevityMin', null), 'longevity');
+  if (f.priceMax !== null) push('under', `Under $${f.priceMax}`, `under $${f.priceMax}`, drop('priceMax', null), 'price');
+  for (const b of f.priceBands) push(`price:${b}`, PRICE_LABEL[b] ?? titleCase(b), (PRICE_LABEL[b] ?? b).toLowerCase(), without('priceBands', b), 'price');
+  if (f.projectionMin !== null) push('proj-min', 'Noticeable', 'noticeable', drop('projectionMin', null), 'projection');
+  if (f.projectionMax !== null) push('proj-max', 'Stays close', 'staying close', drop('projectionMax', null), 'projection');
+  for (const b of f.brands) push(`house:${b}`, names.brands[b] ?? b, `by ${names.brands[b] ?? b}`, without('brands', b), 'house');
+  for (const p of f.perfumers) push(`nose:${p}`, names.perfumers[p] ?? p, `by ${names.perfumers[p] ?? p}`, without('perfumers', p), 'house');
+  for (const k of f.brandKinds) {
+    const [label, phrase] = KIND_LABEL[k] ?? [titleCase(k), `from ${k} houses`];
+    push(`house-type:${k}`, label, phrase, without('brandKinds', k), 'house');
+  }
+  for (const c of f.concentrations) push(`conc:${c}`, CONC_SHORT[c] ?? c, `as ${CONC_SHORT[c] ?? c}`, without('concentrations', c), 'concentration');
+  for (const d of f.decades) push(`decade:${d}`, `${d}s`, `from the ${d}s`, drop('decades', f.decades.filter((x) => x !== d)), 'released');
+  if (f.yearMin !== null && f.yearMax !== null && f.yearMin === f.yearMax) {
+    push('year', `Released ${f.yearMin}`, `released in ${f.yearMin}`, { ...f, yearMin: null, yearMax: null }, 'released');
+  } else {
+    if (f.yearMin !== null) push('from', `${f.yearMin} or later`, `from ${f.yearMin}`, drop('yearMin', null), 'released');
+    if (f.yearMax !== null) push('before', `Before ${f.yearMax + 1}`, `before ${f.yearMax + 1}`, drop('yearMax', null), 'released');
+  }
+  if (f.available) push('available', 'In production only', 'still in production', drop('available', false), 'released');
+  if (f.ratingMin !== null) push('rating', `Rated ${f.ratingMin}+`, `rated ${f.ratingMin} or more`, drop('ratingMin', null), 'rating');
+  if (f.reviewsMin !== null) push('reviews', `${f.reviewsMin}+ reviews`, `with ${f.reviewsMin} reviews or more`, drop('reviewsMin', null), 'rating');
+  if (f.noteMatch !== 'any') {
+    const l = f.noteMatch === 'listed' ? 'Listed by the house' : 'Noticed by people';
+    push('match', l, l.toLowerCase(), drop('noteMatch', 'any'), 'notes');
+  }
+  return out;
+}

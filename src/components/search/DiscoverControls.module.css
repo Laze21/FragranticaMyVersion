@@ -1,11 +1,18 @@
+/*
+ * Discover's controls. One search field (the header carries none on this page), the chip row
+ * that is both the reading of the sentence and the active filters, a results header, a static
+ * rail on desktop that becomes a sheet below 1100, and a tray that appears once two bottles are
+ * ticked for Compare. Nothing dims while a search is pending: a hairline says so instead.
+ */
 .wrap {
   display: grid;
   gap: var(--s-4);
 }
+
+/* ---------- The field ---------- */
 .query {
   position: relative;
   display: flex;
-  gap: 8px;
   max-width: 820px;
 }
 .qIcon {
@@ -20,103 +27,342 @@
   flex: 1;
   min-width: 0;
   height: 52px;
-  padding: 0 14px 0 44px;
+  padding: 0 56px 0 42px;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-1);
   background: var(--paper);
+  box-shadow: var(--shadow-raised);
   font-family: var(--font-serif);
-  font-size: 1.2rem;
+  font-size: var(--t-serif);
+  font-variation-settings: 'opsz' 18;
+}
+.qInput::placeholder {
+  color: var(--fg-3);
+  font-style: italic;
 }
 .qInput:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 0;
+  border-color: transparent;
 }
-.query :global(.btn) {
-  min-height: 52px;
+/* The arrow lives on the search submit, and nowhere else. */
+.qGo {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--r-1);
+  background: var(--ink);
+  color: var(--porcelain);
 }
-.understood {
+.qGo:hover {
+  background: #34302b;
+}
+
+/* ---------- Chips: the reading and the filters are one row ---------- */
+.chipRow {
+  display: grid;
+  gap: 8px;
+}
+.chips {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 12px;
-}
-.readAs {
-  font-size: var(--t-small);
-  color: var(--fg-2);
-}
-.read {
-  font-size: var(--t-small);
-  font-weight: 600;
-  padding: 5px 11px;
-  background: color-mix(in oklab, var(--bergamot) 26%, var(--paper));
-  border-radius: var(--r-pill);
-}
-.read[data-kind='exclude'] {
-  background: color-mix(in oklab, var(--oxblood) 14%, var(--paper));
-  color: var(--oxblood);
-}
-.rawLink {
-  font-size: var(--t-small);
-  min-height: 36px;
-  display: inline-flex;
-  align-items: center;
-}
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 16px;
-  padding: var(--s-3) 0;
-  border-bottom: 1px solid var(--line);
-}
-.filterBtn {
-  display: none;
-}
-.active {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 6px 8px;
   margin: 0;
-  flex: 1;
+}
+.chips > li {
+  display: flex;
+  align-items: center;
   min-width: 0;
 }
-.clear {
+.clear,
+.rawLink {
   border: 0;
   background: none;
+  padding: 0 4px;
   font-size: var(--t-small);
   font-weight: 600;
   text-decoration: underline;
+  text-underline-offset: 0.18em;
   min-height: 36px;
-}
-.sort {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  margin-left: auto;
+  white-space: nowrap;
 }
-.sort select {
-  width: auto;
-  min-height: 40px;
-  padding: 0 10px;
+.rawLink {
+  font-weight: 500;
+  color: var(--fg-2);
+}
+.countSmall {
+  display: none;
   font-size: var(--t-small);
+  color: var(--fg-2);
+  text-align: right;
+  white-space: nowrap;
+  transition: opacity var(--d-quick) var(--ease-standard);
 }
+@starting-style {
+  .countSmall {
+    opacity: 0;
+  }
+}
+
+/* "We read … Couldn't read …": the half that landed and the half that did not, each named. */
+.unread {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 70ch;
+  text-wrap: pretty;
+}
+.unreadItem {
+  white-space: nowrap;
+}
+.unreadText {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-serif-s);
+  color: var(--ink);
+  quotes: '“' '”';
+}
+.unreadLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  background: none;
+  padding: 0 2px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  min-height: 28px;
+}
+
+/* ---------- Toolbar (phone and tablet): two equal quiet buttons that open sheets ---------- */
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.sheetBtn {
+  min-height: 44px;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Layout: the rail and the results ---------- */
 .layout {
   display: grid;
-  gap: var(--s-8);
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--col-gap);
+}
+.layout > * {
+  min-width: 0;
 }
 .rail {
   display: none;
 }
 .results {
   min-width: 0;
-  transition: opacity var(--d-quick);
+  display: grid;
+  gap: var(--s-6);
+  align-content: start;
 }
-.results[data-pending] {
-  opacity: 0.55;
+.resultsHead {
+  position: relative;
+  display: none;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
 }
+.layout[data-plain] .resultsHead {
+  border-top: 0;
+  padding-top: 0;
+}
+.count {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+@starting-style {
+  .count {
+    opacity: 0;
+  }
+}
+.headControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* The density toggle: a two-cell segment in the quiet-button box. */
+.views {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  overflow: hidden;
+}
+.views button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.views button + button {
+  border-left: 1px solid var(--line-strong);
+}
+.views button[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--porcelain);
+}
+/* Sort: the native select with its own chevron removed, standing in the quiet-button box. */
+.sort,
+.pickSelect {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.sortSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 36px;
+  padding: 0 34px 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: transparent;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  width: 100%;
+}
+.sortSelect:hover {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+.sortChevron {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--fg-2);
+}
+.pickSelect .sortSelect {
+  font-weight: 500;
+}
+
+/* Pending: a 2px ink hairline slides under the results header, only once an answer is slow. */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform 600ms var(--ease-evaporate), opacity var(--d-exit) var(--ease-exit);
+}
+.progress[data-on] {
+  transform: scaleX(1);
+  opacity: 1;
+}
+/* A new result set fades in over the quick duration; nothing was dimmed before it. */
+.arrive {
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+@starting-style {
+  .arrive {
+    opacity: 0;
+  }
+}
+
+/* The end line: every set closes under a hairline so the last row never dangles. */
+.end {
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.endLink {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  min-height: 24px;
+}
+
+/* ---------- Compare tray ---------- */
+.tray {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + 12px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  max-width: calc(100vw - 32px);
+  padding: 10px 12px 10px 18px;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-pop);
+  transition: opacity var(--d-quick) var(--ease-evaporate), transform var(--d-quick) var(--ease-evaporate);
+}
+@starting-style {
+  .tray {
+    opacity: 0;
+    transform: translate(-50%, 4px);
+  }
+}
+.trayCount {
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+.trayClear {
+  border: 0;
+  background: none;
+  padding: 0 4px;
+  min-height: 36px;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.trayHint,
+.trayNote {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.trayNote {
+  flex-basis: 100%;
+}
+
+/* ---------- The rail ---------- */
 .panel {
   display: grid;
-  gap: var(--s-5);
+  gap: var(--s-7);
 }
 .group {
   border: 0;
@@ -125,6 +371,7 @@
   display: grid;
   gap: 10px;
   min-width: 0;
+  scroll-margin-top: calc(var(--header-h) + 16px);
 }
 .group legend {
   font-weight: 650;
@@ -132,20 +379,101 @@
   padding: 0;
   margin-bottom: 8px;
 }
+.groupHint {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  margin-top: -6px;
+}
+.subGroup {
+  display: grid;
+  gap: 6px;
+}
+.subLegend {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--fg-3);
+  letter-spacing: 0.01em;
+}
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 .chips small {
-  font-size: 10.5px;
-  opacity: 0.7;
+  font-size: var(--t-micro);
+  font-weight: 400;
+  color: var(--fg-2);
 }
-.swatch {
-  width: 9px;
-  height: 9px;
+.chip[aria-pressed='true'] small {
+  color: inherit;
+}
+
+/* "Count a note when it is": a radio stack, 44px rows, the third with its hint. */
+.matchSet {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.matchSet legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+.match {
+  display: grid;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  overflow: hidden;
+}
+.match button {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  background: var(--paper);
+  text-align: left;
+  font-size: var(--t-small);
+  font-weight: 560;
+  line-height: 1.3;
+}
+.match button + button {
+  border-top: 1px solid var(--line);
+}
+.match button[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--porcelain);
+}
+.radioMark {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
   border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: grid;
+  place-items: center;
 }
+.match button[aria-checked='true'] .radioMark::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.matchText {
+  display: grid;
+  gap: 2px;
+}
+.matchText small {
+  font-size: var(--t-micro);
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+/* Segments: Any / 4h / 6h / 8h / 10h and the like. */
 .seg {
   display: grid;
   grid-auto-flow: column;
@@ -154,30 +482,79 @@
   border-radius: var(--r-1);
   overflow: hidden;
 }
-.seg button,
-.match button {
-  min-height: 40px;
+.seg button {
+  min-height: 36px;
   border: 0;
   background: var(--paper);
-  font-size: var(--t-micro);
+  font-size: var(--t-label);
   font-weight: 600;
   padding: 0 6px;
+  white-space: nowrap;
 }
-.seg button + button,
-.match button + button {
+.seg button + button {
   border-left: 1px solid var(--line);
 }
-.seg [aria-checked='true'],
-.match [aria-checked='true'] {
+.seg [aria-checked='true'] {
   background: var(--ink);
   color: var(--porcelain);
 }
-.match {
+
+/*
+ * Character: the Trail legend as a filter. Thirteen swatches in stack order, each with its name
+ * beside it, each carrying the 1px inset edge every standalone swatch has. On = a 2px ink line
+ * under the label and an ink ring on the swatch, so the state never rests on colour alone.
+ */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+}
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-size: var(--t-label);
+  font-weight: 540;
+  color: var(--fg-2);
+}
+.legendItem:hover {
+  color: var(--ink);
+}
+.legendItem[aria-pressed='true'] {
+  color: var(--ink);
+  font-weight: 650;
+  border-bottom-color: var(--ink);
+}
+.swatch {
+  flex: none;
+  width: 16px;
+  height: 12px;
+  box-shadow: inset 0 0 0 1px rgb(28 26 23 / 0.2);
+}
+.legendItem[aria-pressed='true'] .swatch {
+  box-shadow: inset 0 0 0 1px rgb(28 26 23 / 0.2), 0 0 0 2px var(--ink);
+}
+
+.years {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-1);
-  overflow: hidden;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.years label {
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--fg-3);
+}
+.years input {
+  min-height: 40px;
+  padding: 6px 10px;
 }
 .check {
   display: flex;
@@ -191,14 +568,40 @@
   height: 18px;
   accent-color: var(--ink);
 }
+
+/* "More filters": a plain disclosure, open whenever something inside it is set. */
+.more {
+  border-top: 1px solid var(--line);
+  padding-top: var(--s-4);
+}
+.moreSummary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  cursor: pointer;
+  min-height: 44px;
+  font-size: var(--t-small);
+  font-weight: 650;
+}
+.moreSummary::-webkit-details-marker {
+  display: none;
+}
+.moreChevron {
+  transition: transform var(--d-quick) var(--ease-standard);
+}
+.more[open] .moreChevron {
+  transform: rotate(90deg);
+}
+.moreBody {
+  display: grid;
+  gap: var(--s-7);
+  padding-top: var(--s-4);
+}
+
 .picker {
   display: grid;
   gap: 6px;
-}
-.pickLabel {
-  font-size: var(--t-micro);
-  font-weight: 600;
-  color: var(--fg-3);
 }
 .pickBox {
   position: relative;
@@ -212,7 +615,7 @@
   margin: 0;
   padding: 4px;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-2);
   box-shadow: var(--shadow-pop);
 }
@@ -230,27 +633,127 @@
 .pickList button:hover {
   background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
-@media (min-width: 1000px) {
+
+/* Inside the sheet when nothing matches: the chips above the controls, the footer disabled. */
+.sheetRelax {
+  display: grid;
+  gap: 10px;
+  padding: 8px 0 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.sheetRelaxLine {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+}
+.relax {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+/* The sort sheet: radio rows, 48px, the checked one marked. */
+.sortRows {
+  display: grid;
+}
+.sortRows button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  font-size: var(--t-body);
+  text-align: left;
+}
+.sortRows button[aria-checked='true'] {
+  font-weight: 650;
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 719px) {
+  .chipRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+  }
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-right: 24px;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+  .countSmall {
+    display: block;
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (min-width: 720px) and (max-width: 1099px) {
+  .toolbar {
+    grid-template-columns: auto auto 1fr;
+  }
+  .countSmall {
+    display: block;
+    grid-column: 3;
+    align-self: center;
+  }
+  .chipRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .countSmall {
+    text-align: left;
+  }
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 1100px) {
+  .query {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 30;
+    background: var(--porcelain);
+    padding: 12px 0;
+    margin: -12px 0;
+  }
+  .toolbar {
+    display: none;
+  }
   .layout {
-    grid-template-columns: 272px minmax(0, 1fr);
-    gap: var(--s-8);
+    grid-template-columns: calc(3 * var(--col) + 2 * var(--col-gap)) minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+    padding-top: var(--s-5);
+  }
+  .layout[data-plain] {
+    border-top: 0;
+    padding-top: 0;
   }
   .rail {
     display: block;
-    position: sticky;
-    top: calc(var(--header-h) + 16px);
-    max-height: calc(100vh - var(--header-h) - 32px);
-    overflow: auto;
-    padding-right: 8px;
-    overscroll-behavior: contain;
+    position: static;
+  }
+  .resultsHead {
+    display: flex;
+    border-top: 0;
+    padding-top: 0;
   }
 }
-@media (max-width: 999px) {
-  .filterBtn {
-    display: inline-flex;
-  }
-  .active {
-    order: 3;
-    flex-basis: 100%;
+
+@media (pointer: coarse) {
+  .views button,
+  .legendItem,
+  .sortSelect,
+  .unreadLink,
+  .endLink,
+  .trayClear {
+    min-height: 44px;
   }
 }

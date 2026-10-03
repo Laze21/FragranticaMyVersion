@@ -1,51 +1,222 @@
+/*
+ * Discover. Empty: a title, the field, "Start somewhere", the catalogue. With a question: the
+ * title is the question as we read it, in the italic the site keeps for quoting, and the head
+ * collapses so the first result lands within a screen. The grid is bottles on a shared floor,
+ * three across on desktop, four on a large one, and the first row carries the top match at
+ * double width with its ten-second read: the one asymmetric row.
+ */
 .page {
-  padding-top: var(--s-7);
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-10);
+  display: grid;
+  gap: var(--s-5);
 }
 .head {
-  margin-bottom: var(--s-5);
-  max-width: 70ch;
+  display: grid;
+  gap: 8px;
 }
 .title {
   font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  max-width: 14ch;
 }
-.lede {
-  margin-top: 10px;
+/* The question as we read it: 40px (two of the h3 step), 28px on phones like every utility title. */
+.query {
+  font-size: calc(var(--t-h3) * 2);
+  line-height: 1.1;
+  color: var(--ink);
+  max-width: 28ch;
+}
+.feelingLine {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
   color: var(--fg-2);
-  font-size: var(--t-sub);
 }
-.count {
+
+/* ---------- Start somewhere ---------- */
+.start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 18px;
+}
+.startLabel {
   font-size: var(--t-small);
+  font-weight: 650;
   color: var(--fg-2);
-  margin-bottom: var(--s-4);
 }
+.startList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 18px;
+  margin: 0;
+}
+.startList a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.16em;
+}
+.startList a:hover {
+  text-decoration-color: currentColor;
+}
+.startOther a {
+  font-family: var(--font-sans);
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+.startOther:first-of-type {
+  margin-left: 6px;
+}
+
+/* ---------- Results ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-7) var(--s-4);
   margin: 0;
 }
-@media (min-width: 720px) {
-  .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-8) var(--s-5);
+.grid[data-view='row'] {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+.grid[data-view='row'] > li + li {
+  border-top: 1px solid var(--line);
+}
+.top {
+  grid-column: 1 / -1;
+}
+.topMatch {
+  display: grid;
+  gap: var(--s-4);
+}
+.topText {
+  display: grid;
+  gap: 8px;
+  align-content: end;
+  padding-bottom: 6px;
+}
+.summary {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.35;
+  text-wrap: pretty;
+  max-width: 34ch;
+  font-variation-settings: 'opsz' 18;
+}
+.nearestGrid {
+  margin-top: 0;
+}
+
+/* ---------- Skeleton (loading.tsx) ---------- */
+.skelTitle {
+  height: 40px;
+  width: 280px;
+  max-width: 60%;
+}
+.skelField {
+  height: 52px;
+  max-width: 820px;
+}
+.skelLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--col-gap);
+}
+.skelRail {
+  display: none;
+}
+.skelGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-7) var(--s-4);
+}
+.skelCard {
+  display: grid;
+  gap: 10px;
+}
+.skelGround {
+  position: relative;
+  height: 200px;
+}
+.skelGround::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+.skelBottle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 38%;
+  height: 72%;
+  translate: -50% 0;
+}
+
+@media (max-width: 719px) {
+  .page {
+    padding-top: var(--s-4);
+    gap: var(--s-3);
+  }
+  .query,
+  .title {
+    font-size: var(--t-figure-l);
+  }
+  .start {
+    gap: 4px 14px;
   }
 }
-@media (min-width: 1400px) {
+@media (min-width: 720px) {
+  .grid {
+    gap: var(--s-8) var(--s-5);
+  }
+  .topMatch {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+  .skelGrid {
+    gap: var(--s-8) var(--s-5);
+  }
+  .skelGround {
+    height: 240px;
+  }
+}
+@media (min-width: 1100px) {
+  .page {
+    padding-top: var(--s-7);
+  }
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .top {
+    grid-column: span 2;
+  }
+  .nearestGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .skelLayout {
+    grid-template-columns: calc(3 * var(--col) + 2 * var(--col-gap)) minmax(0, 1fr);
+  }
+  .skelRail {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+  .skelGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1600px) {
   .grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-}
-.empty {
-  padding: var(--s-8) var(--s-6);
-  background: var(--paper);
-  display: grid;
-  gap: var(--s-3);
-}
-.emptyTitle {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
+  .skelGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

@@ -292,22 +292,37 @@ export function interpret(input: string, vocab: Vocabulary): Interpretation {
   }
 
   // Exclusions: "without X", "no X", "not X(-heavy)", "but not X", "isn't X" ----------------------
-  const exRe = /\b(?:without|minus|no|not|isn't|is not|but not|nothing)\s+(?:too\s+|very\s+|any\s+)?([a-z][a-z -]{1,28}?)(?:-heavy| heavy|-forward| notes?)?(?=\s+(?:and|or|but|that|for|with|under|from|by)\b|[,.]|\s*$)/g;
-  for (const m of [...text.matchAll(exRe)]) {
-    const phrase = m[1].trim().replace(/\s+(fragrance|perfume|scent|cologne)s?$/, '');
-    const note = findNote(phrase, vocab);
-    if (note) {
-      if (!f.exclude.includes(note.slug)) f.exclude.push(note.slug);
-      say('exclude', `No ${note.name.toLowerCase()}`, `without ${note.name.toLowerCase()}`);
-    } else if (FAMILY_WORDS[phrase] ?? FAMILY_WORDS[phrase.replace(/y$/, '')]) {
-      const fam = FAMILY_WORDS[phrase] ?? FAMILY_WORDS[phrase.replace(/y$/, '')];
-      if (!f.excludeFamilies.includes(fam)) f.excludeFamilies.push(fam);
-      say('exclude', `Not ${phrase}-heavy`);
-    } else if (DIM_BY_WORD[phrase]) {
-      f.avoidDims.push(DIM_BY_WORD[phrase]);
-      say('exclude', `Not too ${phrase}`);
-    } else continue;
-    text = text.replace(m[0], ' , ');
+  // The words after the cue are tried longest-first (up to four), so "without sea salt" reads the
+  // two-word note and "without tobacco around 100 bucks" reads only the note.
+  const cueRe = /\b(?:without|minus|no|not|isn't|is not|but not|nothing)\s+(?:too\s+|very\s+|any\s+)?((?:[a-z][a-z'-]*\s*){1,4})/g;
+  for (const m of [...text.matchAll(cueRe)]) {
+    const words = m[1].trim().split(/\s+/);
+    for (let n = words.length; n >= 1; n--) {
+      const raw = words.slice(0, n).join(' ');
+      const phrase = raw.replace(/(-heavy|\sheavy|-forward|\snotes?)$/, '').replace(/\s+(fragrance|perfume|scent|cologne)s?$/, '');
+      // A multi-word try must match a note exactly; the loose word match is for the last single word.
+      const note = n === 1 ? findNote(phrase, vocab) : findNoteExact(phrase, vocab);
+      let hit = false;
+      if (note) {
+        if (!f.exclude.includes(note.slug)) f.exclude.push(note.slug);
+        say('exclude', `No ${note.name.toLowerCase()}`, `without ${note.name.toLowerCase()}`);
+        hit = true;
+      } else if (FAMILY_WORDS[phrase] ?? FAMILY_WORDS[phrase.replace(/y$/, '')]) {
+        const fam = FAMILY_WORDS[phrase] ?? FAMILY_WORDS[phrase.replace(/y$/, '')];
+        if (!f.excludeFamilies.includes(fam)) f.excludeFamilies.push(fam);
+        say('exclude', `Not ${phrase}-heavy`);
+        hit = true;
+      } else if (DIM_BY_WORD[phrase]) {
+        f.avoidDims.push(DIM_BY_WORD[phrase]);
+        say('exclude', `Not too ${phrase}`);
+        hit = true;
+      }
+      if (hit) {
+        const cue = m[0].slice(0, m[0].length - m[1].length);
+        text = text.replace(cue + raw, ' , ');
+        break;
+      }
+    }
   }
 
   // Character words ---------------------------------------------------------------------------
@@ -384,10 +399,15 @@ function guessGroup(frag: string): FilterGroup {
   return 'notes';
 }
 
+function findNoteExact(phrase: string, vocab: Vocabulary) {
+  const p = norm(phrase);
+  return vocab.notes.find((n) => norm(n.name) === p || n.aliases.some((a) => norm(a) === p));
+}
+
 function findNote(phrase: string, vocab: Vocabulary) {
   const p = norm(phrase);
   return (
-    vocab.notes.find((n) => norm(n.name) === p || n.aliases.some((a) => norm(a) === p)) ??
+    findNoteExact(phrase, vocab) ??
     vocab.notes.find((n) => p.split(' ').some((w) => w.length > 3 && (norm(n.name) === w || norm(n.name) === w.replace(/s$/, ''))))
   );
 }
@@ -406,10 +426,21 @@ const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 /** Heuristic: does the text read like a sentence rather than a name? */
 export function looksNatural(q: string): boolean {
   return (
-    /\b(without|with|under|similar|like|lasts?|for|that|isn't|not|no|but|summer|winter|spring|autumn|fall|night|office|date|rain|by|from|before|after|since|edp|edt|extrait|parfum|niche|designer)\b/i.test(q) ||
+    /\b(without|with|under|similar|like|lasts?|for|that|isn't|not|no|but|summer|winter|spring|autumn|fall|night|office|date|rainy?|by|from|before|after|since|edp|edt|extrait|parfum|niche|designer)\b/i.test(q) ||
     /\b(19|20)\d\d\b|\b\d0s\b/.test(q) ||
     q.trim().split(/\s+/).length >= 4
   );
+}
+
+/**
+ * Is the whole query a name we have: a fragrance, a house or a perfumer? Names go to the
+ * text search untouched; "Bleu de Chanel" must find the bottle, not read "Chanel" as a filter.
+ */
+export function looksLikeName(q: string, vocab: Vocabulary): boolean {
+  const t = norm(q);
+  if (!t) return false;
+  const close = (name: string) => matchScore(t, norm(name)) >= 0.6;
+  return vocab.fragrances.some((f) => close(f.name) || close(`${f.brandName} ${f.name}`)) || vocab.brands.some((b) => norm(b.name) === t) || vocab.perfumers.some((p) => close(p.name));
 }
 
 /** "Vanilla, without tobacco": the first phrase capitalised, the rest as typed. */

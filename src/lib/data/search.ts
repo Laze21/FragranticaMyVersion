@@ -1,8 +1,10 @@
 import 'server-only';
 import { cache } from 'react';
 import { sql } from '@/lib/db';
-import type { Filters } from '@/lib/search/filters';
+import { EMPTY_FILTERS, type Filters } from '@/lib/search/filters';
 import type { Vocabulary } from '@/lib/search/interpret';
+import { DIMENSION_META, WEAR_CONTEXTS, type Dimension } from '@/lib/scent/vocab';
+import { formatNumber } from '@/lib/scent/read';
 import { CARD_COLUMNS, CARD_FROM, mapCard, type CardRow } from './catalog';
 import { similarityScores } from './similar';
 import type { FragranceCard } from './types';
@@ -79,10 +81,32 @@ export async function suggest(q: string): Promise<Suggestion[]> {
   ];
 }
 
+/** Per-card lines the grid shows beside the facts: why it matched, and the ten-second read. */
+export interface DiscoverMeta {
+  /** "Vanilla listed · 71% smell it", "No tobacco in 1,418 votes". Null when nothing was asked for. */
+  reason: string | null;
+  /** The editorial summary, shown on the top match only. */
+  summary: string | null;
+}
+
 export interface DiscoverResult {
   cards: FragranceCard[];
   total: number;
+  meta: Record<string, DiscoverMeta>;
 }
+
+/* Extra columns the reasons are written from; read beside the card columns, never shown raw. */
+type ReasonRow = CardRow & {
+  total: string;
+  summary: string | null;
+  perceived: Record<string, number> | null;
+  perceived_voters: string | number | null;
+  wear: Record<string, number> | null;
+  wear_voters: string | number | null;
+  typical_price_usd: string | number | null;
+  listed_slugs: string[] | null;
+  nose_names: string | null;
+};
 
 export async function discover(f: Filters, limit = 48): Promise<DiscoverResult> {
   const where: string[] = [`f.visibility = 'public'`];
@@ -122,12 +146,19 @@ export async function discover(f: Filters, limit = 48): Promise<DiscoverResult> 
   if (f.projectionMin !== null) where.push(`s.projection_avg >= ${p(f.projectionMin)}`);
   if (f.projectionMax !== null) where.push(`s.projection_avg <= ${p(f.projectionMax)}`);
   if (f.decades.length) where.push(`(f.release_year / 10 * 10) = any(${p(f.decades)}::int[])`);
+  if (f.yearMin !== null) where.push(`f.release_year >= ${p(f.yearMin)}`);
+  if (f.yearMax !== null) where.push(`f.release_year <= ${p(f.yearMax)}`);
   if (f.ratingMin !== null) where.push(`s.rating_avg >= ${p(f.ratingMin)}`);
   if (f.reviewsMin !== null) where.push(`s.review_count >= ${p(f.reviewsMin)}`);
   if (f.priceBands.length) where.push(`f.price_band = any(${p(f.priceBands)}::text[])`);
   if (f.priceMax !== null) where.push(`f.typical_price_usd <= ${p(f.priceMax)}`);
   if (f.brandKinds.length) where.push(`b.kind = any(${p(f.brandKinds)}::text[])`);
   if (f.brands.length) where.push(`b.slug = any(${p(f.brands)}::text[])`);
+  if (f.perfumers.length) {
+    where.push(
+      `exists (select 1 from public.fragrance_perfumers fp join public.perfumers pf on pf.id = fp.perfumer_id where fp.fragrance_id = f.id and pf.slug = any(${p(f.perfumers)}::text[]))`,
+    );
+  }
   if (f.concentrations.length) where.push(`f.concentration = any(${p(f.concentrations)}::text[])`);
   if (f.available) where.push(`f.status in ('current', 'limited', 'reformulated')`);
   if (f.similarTo) where.push(`f.slug <> ${p(f.similarTo)}`);
@@ -144,8 +175,16 @@ export async function discover(f: Filters, limit = 48): Promise<DiscoverResult> 
     longest: 's.longevity_median_hrs desc nulls last',
   };
 
-  const rows = await sql<CardRow & { total: string }>(
-    `select ${CARD_COLUMNS}, count(*) over () as total
+  // The reasons need the listed notes among the ones asked for, and the perfumers among those asked for.
+  const includeParam = p(f.include);
+  const noseParam = p(f.perfumers);
+  const rows = await sql<ReasonRow>(
+    `select ${CARD_COLUMNS}, count(*) over () as total,
+            f.summary, s.perceived, s.perceived_voters, s.wear, s.wear_voters, f.typical_price_usd,
+            (select array_agg(n.slug) from public.fragrance_notes fn join public.notes n on n.id = fn.note_id
+              where fn.fragrance_id = f.id and n.slug = any(${includeParam}::text[])) as listed_slugs,
+            (select string_agg(pf.name, ', ') from public.fragrance_perfumers fp join public.perfumers pf on pf.id = fp.perfumer_id
+              where fp.fragrance_id = f.id and pf.slug = any(${noseParam}::text[])) as nose_names
        ${CARD_FROM}
        left join public.fragrance_search fs on fs.fragrance_id = f.id
       where ${where.join(' and ')}
@@ -153,26 +192,125 @@ export async function discover(f: Filters, limit = 48): Promise<DiscoverResult> 
       limit 400`,
     params,
   );
-  let cards = rows.map(mapCard);
   const total = rows.length ? Number(rows[0].total) : 0;
+  const names = await noteNames(f.include.concat(f.exclude));
 
+  let scores: Map<string, number> | null = null;
+  let kept = rows;
   if (f.similarTo) {
-    const scores = await similarityScores(f.similarTo);
-    cards = cards.filter((c) => (scores.get(c.id) ?? 0) > 0.45);
-    if (f.sort === 'lesser-known') cards.sort((a, b) => (scores.get(b.id) ?? 0) * 3 - b.trending / 100 - ((scores.get(a.id) ?? 0) * 3 - a.trending / 100));
-    else if (f.sort === 'relevance') cards.sort((a, b) => (scores.get(b.id) ?? 0) - (scores.get(a.id) ?? 0));
-    return { cards: cards.slice(0, limit), total: cards.length };
+    scores = await similarityScores(f.similarTo);
+    const sc = scores;
+    kept = rows.filter((r) => (sc.get(r.id as string) ?? 0) > 0.45);
+    const trending = (r: ReasonRow) => Number(r.trending ?? 0);
+    if (f.sort === 'lesser-known') kept.sort((a, b) => (sc.get(b.id as string) ?? 0) * 3 - trending(b) / 100 - ((sc.get(a.id as string) ?? 0) * 3 - trending(a) / 100));
+    else if (f.sort === 'relevance') kept.sort((a, b) => (sc.get(b.id as string) ?? 0) - (sc.get(a.id as string) ?? 0));
   }
-  return { cards: cards.slice(0, limit), total };
+
+  const page = kept.slice(0, limit);
+  const cards = page.map(mapCard);
+  const meta: Record<string, DiscoverMeta> = {};
+  for (const r of page) {
+    meta[r.id as string] = {
+      reason: matchReason(r, f, names, scores),
+      summary: typeof r.summary === 'string' && r.summary.trim() ? r.summary.trim() : null,
+    };
+  }
+  return { cards, total: f.similarTo ? kept.length : total, meta };
+}
+
+/**
+ * Why this card is in the set, in the order the question was asked: the first note asked for,
+ * the first note ruled out, then the one other thing that narrowed it most. At most two clauses,
+ * so the line stays one line under the card.
+ */
+function matchReason(r: ReasonRow, f: Filters, names: Record<string, string>, scores: Map<string, number> | null): string | null {
+  const parts: string[] = [];
+  const perceived = r.perceived ?? {};
+  const voters = Number(r.perceived_voters ?? 0);
+  const listed = new Set(r.listed_slugs ?? []);
+  const name = (slug: string) => names[slug] ?? slug;
+  const pctOf = (slug: string) => Math.round((Number(perceived[slug] ?? 0) || 0) * 100);
+
+  if (f.similarTo && scores) {
+    const s = scores.get(r.id as string);
+    if (s !== undefined) parts.push(`${Math.round(s * 100)}% alike`);
+  }
+  for (const slug of f.include.slice(0, 1)) {
+    const pct = pctOf(slug);
+    const isListed = listed.has(slug);
+    if (isListed && pct >= 10) parts.push(`${name(slug)} listed · ${pct}% smell it`);
+    else if (isListed) parts.push(`${name(slug)} listed`);
+    else if (pct > 0) parts.push(`${pct}% smell ${name(slug).toLowerCase()}`);
+  }
+  for (const slug of f.exclude.slice(0, 1)) {
+    parts.push(voters > 0 ? `No ${name(slug).toLowerCase()} in ${formatNumber(voters)} votes` : `No ${name(slug).toLowerCase()} listed`);
+  }
+  if (parts.length < 2) {
+    const dim = f.dims[0] as Dimension | undefined;
+    const overall = (r.character as { overall?: Record<string, number> } | null)?.overall ?? {};
+    if (dim && overall[dim] !== undefined) parts.push(`Reads ${DIMENSION_META[dim].label.toLowerCase()} · ${Math.round(Number(overall[dim]) * 100)}%`);
+    else if (f.excludeFamilies.length) parts.push(`Not ${f.excludeFamilies[0]}-heavy`);
+    else if (f.avoidDims.length) parts.push(`Not too ${f.avoidDims[0]}`);
+  }
+  if (parts.length < 2) {
+    const ctx = [...f.seasons, ...f.weather, ...f.times, ...f.occasions][0];
+    const share = ctx ? Number((r.wear ?? {})[ctx] ?? 0) : 0;
+    if (ctx && share > 0) {
+      const label = WEAR_CONTEXTS.find((c) => c.key === ctx)?.label ?? ctx;
+      parts.push(`${label}: ${Math.round(share * 100)}% say it fits`);
+    }
+  }
+  if (parts.length < 2) {
+    if (f.longevityMin !== null && r.longevity_median_hrs) parts.push(`Lasts about ${Math.round(Number(r.longevity_median_hrs))}h for most`);
+    else if ((f.priceMax !== null || f.priceBands.length) && r.typical_price_usd) parts.push(`Typically $${Math.round(Number(r.typical_price_usd))}`);
+    else if (f.projectionMin !== null) parts.push('Noticeable');
+    else if (f.projectionMax !== null) parts.push('Stays close');
+    else if (f.perfumers.length && r.nose_names) parts.push(`Nose: ${r.nose_names}`);
+  }
+  return parts.length ? parts.slice(0, 2).join(' · ') : null;
+}
+
+const noteNames = cache(async (slugs: string[]): Promise<Record<string, string>> => {
+  if (!slugs.length) return {};
+  const rows = await sql<{ slug: string; name: string }>('select slug, name from public.notes where slug = any($1::text[])', [slugs]);
+  return Object.fromEntries(rows.map((r) => [r.slug, r.name]));
+});
+
+/**
+ * When nothing matches: the three closest cards, found by loosening the question one step at a
+ * time (words first, then exclusions, then the context, then the ranges, then everything but the
+ * notes) until something answers. The last step is the catalogue's most popular, so the page
+ * never ends on nothing.
+ */
+export async function nearest(f: Filters, count = 3): Promise<FragranceCard[]> {
+  const steps: Filters[] = [
+    { ...f, q: '' },
+    { ...f, q: '', exclude: [], excludeFamilies: [], avoidDims: [] },
+    { ...f, q: '', exclude: [], excludeFamilies: [], avoidDims: [], seasons: [], weather: [], times: [], occasions: [] },
+    { ...f, q: '', exclude: [], excludeFamilies: [], avoidDims: [], seasons: [], weather: [], times: [], occasions: [], longevityMin: null, projectionMin: null, projectionMax: null, priceMax: null, priceBands: [], ratingMin: null, reviewsMin: null, yearMin: null, yearMax: null, decades: [] },
+    { ...EMPTY_FILTERS, include: f.include, dims: f.dims, similarTo: f.similarTo, noteMatch: 'any' },
+    { ...EMPTY_FILTERS, sort: 'popular' },
+  ];
+  for (const step of steps) {
+    const { cards } = await discover(step, count);
+    if (cards.length) return cards.slice(0, count);
+  }
+  return [];
+}
+
+/** Just the number, for the feelings' counts and the sheet's "Show N results". */
+export async function discoverCount(f: Filters): Promise<number> {
+  return (await discover(f, 1)).total;
 }
 
 export const getVocabulary = cache(async (): Promise<Vocabulary> => {
-  const [notes, brands, fragrances] = await Promise.all([
+  const [notes, brands, perfumers, fragrances] = await Promise.all([
     sql<{ slug: string; name: string; aliases: string[]; family: string }>('select slug, name, aliases, family from public.notes'),
     sql<{ slug: string; name: string }>('select slug, name from public.brands'),
+    sql<{ slug: string; name: string }>('select slug, name from public.perfumers'),
     sql<{ slug: string; name: string; brand_name: string }>(
       `select f.slug, f.name, b.name brand_name from public.fragrances f join public.brands b on b.id = f.brand_id where f.visibility = 'public'`,
     ),
   ]);
-  return { notes, brands, fragrances: fragrances.map((f) => ({ slug: f.slug, name: f.name, brandName: f.brand_name })) };
+  return { notes, brands, perfumers, fragrances: fragrances.map((f) => ({ slug: f.slug, name: f.name, brandName: f.brand_name })) };
 });

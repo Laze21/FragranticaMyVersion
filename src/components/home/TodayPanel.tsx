@@ -34,7 +34,7 @@ export function TodayPanel() {
   const days = data.daysLogged30 ?? 0;
   if (today.length) {
     return (
-      <p className={styles.line}>
+      <p className={styles.today}>
         Today you’re wearing <i className={styles.name}>{today.map((t) => t.name).join(' and ')}</i>.{' '}
         {days > 0 && <span className="tnum">{days === 1 ? '1 day' : `${days} days`} logged this month. </span>}
         <Link href="/diary" className={styles.link}>
