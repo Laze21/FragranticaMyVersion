@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^font-size$/": ["/^(\\d|\\.)/"]
+      },
+      {
+        "severity": "warning",
+        "message": "font-size must reference a --t-* token from src/styles/tokens.css; 12px (--t-micro) is the floor."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/tokens.css"],
+      "rules": {
+        "declaration-property-value-disallowed-list": null
+      }
+    }
+  ]
+}

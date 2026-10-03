@@ -10,12 +10,23 @@ import { ViewerProvider } from '@/components/viewer/ViewerProvider';
 import { Toaster } from '@/components/ui/Toaster';
 import '@/styles/globals.css';
 
+/*
+ * Two families, two voices. Archivo is the instrument (labels, data, buttons, nav); Newsreader is
+ * the display and reading voice, italic reserved for fragrance names. Both are subset variable
+ * fonts. Newsreader's opsz axis is what makes a 72px name crisp and an 18px review body sturdy,
+ * so optical sizing is declared on the face itself and pinned per role in globals.css.
+ * Handoff: the shipped subsets still need re-exporting with opsz 6-72 (Newsreader) and the arrow
+ * range U+2190-2193, U+2197 (Archivo); until then the declaration below is inert but correct.
+ */
 const archivo = localFont({
   src: '../fonts/archivo-var.woff2',
   variable: '--font-archivo',
   weight: '100 900',
   display: 'swap',
-  declarations: [{ prop: 'font-stretch', value: '62% 125%' }],
+  declarations: [
+    { prop: 'font-stretch', value: '62% 125%' },
+    { prop: 'font-optical-sizing', value: 'auto' },
+  ],
   adjustFontFallback: 'Arial',
 });
 
@@ -26,6 +37,7 @@ const newsreader = localFont({
   ],
   variable: '--font-newsreader',
   display: 'swap',
+  declarations: [{ prop: 'font-optical-sizing', value: 'auto' }],
   adjustFontFallback: 'Times New Roman',
 });
 
@@ -41,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f2f0eb',
+  themeColor: '#f3f0ea',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',

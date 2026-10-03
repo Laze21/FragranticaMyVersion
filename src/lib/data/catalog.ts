@@ -25,12 +25,18 @@ const parseLayers = (v: unknown): StageLayers | null => {
   }
 };
 
-/** Shared SELECT for card-sized fragrance data. Expects aliases f, b, s, p. */
+/**
+ * Shared SELECT for card-sized fragrance data. Expects aliases f, b, s, p.
+ *
+ * Height and blur are read through to_jsonb for now, so a long-running dev database that predates
+ * migration 20261004000100 keeps serving cards (with nulls) until it is rebuilt. Once every local
+ * database has been reseeded this becomes plain `f.bottle_height_mm, p.blur_data`.
+ */
 export const CARD_COLUMNS = `
   f.id, f.slug, f.name, b.slug as brand_slug, b.name as brand_name, f.concentration, f.release_year, f.status, f.style,
   f.price_band, f.accent_hex, f.phase_heart_min, f.phase_drydown_min, p.url as poster, p.alt as poster_alt, p.kind as poster_kind,
   p.credit as poster_credit, p.license as poster_license, p.source_url as poster_source, p.layers as poster_layers,
-  f.bottle_height_mm, p.blur_data,
+  (to_jsonb(f) ->> 'bottle_height_mm')::numeric as bottle_height_mm, to_jsonb(p) ->> 'blur_data' as blur_data,
   s.rating_avg, coalesce(s.rating_count, 0) as rating_count, coalesce(s.review_count, 0) as review_count, s.character,
   s.longevity_median_hrs, s.projection_opening_hist, s.projection_later_hist, coalesce(s.own_count, 0) as own_count,
   coalesce(s.trending, 0) as trending, coalesce(s.includes_baseline, false) as includes_baseline`;

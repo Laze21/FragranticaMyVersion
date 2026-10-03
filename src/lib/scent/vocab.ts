@@ -4,32 +4,36 @@ export { DIMENSIONS, type Dimension };
 
 /**
  * Character dimensions. Hues are muted "material" colours (citrus peel, cedar, amber resin,
- * graphite smoke) chosen to sit beside each other in the Trail without vibrating. Every use of
- * colour is paired with a text label; colour is never the only carrier of meaning.
+ * warm graphite) cut so the Trail reads at thumbnail size: every stack-neighbour (fresh to smoky,
+ * the fixed band order) is at least 0.076 apart in OKLab and lightness alternates down the stack.
+ * Two bands (clean, creamy) are pale by nature and are carried by the 1px outline, not by contrast.
+ * Band labels: ink when the hue's OKLab L is at or above 0.6, paper otherwise, never with alpha.
+ * Every use of colour is paired with a text label; colour is never the only carrier of meaning.
  */
 export const DIMENSION_META: Record<Dimension, { label: string; hue: string; description: string; plain: string }> = {
-  fresh: { label: 'Fresh', hue: '#86A7AE', plain: 'bright, airy, citrusy or watery', description: 'Citrus, airy, aquatic and aromatic herbs. The lift you notice first.' },
-  clean: { label: 'Clean', hue: '#B7C2C4', plain: 'soapy, laundry, just-showered', description: 'Musks, aldehydes, soap and laundry. Smells like a fresh shirt.' },
-  green: { label: 'Green', hue: '#7E9473', plain: 'leafy, grassy, snapped stems', description: 'Leaves, stems, galbanum, tomato vine, cut grass.' },
-  floral: { label: 'Floral', hue: '#C6928F', plain: 'flowers, from petal-soft to heady', description: 'Rose, jasmine, white flowers, orange blossom.' },
-  fruity: { label: 'Fruity', hue: '#D9A06B', plain: 'juicy fruit', description: 'Pear, berries, stone fruit, tropical fruit.' },
-  sweet: { label: 'Sweet', hue: '#B97D45', plain: 'sugary, dessert-like', description: 'Vanilla, caramel, praline, honey. Gourmand territory.' },
-  creamy: { label: 'Creamy', hue: '#DCCBA8', plain: 'smooth, milky, soft', description: 'Sandalwood, milk, coconut, lactonic smoothness.' },
-  powdery: { label: 'Powdery', hue: '#A99AA6', plain: 'soft, makeup-bag, cosmetic', description: 'Iris, heliotrope, violet. The feel of face powder.' },
-  spicy: { label: 'Spicy', hue: '#A44B33', plain: 'peppery, warm spices', description: 'Pepper, cardamom, cinnamon, clove, saffron.' },
-  woody: { label: 'Woody', hue: '#8B6B4B', plain: 'pencil shavings, timber, dry woods', description: 'Cedar, sandalwood, vetiver, guaiac, oud.' },
-  earthy: { label: 'Earthy', hue: '#6E6B3F', plain: 'soil, moss, roots', description: 'Patchouli, oakmoss, vetiver roots, hay.' },
-  warm: { label: 'Warm', hue: '#BF8A35', plain: 'amber, resin, cosy', description: 'Amber, resins, labdanum, benzoin, ambroxan warmth.' },
-  smoky: { label: 'Smoky', hue: '#4B4743', plain: 'smoke, incense, leather, tar', description: 'Incense, birch tar, tobacco, leather.' },
+  fresh: { label: 'Fresh', hue: '#6F9AA8', plain: 'bright, airy, citrusy or watery', description: 'Citrus, airy, aquatic and aromatic herbs. The lift you notice first.' },
+  clean: { label: 'Clean', hue: '#C7D2CE', plain: 'soapy, laundry, just-showered', description: 'Musks, aldehydes, soap and laundry. Smells like a fresh shirt.' },
+  green: { label: 'Green', hue: '#6A8E58', plain: 'leafy, grassy, snapped stems', description: 'Leaves, stems, galbanum, tomato vine, cut grass.' },
+  floral: { label: 'Floral', hue: '#C98A93', plain: 'flowers, from petal-soft to heady', description: 'Rose, jasmine, white flowers, orange blossom.' },
+  fruity: { label: 'Fruity', hue: '#DD9668', plain: 'juicy fruit', description: 'Pear, berries, stone fruit, tropical fruit.' },
+  sweet: { label: 'Sweet', hue: '#BF7139', plain: 'sugary, dessert-like', description: 'Vanilla, caramel, praline, honey. Gourmand territory.' },
+  creamy: { label: 'Creamy', hue: '#E3D2A8', plain: 'smooth, milky, soft', description: 'Sandalwood, milk, coconut, lactonic smoothness.' },
+  powdery: { label: 'Powdery', hue: '#A697A8', plain: 'soft, makeup-bag, cosmetic', description: 'Iris, heliotrope, violet. The feel of face powder.' },
+  spicy: { label: 'Spicy', hue: '#9E3A28', plain: 'peppery, warm spices', description: 'Pepper, cardamom, cinnamon, clove, saffron.' },
+  woody: { label: 'Woody', hue: '#8A5A36', plain: 'pencil shavings, timber, dry woods', description: 'Cedar, sandalwood, vetiver, guaiac, oud.' },
+  earthy: { label: 'Earthy', hue: '#5B6B32', plain: 'soil, moss, roots', description: 'Patchouli, oakmoss, vetiver roots, hay.' },
+  warm: { label: 'Warm', hue: '#C99A2E', plain: 'amber, resin, cosy', description: 'Amber, resins, labdanum, benzoin, ambroxan warmth.' },
+  smoky: { label: 'Smoky', hue: '#514A45', plain: 'smoke, incense, leather, tar', description: 'Incense, birch tar, tobacco, leather.' },
 };
 
 export const PHASES = ['opening', 'heart', 'drydown'] as const;
 export type Phase = (typeof PHASES)[number];
 
+/** The windows are the Trail's phase ruler, so they are stated as times, not as prose. */
 export const PHASE_META: Record<Phase, { label: string; window: string }> = {
-  opening: { label: 'Opening', window: 'first 15–30 min' },
-  heart: { label: 'Heart', window: 'the next few hours' },
-  drydown: { label: 'Drydown', window: 'what stays on skin' },
+  opening: { label: 'Opening', window: '0–20 min' },
+  heart: { label: 'Heart', window: '20 min–2.5h' },
+  drydown: { label: 'Drydown', window: '2.5h on' },
 };
 
 export const LONGEVITY_BUCKETS = [
@@ -133,5 +137,5 @@ export const EXPERIENCE_LABEL: Record<string, string> = {
   learning: 'Learning',
   enthusiast: 'Enthusiast',
   collector: 'Collector',
-  professional: 'Industry',
+  professional: 'Works in the industry',
 };

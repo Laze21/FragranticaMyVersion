@@ -10,6 +10,8 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 16px);
+  /* Overlays never toggle body overflow; the gutter is reserved so opening one cannot shift the page. */
+  scrollbar-gutter: stable;
 }
 body {
   margin: 0;
@@ -62,23 +64,43 @@ hr {
   margin: 0;
 }
 
-/* ---------- Type roles ---------- */
+/* ---------- Type roles ----------
+   Two voices, cleanly split. Newsreader roman is the display and reading voice; Newsreader italic
+   means exactly one thing, a fragrance name; Archivo is the instrument for labels, data, buttons,
+   nav and numbers. Roles set family, weight and rhythm; the size comes from the page's token. */
+.t-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.02;
+  text-wrap: balance;
+  font-variation-settings: 'opsz' 72;
+}
 .t-title {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 380;
-  letter-spacing: -0.012em;
+  font-weight: 400;
+  letter-spacing: -0.005em;
   line-height: 1.02;
   text-wrap: balance;
+  font-variation-settings: 'opsz' 72;
 }
-.t-head {
+.t-h3 {
   font-family: var(--font-sans);
+  font-size: var(--t-h3);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.25;
+}
+/* The one place Archivo stays wide: a 13px magazine kicker, tracked open. */
+.kicker {
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
+  font-weight: 650;
   font-stretch: 112%;
-  font-weight: 640;
-  font-size: var(--t-head);
-  letter-spacing: -0.012em;
-  line-height: 1.15;
-  text-wrap: balance;
+  letter-spacing: 0.04em;
+  color: var(--fg-2);
+  line-height: 1.3;
 }
 .t-sub {
   font-size: var(--t-sub);
@@ -102,21 +124,42 @@ hr {
   font-size: var(--t-prose);
   line-height: 1.6;
   font-weight: 400;
-  max-width: var(--measure);
+  max-width: var(--measure-read);
   hanging-punctuation: first;
+  font-variation-settings: 'opsz' 18;
 }
 .t-prose p + p {
   margin-top: 0.8em;
 }
+/* Data figures at text size (<= 20px): condensed, tabular, no negative tracking. */
 .t-figure {
   font-variant-numeric: tabular-nums lining-nums;
-  font-stretch: 82%;
+  font-stretch: 88%;
   font-weight: 560;
-  letter-spacing: -0.02em;
+  line-height: 1;
+}
+/* Headline figures (>= 28px): the serif, so a score and a name share one voice. */
+.t-figure-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums lining-nums;
   line-height: 1;
 }
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Surfaces ----------
+   Three legible steps. Page = porcelain. Raised = paper with a line and a contact shadow, only
+   for things that float or are typed into. Sunk = linen, for wells, tracks, skeletons, bands.
+   Nothing else gets a background. */
+.surface-raised {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-raised);
+}
+.surface-sunk {
+  background: var(--linen);
 }
 
 /* ---------- Layout primitives ---------- */
@@ -125,6 +168,11 @@ hr {
   max-width: var(--page-max);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+/* A band that runs edge to edge inside a .page: the hero wash, "Listed vs. smelled", the shelf planks. */
+.bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(var(--gutter), calc(50vw - var(--content-max) / 2));
 }
 .stack > * + * {
   margin-top: var(--stack, var(--s-4));
@@ -135,6 +183,54 @@ hr {
   gap: var(--cluster, var(--s-2));
   align-items: center;
 }
+
+/*
+ * The twelve-column grid, as named runs. Applied to a child of .page so every page shares the
+ * same lines instead of inventing its own centre. Below 1100 they collapse to one column; the
+ * folds (rail as a sheet, rail as a sticky bar) belong to the page modules.
+ *   .cols-3-10   reading pages: learn, about, list detail        (8 columns, from column 3)
+ *   .cols-4-9    forms: sign-in, review composer                 (6 columns, from column 4)
+ *   .layout-8-3  fragrance body: main 1-8, rail 10-12            (column 9 is the gutter)
+ *   .layout-3-9  discover: rail 1-3, results 4-12
+ */
+.cols-3-10,
+.cols-4-9 {
+  width: 100%;
+}
+.layout-8-3,
+.layout-3-9 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--col-gap);
+}
+.layout-8-3 > *,
+.layout-3-9 > * {
+  min-width: 0;
+}
+@media (min-width: 720px) {
+  .cols-3-10,
+  .cols-4-9 {
+    max-width: 640px;
+  }
+}
+@media (min-width: 1100px) {
+  .cols-3-10 {
+    max-width: calc(8 * var(--col) + 7 * var(--col-gap));
+    margin-inline-start: calc(2 * (var(--col) + var(--col-gap)));
+  }
+  .cols-4-9 {
+    max-width: calc(6 * var(--col) + 5 * var(--col-gap));
+    margin-inline-start: calc(3 * (var(--col) + var(--col-gap)));
+  }
+  .layout-8-3 {
+    grid-template-columns: minmax(0, 1fr) calc(3 * var(--col) + 2 * var(--col-gap));
+    column-gap: calc(var(--col) + 2 * var(--col-gap));
+  }
+  .layout-3-9 {
+    grid-template-columns: calc(3 * var(--col) + 2 * var(--col-gap)) minmax(0, 1fr);
+  }
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px;
@@ -161,6 +257,7 @@ hr {
 }
 
 /* ---------- Controls ---------- */
+/* One ink primary per screen. Everything else is quiet (outlined, 36px) or bare. */
 .btn {
   --btn-bg: var(--ink);
   --btn-fg: var(--porcelain);
@@ -199,6 +296,8 @@ hr {
   --btn-bg: transparent;
   --btn-fg: var(--ink);
   --btn-line: var(--line-strong);
+  min-height: 36px;
+  padding: 0 var(--s-4);
 }
 .btn--quiet:hover {
   --btn-bg: color-mix(in oklab, var(--ink) 6%, transparent);
@@ -215,12 +314,6 @@ hr {
 .btn--small {
   min-height: 36px;
   padding: 0 var(--s-3);
-}
-/* Touch targets stay 44px even when a small button is visually compact. */
-@media (pointer: coarse) {
-  .btn--small {
-    min-height: 44px;
-  }
 }
 
 .field {
@@ -245,15 +338,17 @@ hr {
   background: var(--paper);
   border: 1px solid var(--line-strong);
   border-radius: var(--r-1);
-  font-size: 16px; /* prevents iOS zoom */
+  box-shadow: var(--shadow-raised);
+  font-size: var(--t-body); /* 16px: anything smaller makes iOS zoom the page on focus */
   line-height: 1.4;
 }
 .textarea {
   min-height: 140px;
   resize: vertical;
   font-family: var(--font-serif);
-  font-size: 1.0625rem;
+  font-size: var(--t-serif);
   line-height: 1.55;
+  font-variation-settings: 'opsz' 18;
 }
 .input:focus-visible,
 .select:focus-visible,
@@ -263,7 +358,8 @@ hr {
   border-color: transparent;
 }
 
-/* Chips: filters, statuses and tags only. */
+/* Chips: filters, statuses and tags. Two pill styles only: outlined, and ink-filled when on.
+   Exclusions are the one exception, oxblood-filled, and always carry a "No" or an x as well. */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -280,11 +376,6 @@ hr {
   text-decoration: none;
   color: var(--fg);
 }
-@media (pointer: coarse) {
-  .chip {
-    min-height: 40px;
-  }
-}
 .chip[aria-pressed='true'],
 .chip[aria-checked='true'],
 .chip[data-on='true'] {
@@ -292,9 +383,41 @@ hr {
   color: var(--porcelain);
   border-color: var(--ink);
 }
+.chip--exclude[aria-pressed='true'],
 .chip--exclude[data-on='true'] {
   background: var(--oxblood);
+  color: var(--porcelain);
   border-color: var(--oxblood);
+}
+
+/*
+ * Hit areas on coarse pointers: 44px minimum, whatever the drawn height. Global classes grow
+ * their min-height. Module-scoped controls (DiaryView .del, the steppers, ShelfView .views and
+ * .editBtn, ReviewItem .more, compare .remove, DiscoverControls .seg and .match buttons) add the
+ * `hit` class: the drawn box stays small and an invisible pseudo-element extends the target.
+ * Radio buttons inside a radiogroup (ScoreRow, the vote sheets) grow by selector.
+ */
+.hit {
+  position: relative;
+}
+@media (pointer: coarse) {
+  .btn--small,
+  .btn--quiet,
+  .chip {
+    min-height: 44px;
+  }
+  [role='radiogroup'] button[role='radio'] {
+    min-height: 44px;
+  }
+  .hit::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    translate: -50% -50%;
+  }
 }
 
 .demo-flag {
