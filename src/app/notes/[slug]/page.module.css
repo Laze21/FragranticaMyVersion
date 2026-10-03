@@ -56,7 +56,7 @@
   font-size: var(--t-serif-l);
   line-height: 1.35;
   text-wrap: pretty;
-  font-variation-settings: "opsz" 18;
+  font-variation-settings: 'opsz' 18;
 }
 /* The blotter: paper, with the note climbing the bottom 40%; its tip is clipped like a cut strip. */
 .blotter {
@@ -69,14 +69,7 @@
   box-shadow:
     inset 0 0 0 1px rgb(28 26 23 / 0.2),
     0 1px 0 rgb(28 26 23 / 0.06);
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 4px),
-    calc(100% - 4px) 100%,
-    4px 100%,
-    0 calc(100% - 4px)
-  );
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px));
   pointer-events: none;
 }
 .blotterTip {
@@ -85,12 +78,7 @@
   right: 0;
   bottom: 0;
   height: 40%;
-  background: linear-gradient(
-    to top,
-    var(--scent) 0 70%,
-    color-mix(in oklab, var(--scent) 55%, var(--paper)) 92%,
-    transparent
-  );
+  background: linear-gradient(to top, var(--scent) 0 70%, color-mix(in oklab, var(--scent) 55%, var(--paper)) 92%, transparent);
 }
 
 .body {
@@ -162,17 +150,13 @@
   background: var(--bar-hue, var(--scent-ink));
 }
 .dimFill::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
   width: 3px;
-  background: color-mix(
-    in oklab,
-    var(--bar-hue, var(--scent-ink)) 60%,
-    var(--ink)
-  );
+  background: color-mix(in oklab, var(--bar-hue, var(--scent-ink)) 60%, var(--ink));
 }
 
 .section {
@@ -303,7 +287,7 @@
   /* tablet: the name takes the width, the sentence sits beneath it, the blotter stands at the right */
   .heroGrid {
     grid-template-columns: minmax(0, 1fr) 140px;
-    grid-template-areas: "identity blotter" "smells blotter";
+    grid-template-areas: 'identity blotter' 'smells blotter';
     align-items: end;
   }
   .identity {
@@ -320,14 +304,7 @@
     width: 120px;
     height: 340px;
     margin-bottom: calc(-1 * var(--s-7) - 64px);
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% calc(100% - 10px),
-      calc(100% - 10px) 100%,
-      10px 100%,
-      0 calc(100% - 10px)
-    );
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px));
   }
   .body {
     padding-top: calc(64px + var(--s-9));
@@ -338,17 +315,13 @@
 }
 @media (min-width: 1100px) {
   .heroGrid {
-    grid-template-columns: calc(5 * var(--col) + 4 * var(--col-gap)) minmax(
-        0,
-        34ch
-      ) minmax(0, 1fr);
-    grid-template-areas: "identity smells blotter";
+    grid-template-columns:
+      calc(5 * var(--col) + 4 * var(--col-gap)) minmax(0, 34ch)
+      minmax(0, 1fr);
+    grid-template-areas: 'identity smells blotter';
   }
   .two {
-    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(
-        0,
-        1fr
-      );
+    grid-template-columns: calc(7 * var(--col) + 6 * var(--col-gap)) minmax(0, 1fr);
   }
 }
 @media (max-width: 719px) {

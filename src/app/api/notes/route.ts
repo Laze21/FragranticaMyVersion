@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { sql } from "@/lib/db";
+import { NextResponse } from 'next/server';
+import { sql } from '@/lib/db';
 
 export const revalidate = 3600;
 
@@ -16,9 +16,7 @@ export async function GET() {
     kind: string;
     hue: string;
     aliases: string[] | null;
-  }>(
-    "select slug, name, family, kind, hue, aliases from public.notes order by name",
-  );
+  }>('select slug, name, family, kind, hue, aliases from public.notes order by name');
   return NextResponse.json({
     notes: notes.map((n) => ({
       ...n,

@@ -27,5 +27,5 @@
   color: var(--fg-2);
   max-width: var(--measure-read);
   text-wrap: pretty;
-  font-variation-settings: "opsz" 18;
+  font-variation-settings: 'opsz' 18;
 }
