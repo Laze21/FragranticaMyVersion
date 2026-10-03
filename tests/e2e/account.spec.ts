@@ -32,13 +32,14 @@ test.describe('account flows', () => {
   test('rates a fragrance', async ({ page }) => {
     await signInDemo(page);
     await page.goto('/fragrance/santal-33');
-    await page.getByRole('button', { name: /rate it|change your rating/i }).first().click();
+    // The rail's "Your take" aside carries the rating row; the section prompt is the fallback on narrow screens.
+    await page.getByRole('button', { name: /your rating|rate it out of 10/i }).first().click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
     await dialog.getByRole('radio', { name: /^8 out of 10$/ }).first().click();
     await dialog.getByRole('button', { name: /save|done/i }).click();
     await expect(dialog).toBeHidden();
-    await expect(page.getByRole('button', { name: /change your rating/i }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: /your rating/i }).first()).toContainText('8/10');
   });
 
   test('writes a quick take with an ownership and gifted disclosure, then deletes it', async ({ page }) => {
@@ -54,7 +55,7 @@ test.describe('account flows', () => {
     await expect(page.getByText(/garden in August/)).toBeVisible();
     await expect(page.getByText(/gift|free/i).first()).toBeVisible();
     await page.getByRole('button', { name: /^delete$/i }).first().click();
-    await page.getByRole('button', { name: /yes, delete/i }).click();
+    await page.getByRole('button', { name: /yes, (delete|remove)/i }).click();
     await expect(page.getByText(/garden in August/)).toBeHidden();
   });
 
