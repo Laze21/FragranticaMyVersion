@@ -2,7 +2,15 @@
 import { chromium } from 'playwright';
 const [, , path = '/', out = 'shot.png', w = '1440', h = '900', full = '0'] = process.argv;
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
+const ctx = await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
+if (process.env.AUTH) {
+  const p = await ctx.newPage();
+  await p.goto(`http://localhost:${process.env.PORT ?? 3100}/sign-in`);
+  await p.getByRole('button', { name: 'Continue as the demo account' }).click();
+  await p.waitForURL(/localhost:\d+\/$/);
+  await p.close();
+}
+const page = await ctx.newPage();
 const errors = [];
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
 page.on('pageerror', (e) => errors.push(e.message));

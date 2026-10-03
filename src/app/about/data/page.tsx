@@ -61,6 +61,7 @@ export default async function DataPage() {
         </p>
         <h2>Source types</h2>
       </div>
+      <div className={styles.tableWrap}>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -86,6 +87,7 @@ export default async function DataPage() {
           ))}
         </tbody>
       </table>
+      </div>
       <div className={`t-prose ${styles.prose}`}>
         <h2>Where data will come from at launch</h2>
         <ul>

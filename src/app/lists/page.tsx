@@ -14,7 +14,7 @@ export default async function ListsPage() {
             array_remove(array_agg(a.url order by li.position), null) posters
        from public.lists l join public.profiles p on p.id = l.user_id
        left join public.list_items li on li.list_id = l.id
-       left join public.fragrance_assets a on a.fragrance_id = li.fragrance_id and a.kind = 'poster' and a.is_primary
+       left join public.fragrance_primary_image a on a.fragrance_id = li.fragrance_id
       where l.is_public and not p.is_private group by l.id, p.handle, p.display_name order by l.created_at desc`,
   );
   return (

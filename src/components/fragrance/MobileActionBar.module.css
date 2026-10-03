@@ -12,6 +12,14 @@
     grid-template-columns: repeat(3, 1fr);
     background: var(--paper);
     border-top: 1px solid var(--line);
+    transform: translateY(110%);
+    visibility: hidden;
+    transition: transform var(--d-standard) var(--ease-evaporate), visibility 0s linear var(--d-standard);
+  }
+  .bar[data-show] {
+    transform: none;
+    visibility: visible;
+    transition: transform var(--d-standard) var(--ease-evaporate);
   }
   .bar button,
   .bar a {

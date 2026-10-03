@@ -3,6 +3,31 @@
   flex-wrap: wrap;
   gap: var(--s-2);
 }
+@media (max-width: 719px) {
+  .actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
+  }
+  .actions .shelfBtn,
+  .actions .wear {
+    min-width: 0;
+    padding: 0 10px;
+  }
+  .menuWrap {
+    min-width: 0;
+  }
+  .menuWrap > button {
+    width: 100%;
+  }
+  .wearLong {
+    display: none;
+  }
+}
+@media (min-width: 720px) {
+  .wearShort {
+    display: none;
+  }
+}
 .menuWrap {
   position: relative;
 }

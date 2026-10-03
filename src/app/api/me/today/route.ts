@@ -19,7 +19,7 @@ export async function GET() {
               (select count(*) from public.wear_log_items wi join public.wear_logs w on w.id = wi.wear_log_id where w.user_id = c.user_id and wi.fragrance_id = f.id and w.worn_on > current_date - 60) recent
          from public.collection_items i join public.collections c on c.id = i.collection_id and c.kind = 'main'
          join public.fragrances f on f.id = i.fragrance_id
-         left join public.fragrance_assets a on a.fragrance_id = f.id and a.kind = 'poster' and a.is_primary
+         left join public.fragrance_primary_image a on a.fragrance_id = f.id
         where c.user_id = $1 and i.status = 'own'
         order by i.is_favorite desc, recent desc, f.name limit 4`,
       [v.id],

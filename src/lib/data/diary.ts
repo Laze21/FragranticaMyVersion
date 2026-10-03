@@ -18,7 +18,7 @@ export async function getDiary(userId: string, days = 140): Promise<DiaryEntry[]
        join public.wear_log_items i on i.wear_log_id = w.id
        join public.fragrances f on f.id = i.fragrance_id
        join public.brands b on b.id = f.brand_id
-       left join public.fragrance_assets a on a.fragrance_id = f.id and a.kind = 'poster' and a.is_primary
+       left join public.fragrance_primary_image a on a.fragrance_id = f.id
       where w.user_id = $1 and w.worn_on > current_date - $2::int
       group by w.id order by w.worn_on desc, w.created_at desc`,
     [userId, days],
@@ -38,7 +38,7 @@ export async function shelfOptions(userId: string) {
     `select f.slug, f.name, b.name brand, a.url poster, i.status
        from public.collection_items i join public.collections c on c.id = i.collection_id and c.kind = 'main'
        join public.fragrances f on f.id = i.fragrance_id join public.brands b on b.id = f.brand_id
-       left join public.fragrance_assets a on a.fragrance_id = f.id and a.kind = 'poster' and a.is_primary
+       left join public.fragrance_primary_image a on a.fragrance_id = f.id
       where c.user_id = $1 and i.status in ('own', 'testing', 'sampled')
       order by i.is_favorite desc, f.name`,
     [userId],

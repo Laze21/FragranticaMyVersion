@@ -3,17 +3,16 @@
  * and executed in headless Chromium (WebGL via SwiftShader).
  */
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
-import { buildBottle, buildClips, cameraFor } from '../../src/lib/bottle/build';
-import { setupLights } from '../../src/lib/bottle/stage';
+import { buildBottle, buildClips, cameraFor, FRAMING } from '../../src/lib/bottle/build';
+import { setupLights, studioEnvironment } from '../../src/lib/bottle/stage';
 import type { BottleSpec } from '../../src/seed/types';
 
 const FONTS = { sans: 'Archivo', serif: 'Newsreader' };
 
 async function ready() {
   await document.fonts.ready;
-  await Promise.all([document.fonts.load('600 34px Archivo'), document.fonts.load('italic 400 60px Newsreader')]);
+  await Promise.all([document.fonts.load('300 34px Archivo'), document.fonts.load('600 34px Archivo'), document.fonts.load('italic 400 60px Newsreader'), document.fonts.load('400 60px Newsreader')]);
 }
 
 function makeRenderer(w: number, h: number) {
@@ -27,16 +26,16 @@ function makeRenderer(w: number, h: number) {
   return renderer;
 }
 
-async function renderPoster(spec: BottleSpec, brand: string, name: string, w: number, h: number): Promise<string> {
+async function renderPoster(spec: BottleSpec, _brand: string, _name: string, w: number, h: number): Promise<string> {
   await ready();
   const renderer = makeRenderer(w, h);
   document.body.appendChild(renderer.domElement);
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environment = pmrem.fromScene(studioEnvironment(), 0, 0.1, 100, { size: 512 }).texture;
   setupLights(scene);
-  const built = buildBottle(spec, { brand, name, doc: document, fonts: FONTS });
-  built.root.rotation.y = -0.38;
+  const built = buildBottle(spec, { doc: document, fonts: FONTS });
+  built.root.rotation.y = FRAMING.yaw + (spec.pose?.yaw ?? 0);
   scene.add(built.root);
   const cam = cameraFor(built, w / h);
   renderer.render(scene, cam);
@@ -47,9 +46,9 @@ async function renderPoster(spec: BottleSpec, brand: string, name: string, w: nu
   return url;
 }
 
-async function exportGlb(spec: BottleSpec, brand: string, name: string): Promise<string> {
+async function exportGlb(spec: BottleSpec, _brand?: string, _name?: string): Promise<string> {
   await ready();
-  const built = buildBottle(spec, { brand, name, doc: document, fonts: FONTS });
+  const built = buildBottle(spec, { doc: document, fonts: FONTS });
   const clips = buildClips(built);
   const scene = new THREE.Scene();
   scene.add(built.root);

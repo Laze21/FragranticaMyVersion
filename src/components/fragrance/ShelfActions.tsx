@@ -91,7 +91,7 @@ export function ShelfActions({ slug, name, upcoming, compact }: { slug: string; 
   const current = entry ? COLLECTION_STATUSES.find((s) => s.key === entry.status) : null;
 
   return (
-    <div className={styles.actions} data-compact={compact || undefined} aria-busy={pending || undefined}>
+    <div className={styles.actions} id="hero-actions" data-compact={compact || undefined} aria-busy={pending || undefined}>
       <div className={styles.menuWrap} ref={menuRef}>
         <button
           type="button"
@@ -129,7 +129,8 @@ export function ShelfActions({ slug, name, upcoming, compact }: { slug: string; 
             <Icon name="atomizer" size={18} />
             <span className={styles.mist} />
           </span>
-          Wearing it today
+          <span className={styles.wearLong}>Wearing it today</span>
+          <span className={styles.wearShort}>Worn today</span>
         </button>
       )}
       <button

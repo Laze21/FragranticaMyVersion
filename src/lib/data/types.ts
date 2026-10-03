@@ -24,6 +24,12 @@ export interface FragranceCard {
   accent: string;
   poster: string | null;
   posterAlt: string | null;
+  /** A licensed product photograph, or our own labelled illustration. */
+  posterKind: 'photo' | 'illustration';
+  posterCredit: string | null;
+  posterLicense: string | null;
+  posterSource: string | null;
+  posterNozzle: { x: number; y: number } | null;
   ratingAvg: number | null;
   ratingCount: number;
   reviewCount: number;

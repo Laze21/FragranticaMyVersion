@@ -7,10 +7,9 @@
  * an animation plays, or while the bottle eases back to rest. Battery matters.
  */
 import * as THREE from 'three';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { applyFresnel, cameraFor, FRAMING } from '@/lib/bottle/build';
-import { setupLights } from '@/lib/bottle/stage';
+import { setupLights, studioEnvironment } from '@/lib/bottle/stage';
 
 export interface ViewerController {
   explore(): Promise<{ x: number; y: number } | null>;
@@ -43,7 +42,7 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
 
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environment = pmrem.fromScene(studioEnvironment(), 0, 0.1, 100).texture;
   setupLights(scene);
 
   let gltf;
@@ -72,7 +71,10 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
       applyFresnel(mat, mat.roughness > 0.3 ? 0.8 : 0.9, mat.roughness > 0.3 ? 0.05 : 0.35);
     } else if (mat.name === 'Liquid') {
       mat.depthWrite = false;
-      applyFresnel(mat, 0.96, 0.42);
+      // Pale juices are drawn unlit (see liquidMaterial); glTF can't carry that flag.
+      if (mat.emissive && mat.emissive.getHex() !== 0) mat.toneMapped = false;
+      const [edgeAlpha, edgeDarken] = (mat.userData.fresnel as [number, number] | undefined) ?? [0.96, 0.42];
+      applyFresnel(mat, edgeAlpha, edgeDarken);
     } else if (mat.name === 'Label' || mat.name === 'Shadow') {
       mat.depthWrite = false;
     }

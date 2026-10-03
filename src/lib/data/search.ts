@@ -42,7 +42,7 @@ export async function suggest(q: string): Promise<Suggestion[]> {
          from public.fragrance_search fs
          join public.fragrances f on f.id = fs.fragrance_id and f.visibility = 'public'
          join public.brands b on b.id = f.brand_id
-         left join lateral (select url from public.fragrance_assets a where a.fragrance_id = f.id and a.kind = 'poster' and a.is_primary limit 1) p on true
+         left join public.fragrance_primary_image p on p.fragrance_id = f.id
         where ($2::text is not null and fs.tsv @@ to_tsquery('simple', $2))
            or extensions.word_similarity(public.immutable_unaccent(lower($1)), public.immutable_unaccent(lower(f.name || ' ' || b.name))) > 0.35
         order by rank desc limit 6`,

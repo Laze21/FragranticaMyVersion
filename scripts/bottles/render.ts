@@ -1,22 +1,36 @@
 /**
  * Renders original bottle posters (and GLB models where has3d) for every seed fragrance.
  *
- *   npm run bottles            # all
- *   npm run bottles -- graphite-hour kvist
+ *   npm run bottles                         # all catalogue bottles
+ *   npm run bottles -- dior-sauvage chanel-no-5
+ *   npm run bottles -- --specs <dir> --out <dir> [--png]   # every <slug>.json spec in a directory
  *
  * Output: public/bottles/<slug>.webp (transparent, 900x1200), public/models/<slug>.glb
  */
 import { build } from 'esbuild';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import sharp from 'sharp';
 import { CATALOG } from '../../src/seed/real';
 
 const ROOT = process.cwd();
-const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
-const all = CATALOG.fragrances.filter((f) => !only.length || only.includes(f.slug));
+const argv = process.argv.slice(2);
+const flag = (name: string) => {
+  const i = argv.indexOf(name);
+  return i >= 0 ? argv[i + 1] : undefined;
+};
+const specsDir = flag('--specs');
+const outDir = flag('--out') ?? (specsDir ? path.join(specsDir, 'renders') : path.join(ROOT, 'public/bottles'));
+const asPng = argv.includes('--png');
+const only = argv.filter((a, i) => !a.startsWith('-') && argv[i - 1] !== '--specs' && argv[i - 1] !== '--out');
 const brandName = Object.fromEntries(CATALOG.brands.map((b) => [b.slug, b.name]));
+interface Job { slug: string; bottle: unknown; brand: string; name: string; has3d?: boolean; noImage?: boolean }
+const all: Job[] = specsDir
+  ? readdirSync(specsDir)
+      .filter((f) => f.endsWith('.json') && (!only.length || only.includes(f.replace(/\.json$/, ''))))
+      .map((f) => ({ slug: f.replace(/\.json$/, ''), bottle: JSON.parse(readFileSync(path.join(specsDir, f), 'utf8')), brand: '', name: '' }))
+  : CATALOG.fragrances.filter((f) => !only.length || only.includes(f.slug)).map((f) => ({ slug: f.slug, bottle: f.bottle, brand: brandName[f.brand], name: f.name, has3d: f.has3d, noImage: f.noImage }));
 
 const bundle = await build({
   entryPoints: [path.join(ROOT, 'scripts/bottles/page.ts')],
@@ -54,19 +68,25 @@ await page.route('http://bottles.local/**', (route) => {
 });
 await page.goto('http://bottles.local/');
 
-mkdirSync(path.join(ROOT, 'public/bottles'), { recursive: true });
+mkdirSync(outDir, { recursive: true });
 mkdirSync(path.join(ROOT, 'public/models'), { recursive: true });
 
 for (const f of all) {
   const t0 = Date.now();
-  const brand = brandName[f.brand];
+  const brand = f.brand;
   if (!f.noImage) {
-    const dataUrl: string = await page.evaluate(
-      ([spec, b, n]) => (window as unknown as { renderPoster: (...a: unknown[]) => Promise<string> }).renderPoster(spec, b, n, 1200, 1600),
-      [f.bottle, brand, f.name] as const,
-    );
-    const png = Buffer.from(dataUrl.split(',')[1], 'base64');
-    await sharp(png).resize(900, 1200).webp({ quality: 84, alphaQuality: 90, effort: 5 }).toFile(path.join(ROOT, `public/bottles/${f.slug}.webp`));
+    try {
+      const dataUrl: string = await page.evaluate(
+        ([spec, b, n]) => (window as unknown as { renderPoster: (...a: unknown[]) => Promise<string> }).renderPoster(spec, b, n, 1200, 1600),
+        [f.bottle, brand, f.name] as const,
+      );
+      const png = Buffer.from(dataUrl.split(',')[1], 'base64');
+      if (asPng) await sharp(png).resize(600, 800).png().toFile(path.join(outDir, `${f.slug}.png`));
+      else await sharp(png).resize(900, 1200).webp({ quality: 84, alphaQuality: 90, effort: 5 }).toFile(path.join(outDir, `${f.slug}.webp`));
+    } catch (e) {
+      console.error(`[${f.slug}] render failed: ${(e as Error).message.split('\n')[0]}`);
+      continue;
+    }
   }
   if (f.has3d) {
     const b64: string = await page.evaluate(

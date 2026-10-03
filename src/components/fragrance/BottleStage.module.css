@@ -1,12 +1,13 @@
 .stage {
   display: grid;
   justify-items: center;
-  gap: var(--s-4);
+  gap: var(--s-3);
 }
 .frame {
   position: relative;
   width: min(100%, 520px);
   aspect-ratio: 3 / 4;
+  perspective: 1400px;
 }
 .frame canvas {
   position: absolute;
@@ -23,14 +24,108 @@
 .stage[data-mode='3d'] .frame canvas {
   opacity: 1;
 }
+
+/* The object: leans toward the pointer, dips when the atomizer is pressed. */
+.object {
+  position: absolute;
+  inset: 0;
+  --rx: 0deg;
+  --ry: 0deg;
+  --sx: 50%;
+  --sy: 30%;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: opacity 600ms var(--ease-evaporate);
+  animation: settle 900ms var(--ease-settle) both;
+}
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+}
+.object[data-pressing] {
+  animation: press 420ms var(--ease-standard);
+}
+@keyframes press {
+  30% {
+    transform: translateY(3px) rotateX(var(--rx)) rotateY(var(--ry)) scaleY(0.992);
+  }
+}
+.stage[data-mode='3d'] .object {
+  opacity: 0;
+  pointer-events: none;
+}
 .poster {
   object-fit: contain;
-  transition: opacity 600ms var(--ease-evaporate);
 }
-/* Keep the poster in the accessibility tree; just let the canvas cover it. */
-.stage[data-mode='3d'] .poster {
+
+/* Sheen: a soft diagonal highlight that slides across the glass, masked to the bottle itself. */
+.sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(60% 45% at var(--sx) var(--sy), rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.08) 45%, transparent 70%);
+  mix-blend-mode: soft-light;
+  -webkit-mask: var(--mask) center / contain no-repeat;
+  mask: var(--mask) center / contain no-repeat;
+  transition: opacity 500ms var(--ease-evaporate);
+}
+.frame:hover .sheen {
+  opacity: 1;
+}
+
+/* Puff: a few droplets leave the nozzle when the atomizer is pressed. */
+.puff {
+  position: absolute;
+  left: var(--nx);
+  top: var(--ny);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.puff i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent, #a79f93) 40%, white);
   opacity: 0;
 }
+.object[data-pressing] .puff i {
+  animation: puff 720ms var(--ease-evaporate) calc(110ms + var(--i) * 22ms) both;
+  --dx: calc((var(--i) - 4) * 9px);
+  --dy: calc(-26px - (var(--i) * 3px));
+}
+@keyframes puff {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.8);
+  }
+}
+
+/* Floor line the bottle stands on. */
+.floor {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 5.4%;
+  height: 1px;
+  background: color-mix(in oklab, var(--ink) 10%, transparent);
+  pointer-events: none;
+}
+
 .noImage {
   position: absolute;
   inset: 12% 18%;
@@ -56,7 +151,40 @@
   gap: var(--s-2) var(--s-4);
   min-height: 44px;
 }
-.hint {
+.hint,
+.credit {
   font-size: var(--t-micro);
   color: var(--fg-3);
+}
+.credit {
+  margin: 0;
+  text-align: center;
+}
+.credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Phones: the bottle shares the first screen with the name and the quick read. */
+@media (max-width: 719px) {
+  .frame {
+    width: auto;
+    height: min(42vh, 360px);
+    max-width: 100%;
+  }
+  .stage {
+    gap: var(--s-2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .object,
+  .object[data-pressing],
+  .object[data-pressing] .puff i {
+    animation: none;
+    transform: none;
+  }
+  .sheen {
+    display: none;
+  }
 }

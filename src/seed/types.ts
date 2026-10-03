@@ -137,40 +137,9 @@ export type FragranceStatus = 'current' | 'discontinued' | 'limited' | 'reformul
 export type MarketedFor = 'feminine' | 'masculine' | 'shared' | 'unspecified';
 export type PriceBand = 'budget' | 'accessible' | 'premium' | 'luxury' | 'ultra';
 
-/** Parametric bottle used to build both the poster render and (optionally) the 3D model. */
-export interface BottleSpec {
-  body:
-    | 'cylinder' // straight round column
-    | 'flask' // flat rectangle with soft edges, like a hip flask
-    | 'block' // heavy squared cube / near-cube
-    | 'tall' // tall slim rectangle
-    | 'apothecary' // round body with shoulders and a neck
-    | 'tapered' // narrows toward the top
-    | 'orb' // sphere / squashed sphere
-    | 'faceted' // polygonal prism (6-8 sides)
-    | 'pebble'; // smooth flattened oval
-  /** Relative proportions. 1 = default for that body. */
-  width?: number;
-  height?: number;
-  /** Front-to-back thickness multiplier for flask/tall/block/pebble bodies (1 = default). */
-  depth?: number;
-  /** Cap size multipliers relative to the default cap for that shape. */
-  capWidth?: number;
-  capHeight?: number;
-  /** Optional second glass colour that the tint fades to toward the top (e.g. blue-to-black). */
-  glassGradient?: string;
-  glass: 'clear' | 'smoked' | 'frosted' | 'tinted';
-  glassTint?: string; // hex for tinted/smoked
-  liquid: string; // hex
-  fill?: number; // 0..1, default .85
-  cap: 'cylinder' | 'cube' | 'sphere' | 'tall' | 'disc' | 'faceted' | 'pebble' | 'dome';
-  capMaterial: 'gold' | 'silver' | 'gunmetal' | 'black' | 'white' | 'wood' | 'stone' | 'resin';
-  capColor?: string; // hex, for resin/stone/wood variation
-  collar: 'gold' | 'silver' | 'black' | 'none';
-  label: 'none' | 'plate' | 'printed' | 'paper';
-  labelColor?: string;
-  labelInk?: string;
-}
+import type { BottleSpec } from '@/lib/bottle/spec';
+import type { BottleSpecV1 } from '@/lib/bottle/legacy';
+export type { BottleSpec, BottleSpecV1 };
 
 /** Compact community block. Expanded into demo distributions by the seed generator. */
 export interface SeedCommunity {
@@ -269,7 +238,8 @@ export interface SeedFragrance {
   /** When each phase typically starts, minutes after spraying. */
   phases?: { heartAtMin: number; drydownAtMin: number };
   community: SeedCommunity;
-  bottle: BottleSpec;
+  /** v2 spec, or the first-generation preset description (converted to v2 when the catalogue is assembled). */
+  bottle: BottleSpec | BottleSpecV1;
   /** Scent accent colour for this fragrance page (hex). Muted, must not fight the UI. */
   accent: string;
   /** Only the flagship demo gets a 3D model. */

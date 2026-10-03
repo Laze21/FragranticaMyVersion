@@ -38,8 +38,8 @@ export function Hero({ f, similar }: { f: FragranceDetail; similar: SimilarGroup
         <div className={styles.stageCol}>
           <BottleStage
             name={f.name}
-            poster={f.poster}
-            posterAlt={f.posterAlt}
+            accent={f.accent}
+            image={f.poster ? { url: f.poster, alt: f.posterAlt, kind: f.posterKind, credit: f.posterCredit, license: f.posterLicense, sourceUrl: f.posterSource, nozzle: f.posterNozzle } : null}
             model={f.model ? { url: f.model.url, animations: { spray: f.model.animations.spray, open: f.model.animations.open } } : null}
           />
         </div>

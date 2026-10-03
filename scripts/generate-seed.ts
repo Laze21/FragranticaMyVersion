@@ -12,6 +12,10 @@ import { GLOSSARY } from '../src/seed/glossary';
 import { LISTS } from '../src/seed/lists';
 import { NOTES as BASE_NOTES } from '../src/seed/notes';
 import { CATALOG } from '../src/seed/real';
+import { BOTTLE_PHOTOS } from '../src/seed/images';
+
+const brandNameOf = Object.fromEntries(CATALOG.brands.map((b) => [b.slug, b.name]));
+import type { BottleSpec } from '../src/lib/bottle/spec';
 import type { Dimension, SeedFragrance, SeedNote, SeedReview } from '../src/seed/types';
 import { DIMENSIONS } from '../src/seed/types';
 import { USERS } from '../src/seed/users';
@@ -123,6 +127,7 @@ insert('public.data_sources', [
   { id: q(id.source('editorial')), slug: q('editorial-desk'), name: q('Editorial desk'), source_type: q('editorial'), homepage_url: 'null', license: q('proprietary'), share_alike: 'false', terms_url: 'null', notes: q('Our own research, summaries and character estimates.'), is_demo: 'false' },
   { id: q(id.source('community-demo')), slug: q('community-demo-baseline'), name: q('Demo community baseline'), source_type: q('community'), homepage_url: 'null', license: q('demo'), share_alike: 'false', terms_url: 'null', notes: q('Generated aggregate votes so the prototype has realistic distributions. Not real people.'), is_demo: 'true' },
   { id: q(id.source('renders')), slug: q('original-renders'), name: q('Original bottle renders'), source_type: q('editorial'), homepage_url: 'null', license: q('proprietary'), share_alike: 'false', terms_url: 'null', notes: q('Bottle images rendered in-house from parametric models. No third-party imagery.'), is_demo: 'false' },
+  { id: q(id.source('photos')), slug: q('bottle-photos'), name: q('Licensed bottle photographs'), source_type: q('public_dataset'), homepage_url: 'null', license: q('mixed'), share_alike: 'false', terms_url: 'null', notes: q('Product photographs used under their own licences (CC BY, CC BY-SA, CC0, written permission, or our own). Each asset row carries its licence, credit and source.'), is_demo: 'false' },
   { id: q(id.source('wikidata')), slug: q('wikidata'), name: q('Wikidata'), source_type: q('public_dataset'), homepage_url: q('https://www.wikidata.org'), license: q('CC0-1.0'), share_alike: 'false', terms_url: q('https://www.wikidata.org/wiki/Wikidata:Licensing'), notes: q('Brands, perfumers, parent companies, stable Q-IDs. Not used by the demo catalogue.'), is_demo: 'false' },
   { id: q(id.source('obf')), slug: q('open-beauty-facts'), name: q('Open Beauty Facts'), source_type: q('public_dataset'), homepage_url: q('https://world.openbeautyfacts.org'), license: q('ODbL-1.0'), share_alike: 'true', terms_url: q('https://world.openbeautyfacts.org/data'), notes: q('GTINs and INCI lists. Share-alike: stored in isolated tables, never merged into proprietary ones.'), is_demo: 'false' },
   { id: q(id.source('pubchem')), slug: q('pubchem'), name: q('PubChem'), source_type: q('public_dataset'), homepage_url: q('https://pubchem.ncbi.nlm.nih.gov'), license: q('public-domain'), share_alike: 'false', terms_url: q('https://www.ncbi.nlm.nih.gov/home/about/policies/'), notes: q('Aroma molecule identifiers and synonyms for note pages.'), is_demo: 'false' },
@@ -351,6 +356,44 @@ for (const f of FRAGRANCES) {
       animation_notes: 'null',
     });
   }
+  const photo = BOTTLE_PHOTOS.find((p) => p.slug === f.slug);
+  if (photo) {
+    assetRows.push({
+      id: q(seedId('asset', `${f.slug}:photo`)),
+      fragrance_id: q(fid),
+      kind: q('photo'),
+      url: q(`/bottles/${f.slug}.webp`),
+      width: '900',
+      height: '1200',
+      mime: q('image/webp'),
+      alt: q(`${f.name} by ${brandNameOf[f.brand] ?? f.brand}: ${f.bottleDescription ?? describeBottle(f)}`),
+      is_primary: 'true',
+      license: q(photo.license),
+      credit: q(photo.credit),
+      data_source_id: q(id.source('photos')),
+      status: q('approved'),
+      poster_url: photo.nozzle ? json(photo.nozzle) : 'null',
+      model_version: 'null',
+      animation_idle: 'null',
+      animation_spray: 'null',
+      animation_open: 'null',
+      animation_notes: 'null',
+    });
+    sourceRows.push({
+      id: q(seedId('claim', `${f.slug}:photo`)),
+      fragrance_id: q(fid),
+      data_source_id: q(id.source('photos')),
+      field: q('image'),
+      value: json({ kind: 'photo', license: photo.license, credit: photo.credit }),
+      source_url: photo.sourceUrl ? q(photo.sourceUrl) : 'null',
+      license: q(photo.license),
+      retrieved_at: q(photo.verifiedAt),
+      verified_at: q(photo.verifiedAt),
+      confidence: '1',
+      status: q('accepted'),
+      notes: photo.notes ? q(photo.notes) : 'null',
+    });
+  }
   if (f.has3d) {
     assetRows.push({
       id: q(seedId('asset', `${f.slug}:model`)),
@@ -577,18 +620,9 @@ console.log(
 );
 
 function describeBottle(f: SeedFragrance): string {
-  const b = f.bottle;
-  const body: Record<string, string> = {
-    cylinder: 'a round glass column',
-    flask: 'a flat flask',
-    block: 'a heavy square block',
-    tall: 'a tall slim rectangle',
-    apothecary: 'an apothecary bottle with a short neck',
-    tapered: 'a tapered bottle',
-    orb: 'a round orb',
-    faceted: 'a faceted bottle',
-    pebble: 'a smooth pebble-shaped bottle',
-  };
-  const glass = b.glass === 'clear' ? 'clear glass' : `${b.glass} glass`;
-  return `${body[b.body]} in ${glass} with a ${b.capMaterial} ${b.cap} cap`;
+  const b = f.bottle as BottleSpec;
+  const shape = b.body.kind === 'silhouette' ? 'a shaped' : b.body.plan === 'round' || b.body.plan === 'ellipse' ? 'a round' : b.body.plan === 'polygon' ? 'a faceted' : 'a rectangular';
+  const glass = b.glass.finish === 'clear' ? 'clear glass' : `${b.glass.finish} glass`;
+  const cap = b.cap.kind.startsWith('stopper') ? 'stopper' : 'cap';
+  return `${shape} ${glass} bottle with a ${b.cap.material.replace('glass-', '')} ${cap}`;
 }

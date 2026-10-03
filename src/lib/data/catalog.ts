@@ -11,11 +11,22 @@ const avgFromHist = (h: number[] | null | undefined) => {
   return total ? h.reduce((s, c, i) => s + c * (i + 1), 0) / total : null;
 };
 const emptyCharacter = (): Character => ({ overall: {}, opening: {}, heart: {}, drydown: {} });
+/** Photo assets keep the nozzle point (fractions of the image) in poster_url as JSON. */
+const parseNozzle = (v: unknown): { x: number; y: number } | null => {
+  if (!v) return null;
+  try {
+    const o = typeof v === 'string' ? JSON.parse(v) : v;
+    return o && typeof o.x === 'number' && typeof o.y === 'number' ? { x: o.x, y: o.y } : null;
+  } catch {
+    return null;
+  }
+};
 
 /** Shared SELECT for card-sized fragrance data. Expects aliases f, b, s, p. */
 export const CARD_COLUMNS = `
   f.id, f.slug, f.name, b.slug as brand_slug, b.name as brand_name, f.concentration, f.release_year, f.status, f.style,
-  f.price_band, f.accent_hex, f.phase_heart_min, f.phase_drydown_min, p.url as poster, p.alt as poster_alt,
+  f.price_band, f.accent_hex, f.phase_heart_min, f.phase_drydown_min, p.url as poster, p.alt as poster_alt, p.kind as poster_kind,
+  p.credit as poster_credit, p.license as poster_license, p.source_url as poster_source, p.nozzle as poster_nozzle,
   s.rating_avg, coalesce(s.rating_count, 0) as rating_count, coalesce(s.review_count, 0) as review_count, s.character,
   s.longevity_median_hrs, s.projection_opening_hist, s.projection_later_hist, coalesce(s.own_count, 0) as own_count,
   coalesce(s.trending, 0) as trending, coalesce(s.includes_baseline, false) as includes_baseline`;
@@ -24,10 +35,7 @@ export const CARD_FROM = `
   from public.fragrances f
   join public.brands b on b.id = f.brand_id
   left join public.fragrance_stats s on s.fragrance_id = f.id
-  left join lateral (
-    select a.url, a.alt from public.fragrance_assets a
-     where a.fragrance_id = f.id and a.kind = 'poster' and a.is_primary and a.status = 'approved' limit 1
-  ) p on true`;
+  left join public.fragrance_primary_image p on p.fragrance_id = f.id`;
 
 export type CardRow = Record<string, unknown>;
 
@@ -47,6 +55,11 @@ export function mapCard(r: CardRow): FragranceCard {
     accent: (r.accent_hex as string) ?? '#8a8f8c',
     poster: (r.poster as string) ?? null,
     posterAlt: (r.poster_alt as string) ?? null,
+    posterKind: r.poster_kind === 'photo' ? 'photo' : 'illustration',
+    posterCredit: (r.poster_credit as string) ?? null,
+    posterLicense: (r.poster_license as string) ?? null,
+    posterSource: (r.poster_source as string) ?? null,
+    posterNozzle: parseNozzle(r.poster_nozzle),
     ratingAvg: n(r.rating_avg),
     ratingCount: Number(r.rating_count ?? 0),
     reviewCount: Number(r.review_count ?? 0),
