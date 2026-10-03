@@ -138,7 +138,7 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
         if (Math.abs(diff) > 0.002) activeUntil = Math.max(activeUntil, now + 100);
       }
     }
-    pivot.rotation.x += (0 - pivot.rotation.x) * 0.12;
+    if (!dragging) pivot.rotation.x += (0 - pivot.rotation.x) * 0.12;
     scene.environmentRotation.y += (targetEnv.y - scene.environmentRotation.y) * 0.1;
     if (mistAge >= 0) {
       mistAge += dt;
@@ -146,11 +146,11 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
         mistPos[i * 3] += mistVel[i * 3] * dt;
         mistPos[i * 3 + 1] += mistVel[i * 3 + 1] * dt;
         mistPos[i * 3 + 2] += mistVel[i * 3 + 2] * dt;
-        mistVel[i * 3 + 1] += 0.05 * dt; // volatile: it rises
+        mistVel[i * 3 + 1] += 0.09 * dt; // volatile: it rises
       }
       mistGeo.attributes.position.needsUpdate = true;
-      mistMat.opacity = Math.max(0, 0.75 - mistAge * 0.9);
-      if (mistAge > 0.9) mistAge = -1;
+      mistMat.opacity = Math.max(0, 0.75 - mistAge * 0.65);
+      if (mistAge > 1.2) mistAge = -1;
     }
     renderer.render(scene, camera);
     if (now < activeUntil || dragging || Math.abs(yawVel) > 0.0004) raf = requestAnimationFrame(frame);
@@ -263,15 +263,25 @@ export async function mountViewer(container: HTMLElement, opts: ViewerOptions): 
         mistAge = 0;
       }
       const origin = nozzle ? toScreen(nozzle) : null;
-      await spray;
-      // Cap clicks back on after the mist has gone.
-      setTimeout(() => {
-        void play(opts.animations.open, -1.6).then(() => {
-          busy = false;
-          lastInteraction = performance.now();
-          kick(4000);
-        });
-      }, 1600);
+      // Hand the nozzle point over while the canvas mist is still in the air, so the page mist
+      // continues the same puff instead of starting a second one.
+      void spray.then(() => {
+        // Cap clicks back on after the mist has gone: the lid returns, the bottle dips for two frames.
+        setTimeout(() => {
+          void play(opts.animations.open, -1.6).then(() => {
+            pivot.position.y = -0.004;
+            kick(80);
+            setTimeout(() => {
+              pivot.position.y = 0;
+              kick(60);
+            }, 70);
+            busy = false;
+            // Hold face-on while the reader looks at the Trail; drift back only much later.
+            lastInteraction = performance.now() + 8500;
+            kick(200);
+          });
+        }, 1600);
+      });
       return origin;
     },
     dispose() {

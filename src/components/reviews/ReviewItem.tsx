@@ -5,7 +5,9 @@ import { useState, useTransition } from 'react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Icon } from '@/components/Icon';
 import { toast } from '@/components/ui/Toaster';
-import { addComment, listComments, reportContent, toggleHelpful } from '@/app/actions/reviews';
+import { addComment, deleteMyReview, listComments, reportContent, toggleHelpful } from '@/app/actions/reviews';
+import { useViewer } from '@/components/viewer/ViewerProvider';
+import { useRouter } from 'next/navigation';
 import type { ReviewView } from '@/lib/data/types';
 import { EXPERIENCE_LABEL, REVIEW_FOCUS } from '@/lib/scent/vocab';
 import { relativeDays } from '@/lib/scent/read';
@@ -26,9 +28,23 @@ export function ReviewItem({ review, helpfulByMe = false, showFragrance = false,
   const [comments, setComments] = useState<Awaited<ReturnType<typeof listComments>> | null>(null);
   const [draft, setDraft] = useState('');
   const [reporting, setReporting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [pending, start] = useTransition();
+  const { viewer } = useViewer();
+  const router = useRouter();
+  const mine = !!viewer && viewer.handle === review.author.handle;
 
-  if (review.status === 'deleted') {
+  const onDelete = () =>
+    start(async () => {
+      const res = await deleteMyReview(review.id);
+      if (!res.ok) return toast(res.error, 'error');
+      setDeleted(true);
+      toast('Review deleted.');
+      router.refresh();
+    });
+
+  if (review.status === 'deleted' || deleted) {
     return (
       <article className={styles.review} data-deleted>
         <p className={styles.deleted}>
@@ -124,9 +140,34 @@ export function ReviewItem({ review, helpfulByMe = false, showFragrance = false,
           <button type="button" className={styles.action} onClick={openComments} aria-expanded={comments !== null}>
             <Icon name="comment" size={15} /> {review.commentCount ? review.commentCount : 'Reply'}
           </button>
-          <button type="button" className={styles.action} onClick={() => setReporting((r) => !r)} aria-expanded={reporting}>
-            <Icon name="flag" size={15} /> <span className="visually-hidden">Report</span>
-          </button>
+          {mine ? (
+            <>
+              {review.fragrance?.slug && (
+                <Link href={`/fragrance/${review.fragrance.slug}/review`} className={styles.action}>
+                  Edit
+                </Link>
+              )}
+              {confirmDelete ? (
+                <span className={styles.confirm}>
+                  Delete this review?{' '}
+                  <button type="button" className={styles.action} onClick={onDelete} disabled={pending}>
+                    Yes, delete
+                  </button>
+                  <button type="button" className={styles.action} onClick={() => setConfirmDelete(false)}>
+                    Keep it
+                  </button>
+                </span>
+              ) : (
+                <button type="button" className={styles.action} onClick={() => setConfirmDelete(true)}>
+                  Delete
+                </button>
+              )}
+            </>
+          ) : (
+            <button type="button" className={styles.action} onClick={() => setReporting((r) => !r)} aria-expanded={reporting}>
+              <Icon name="flag" size={15} /> <span className="visually-hidden">Report</span>
+            </button>
+          )}
         </footer>
         {reporting && (
           <div className={styles.report}>

@@ -53,9 +53,8 @@ test.describe('account flows', () => {
     await page.waitForURL(/\/fragrance\/philosykos/);
     await expect(page.getByText(/garden in August/)).toBeVisible();
     await expect(page.getByText(/gift|free/i).first()).toBeVisible();
-    await page.getByRole('button', { name: /delete/i }).first().click();
-    const confirm = page.getByRole('button', { name: /delete/i }).first();
-    if (await confirm.isVisible().catch(() => false)) await confirm.click();
+    await page.getByRole('button', { name: /^delete$/i }).first().click();
+    await page.getByRole('button', { name: /yes, delete/i }).click();
     await expect(page.getByText(/garden in August/)).toBeHidden();
   });
 
