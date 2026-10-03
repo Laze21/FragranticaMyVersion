@@ -29,7 +29,7 @@ const EXAMPLES = ['vanilla without tobacco', 'fresh that lasts 8 hours', 'rainy 
  * notes and perfumers; Enter on free text goes to Discover, which interprets sentences.
  * Press "/" anywhere to focus. On phones it opens as a full-screen sheet.
  */
-export function SearchBox() {
+export function SearchBox({ inline, autoFocus }: { inline?: boolean; autoFocus?: boolean } = {}) {
   const router = useRouter();
   const id = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,15 +54,13 @@ export function SearchBox() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // The phone panel is fixed over the page; the page keeps its scrollbar (no overflow toggling).
   useEffect(() => {
-    if (sheet) {
-      inputRef.current?.focus();
-      document.documentElement.style.overflow = 'hidden';
-      return () => {
-        document.documentElement.style.overflow = '';
-      };
-    }
+    if (sheet) inputRef.current?.focus();
   }, [sheet]);
+  useEffect(() => {
+    if (autoFocus) inputRef.current?.focus({ preventScroll: true });
+  }, [autoFocus]);
 
   useEffect(() => {
     const term = q.trim();
@@ -105,7 +103,7 @@ export function SearchBox() {
   let lastGroup = '';
 
   return (
-    <div className={styles.wrap} data-sheet={sheet || undefined}>
+    <div className={styles.wrap} data-sheet={sheet || undefined} data-inline={inline || undefined}>
       <button type="button" className={styles.trigger} aria-label="Search" onClick={() => setSheet(true)}>
         <Icon name="search" />
       </button>
@@ -171,7 +169,7 @@ export function SearchBox() {
           <div className={styles.dropdown}>
             {q.trim().length < 2 ? (
               <div className={styles.examples}>
-                <p className="t-label">Try asking</p>
+                <p className="t-label">Try one of these</p>
                 <ul role="list">
                   {EXAMPLES.map((ex) => (
                     <li key={ex}>

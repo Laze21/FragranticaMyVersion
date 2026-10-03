@@ -1,4 +1,9 @@
-.plate {
+/*
+ * Floor variant: no box. The bottle stands on a shared floor rule at its real height; the
+ * render's own contact shadow does the grounding. Nothing moves on hover, so reduced motion
+ * has nothing to suppress.
+ */
+.card {
   position: relative;
   display: grid;
   gap: 10px;
@@ -6,48 +11,126 @@
 }
 .ground {
   position: relative;
-  aspect-ratio: 4 / 5;
-  background: var(--scent-wash);
-  overflow: hidden;
+  height: 240px;
+  background: none;
   --trail-gap: var(--porcelain);
+}
+.ground::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+/* A tall slot keeps the floor at 240px; the plate idiom stays a 4:5 tinted ground with its counter. */
+.card[data-variant='plate'] .ground {
+  height: auto;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(var(--scent-wash) 0 60%, var(--scent-wash-2));
+}
+.card[data-variant='plate'] .ground::after {
+  display: none;
+}
+.object {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 .img {
   object-fit: contain;
-  object-position: center 62%;
-  transition: transform var(--d-slow) var(--ease-evaporate);
+  object-position: center bottom;
 }
-.plate:hover .img {
-  transform: scale(1.025);
-}
-.noImgPlate {
+/* The faint bottle behind the image, so a slow poster never leaves a blank slot. */
+.ghost {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: var(--t-micro);
-  color: var(--fg-3);
+  left: 50%;
+  bottom: 14px;
+  translate: -50% 0;
+  color: var(--stone-2);
 }
 .status {
   position: absolute;
-  left: 8px;
+  left: 0;
   top: 8px;
-  font-size: 11px;
+  z-index: 2;
+  font-size: var(--t-micro);
   font-weight: 650;
   font-stretch: 88%;
-  padding: 3px 8px;
-  background: var(--paper);
-  color: var(--oxblood);
+  line-height: 1;
+  padding: 5px 8px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
+  color: var(--ink);
+}
+.corner {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.compare {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+.compare input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+.card:hover .compare,
+.card:focus-within .compare,
+.compare:has(input:checked) {
+  opacity: 1;
+}
+@media (pointer: coarse) {
+  .compare {
+    opacity: 1;
+    width: 44px;
+    height: 44px;
+    margin: -8px -8px 0 0;
+  }
+}
+/* "ill.": an illustration, not a product photo. Shown on hover or focus, and always on rows. */
+.ill {
+  position: absolute;
+  right: 2px;
+  bottom: 6px;
+  z-index: 2;
+  font-size: var(--t-micro);
+  font-weight: 600;
+  font-stretch: 88%;
+  color: var(--fg-3);
+  opacity: 0;
+  transition: opacity var(--d-quick) var(--ease-standard);
+}
+.card:hover .ill,
+.card:focus-within .ill {
+  opacity: 1;
 }
 .body {
   display: grid;
   gap: 4px;
   min-width: 0;
 }
+.body > * {
+  min-width: 0;
+}
 .brand {
-  font-size: var(--t-micro);
+  font-size: var(--t-label);
   font-weight: 600;
-  color: var(--fg-3);
+  color: var(--fg-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,16 +138,18 @@
 .name {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 420;
-  font-size: 1.22rem;
+  font-weight: 400;
+  font-size: var(--t-name);
   line-height: 1.15;
   overflow-wrap: anywhere;
+  /* A horizontal shelf sets --card-name-lines: 2 so every bottle's data line shares a baseline. */
+  min-height: calc(var(--card-name-lines, 1) * 1lh);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-/* The whole plate is the link target, but only the name is announced. */
+/* The whole card is the link target, but only the name is announced. */
 .link {
   text-decoration: none;
 }
@@ -73,23 +158,25 @@
   position: absolute;
   inset: 0;
 }
-.link:hover {
+.link:hover,
+.card:hover .link {
   text-decoration: underline;
 }
 .trail {
   width: 100%;
+  max-width: 180px;
   height: auto;
   margin: 2px 0;
 }
-.foot {
+.data {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
-  font-size: var(--t-micro);
+  font-size: var(--t-label);
   color: var(--fg-2);
 }
-.foot > span:first-child {
+.dataText {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,20 +185,25 @@
 .rating {
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
   white-space: nowrap;
+  flex: none;
 }
 .rating b {
-  font-size: 0.95rem;
+  font-size: calc(var(--t-micro) * 1.25); /* 15px: a hair above the data line, below the name */
   color: var(--ink);
   font-weight: 650;
 }
 .rating small {
-  font-size: 11px;
+  font-size: var(--t-micro);
   color: var(--fg-3);
 }
+.reason {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+  text-wrap: pretty;
+}
 
-/* Row variant */
+/* Row variant: a ranked line. No ground, no Trail; the two-word character lives in the data. */
 .row {
   position: relative;
   display: grid;
@@ -125,24 +217,24 @@
   grid-template-columns: 56px minmax(0, 1fr) auto;
 }
 .rank {
-  font-size: 1.4rem;
-  font-weight: 560;
-  font-stretch: 80%;
-  font-variant-numeric: tabular-nums;
-  color: var(--fg-3);
-  width: 1.6em;
+  font-size: calc(var(--t-micro) * 2); /* 24px */
+  font-weight: 500;
+  font-stretch: 88%;
+  color: var(--ink-2);
+  width: 1.4em;
   text-align: right;
+  line-height: 1;
 }
 .rowThumb {
   position: relative;
   width: 56px;
   height: 70px;
-  background: var(--scent-wash);
-  overflow: hidden;
+  display: grid;
+  place-items: center;
 }
-.noImg {
-  position: absolute;
-  inset: 0;
+.rowImg {
+  object-fit: contain;
+  object-position: center bottom;
 }
 .rowBody {
   min-width: 0;
@@ -150,31 +242,32 @@
 .rowName {
   font-family: var(--font-serif);
   font-style: italic;
-  font-weight: 420;
-  font-size: 1.1rem;
+  font-weight: 400;
+  font-size: var(--t-name-s);
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .meta {
-  font-size: var(--t-micro);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: var(--t-label);
   color: var(--fg-3);
+}
+.meta > span:first-child {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.why {
-  font-size: var(--t-micro);
-  color: var(--fg-2);
-  margin-top: 2px;
-}
-.rowTrail {
-  margin-top: 6px;
-}
-.rowRating b {
-  font-size: 1rem;
-  font-weight: 650;
+.metric {
+  font-size: var(--t-small);
+  font-weight: 600;
+  font-stretch: 88%;
+  color: var(--ink-2);
+  white-space: nowrap;
 }
 .row[data-variant='mini'] .rowThumb {
   width: 48px;
@@ -182,4 +275,9 @@
 }
 .row[data-variant='mini'] {
   grid-template-columns: 48px minmax(0, 1fr) auto;
+}
+@media (max-width: 719px) {
+  .ground {
+    height: 200px;
+  }
 }

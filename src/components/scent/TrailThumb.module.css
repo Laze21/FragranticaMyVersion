@@ -1,0 +1,30 @@
+.thumb {
+  display: block;
+  overflow: visible;
+}
+.ruler line {
+  stroke: var(--stone-2);
+  stroke-width: 1;
+}
+/* The cut-paper edge that keeps pale top bands from dissolving into porcelain. */
+.outline {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.22;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.endLabel line {
+  stroke: var(--ink);
+  stroke-opacity: 0.25;
+  stroke-width: 1;
+}
+.endLabel text {
+  font: 600 var(--t-micro) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--porcelain);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}

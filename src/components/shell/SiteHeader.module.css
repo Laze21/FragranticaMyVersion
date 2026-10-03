@@ -5,6 +5,10 @@
   z-index: 40;
   background: var(--porcelain);
   border-bottom: 1px solid var(--line);
+  transition: transform var(--d-standard) var(--ease-evaporate);
+}
+.header[data-hidden] {
+  transform: translateY(-100%);
 }
 .inner {
   height: var(--header-h);
@@ -12,6 +16,7 @@
   align-items: center;
   gap: var(--s-5);
 }
+/* The masthead: the name in the publication's own face, natural case, beside the mark. */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -27,12 +32,11 @@
   color: var(--ink);
 }
 .wordmark {
-  font-size: 1.3rem;
-  font-weight: 720;
-  font-stretch: 118%;
-  letter-spacing: -0.035em;
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  font-weight: 500;
   line-height: 1;
-  text-transform: lowercase;
+  letter-spacing: -0.005em;
 }
 .search {
   flex: 1 1 auto;
@@ -54,7 +58,7 @@
   padding: 0 12px;
   text-decoration: none;
   font-size: var(--t-small);
-  font-weight: 560;
+  font-weight: 500;
   color: var(--fg-2);
   border-radius: var(--r-1);
 }
@@ -64,6 +68,7 @@
 }
 .navLink[aria-current='page'] {
   color: var(--ink);
+  font-weight: 600;
   box-shadow: inset 0 -2px 0 var(--ink);
   border-radius: 0;
 }
@@ -85,18 +90,34 @@
   background: none;
   border-radius: 50%;
 }
+/* The account menu: the overlay vocabulary. Raised paper, the stronger line, drift in, fade out. */
 .menu {
   position: absolute;
   right: 0;
   top: calc(100% + 6px);
   min-width: 240px;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-2);
   box-shadow: var(--shadow-pop);
   padding: 6px;
   display: grid;
   z-index: 50;
+  opacity: 0;
+  transition: opacity var(--d-exit) var(--ease-exit);
+}
+.menu[data-open] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--d-quick) var(--ease-evaporate),
+    transform var(--d-quick) var(--ease-evaporate);
+}
+@starting-style {
+  .menu[data-open] {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 .menuHead {
   display: grid;
@@ -126,8 +147,61 @@
 .menu button:hover {
   background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
+/* Phones: a 44px Browse control opens the site as a sheet; Sign in lives in the tab bar. */
+.browse {
+  display: none;
+}
+.browseList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.browseGroup {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+.browseGroup:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.browseLabel {
+  margin-bottom: 4px;
+}
+.browseList a,
+.browseList button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  font-size: var(--t-body);
+  font-weight: 500;
+  border-radius: var(--r-1);
+}
+.browseList a[aria-current='page'] {
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--ink);
+  padding-left: 12px;
+}
+.browseList a:hover,
+.browseList button:hover {
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+}
+.browseSignOut {
+  color: var(--fg-2);
+}
 
 @media (min-width: 1100px) {
+  .header[data-hidden] {
+    transform: none;
+  }
   .nav {
     display: block;
     margin-left: auto;
@@ -142,6 +216,26 @@
     gap: var(--s-3);
   }
   .wordmark {
-    font-size: 1.15rem;
+    font-size: var(--t-name);
+  }
+  .signin,
+  .account {
+    display: none;
+  }
+  .browse {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    border-radius: var(--r-1);
+    flex: none;
+  }
+  /* With the search present, Browse sits after it; the search's own trigger pushes right. */
+  .inner[data-search] .browse {
+    margin-left: 0;
   }
 }

@@ -203,6 +203,18 @@
     background: var(--porcelain);
     padding: 10px var(--gutter);
     padding-top: calc(10px + env(safe-area-inset-top));
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  /* In the page (the 404), the field is simply there at every width. */
+  .wrap[data-inline] {
+    display: block;
+  }
+  .wrap[data-inline] .trigger {
+    display: none;
+  }
+  .wrap[data-inline] .panel {
+    display: block;
   }
   .wrap[data-sheet] .dropdown {
     position: static;

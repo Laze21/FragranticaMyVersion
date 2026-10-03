@@ -1,33 +1,51 @@
 .list {
   display: grid;
-  gap: 8px;
+  gap: 0;
   margin: 0;
   padding: 0;
 }
-.list li {
+.row {
   display: grid;
-  grid-template-columns: 7.5em 1fr;
-  align-items: center;
-  gap: 12px;
+  gap: 3px;
+  height: 24px;
+  align-content: center;
+}
+.line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: var(--t-label);
+  line-height: 1;
 }
 .name {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: var(--t-small);
   font-weight: 600;
 }
-.name i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--fg-2);
 }
 .track {
-  height: 10px;
-  background: var(--bg-sunk);
+  display: block;
+  height: 6px;
+  background: var(--linen);
   position: relative;
+  overflow: hidden;
 }
-.track span {
+.fill {
   position: absolute;
   inset: 0 auto 0 0;
+  background: var(--bar-hue, var(--scent-ink));
+  transition: width var(--d-slow) var(--ease-evaporate);
+}
+/* the end cap: a darker tip so the bar reads as a drawn mark, not a progress bar */
+.fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: color-mix(in oklab, var(--bar-hue, var(--scent-ink)) 60%, var(--ink));
 }

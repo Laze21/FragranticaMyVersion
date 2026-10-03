@@ -1,3 +1,4 @@
+/* Sunk surface, one line, never taller than 36px. */
 .banner {
   background: var(--linen);
   font-size: var(--t-micro);
@@ -8,14 +9,21 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 34px;
+  height: 36px;
+}
+.text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .banner button {
+  flex: none;
   border: 0;
   background: none;
   font-weight: 600;
   font-size: var(--t-micro);
-  min-height: 34px;
+  min-height: 36px;
   padding: 0 4px;
   color: var(--fg-2);
 }

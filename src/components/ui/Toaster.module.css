@@ -9,37 +9,68 @@
   pointer-events: none;
   width: min(92vw, 420px);
 }
+/* Ink on porcelain, the house colours inverted: a toast is the one dark surface in the product. */
 .toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   background: var(--ink);
   color: var(--porcelain);
-  padding: 12px 16px;
+  padding: 10px 10px 10px 16px;
+  min-height: 44px;
   border-radius: var(--r-2);
   font-size: var(--t-small);
   box-shadow: var(--shadow-pop);
-  animation: rise var(--d-standard) var(--ease-evaporate);
+  pointer-events: auto;
+  transition:
+    opacity var(--d-standard) var(--ease-evaporate),
+    transform var(--d-standard) var(--ease-evaporate);
 }
-.toast[data-tone='error'] {
-  background: var(--oxblood);
-}
-@keyframes rise {
-  from {
+@starting-style {
+  .toast {
     opacity: 0;
     transform: translateY(6px);
   }
 }
-.toast {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+.toast[data-leaving] {
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--toast-exit) var(--ease-exit),
+    transform var(--toast-exit) var(--ease-exit);
 }
-.toast button {
-  pointer-events: auto;
+.toast[data-tone='error'] {
+  background: var(--oxblood);
+}
+.text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.action {
   border: 0;
   background: none;
   color: var(--bergamot);
   font-weight: 650;
   font-size: var(--t-small);
-  min-height: 32px;
-  padding: 0 4px;
+  min-height: 36px;
+  padding: 0 6px;
+  flex: none;
+}
+.action:hover {
+  text-decoration: underline;
+}
+.close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px -10px -4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  flex: none;
+  border-radius: var(--r-1);
+}
+.close:hover {
+  background: rgb(255 255 255 / 0.12);
 }

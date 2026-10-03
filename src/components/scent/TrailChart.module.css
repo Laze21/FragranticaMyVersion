@@ -7,54 +7,176 @@
   touch-action: pan-y;
   cursor: crosshair;
 }
+.plot[data-coarse] {
+  touch-action: none;
+}
+.svg {
+  display: block;
+  overflow: visible;
+}
+
+/* ---- draw-on: once per visit, from the nose ---- */
+.figure[data-drawn='pending'] .bands {
+  clip-path: inset(0 100% 0 0);
+}
+.figure[data-drawn='done'] .bands {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--d-signature) var(--ease-evaporate);
+}
+.figure[data-drawn='pending'] .rules,
+.figure[data-drawn='pending'] .labels {
+  opacity: 0;
+}
+.figure[data-drawn='done'] .rules {
+  opacity: 1;
+  transition: opacity var(--d-standard) var(--ease-standard) 500ms;
+}
+.figure[data-drawn='done'] .labels {
+  opacity: 1;
+  transition: opacity var(--d-standard) var(--ease-standard) 700ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .figure[data-drawn='done'] .rules,
+  .figure[data-drawn='done'] .labels {
+    transition-delay: 0s;
+  }
+}
+
+/* ---- under the bands: the skin line and the thickness guides ---- */
+.skin {
+  stroke: var(--ink);
+  stroke-opacity: 0.3;
+  stroke-width: 2;
+}
+.guide {
+  stroke: var(--ink);
+  stroke-opacity: 0.1;
+  stroke-width: 1;
+  stroke-dasharray: 1 3;
+}
+.guideLabel {
+  font: 500 var(--t-micro) var(--font-sans);
+  fill: var(--fg-3);
+  paint-order: stroke;
+  stroke: var(--porcelain);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+/* ---- phase ruler ---- */
+.phaseRule {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 1 3;
+}
+.phaseLabel {
+  font: 600 var(--t-label) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--fg-2);
+}
+.phaseWindow {
+  font-weight: 500;
+  fill: var(--fg-3);
+}
+
+/* ---- the trail ---- */
 .band {
   transition: opacity var(--d-standard) var(--ease-standard);
 }
-.plot:hover .band {
-  opacity: 0.94;
-}
-.phaseLabel {
-  font: 600 11.5px var(--font-sans);
-  font-stretch: 88%;
-  fill: var(--fg-3);
-}
-.bandLabel {
-  font: 600 11px var(--font-sans);
-  font-stretch: 88%;
-  fill: rgb(28 26 23 / 0.78);
-  pointer-events: none;
-}
-.bandLabel[data-dark] {
-  fill: rgb(251 250 247 / 0.92);
-}
-.endLine {
+.outline {
+  fill: none;
   stroke: var(--ink);
-  stroke-dasharray: 2 4;
+  stroke-opacity: 0.22;
   stroke-width: 1;
-  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
 }
-.endLabel {
-  font: 500 11px var(--font-sans);
-  fill: var(--fg-3);
+.bandEdge {
+  transition: transform var(--d-instant) linear;
 }
-.scrub {
+.bandEdge line {
   stroke: var(--ink);
-  stroke-width: 1.2;
+  stroke-width: 1;
 }
+
+/* ---- labels ---- */
+.bandLabel {
+  font: 600 var(--t-micro) var(--font-sans);
+  pointer-events: none;
+  fill: var(--ink);
+}
+.bandLabel[data-ink='paper'] {
+  fill: var(--paper);
+}
+.endLabel line {
+  stroke: var(--ink);
+  stroke-opacity: 0.25;
+  stroke-width: 1;
+}
+.endLabel text {
+  font: 600 var(--t-micro) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--ink);
+  paint-order: stroke;
+  stroke: var(--porcelain);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+/* ---- axis ---- */
 .axis line {
   stroke: var(--line-strong);
 }
 .axis text {
-  font: 500 11px var(--font-sans);
+  font: 500 var(--t-micro) var(--font-sans);
   font-variant-numeric: tabular-nums;
   fill: var(--fg-3);
 }
+.longevityTick line {
+  stroke: var(--ink);
+}
+.longevityTick text {
+  font-weight: 600;
+  fill: var(--fg-2);
+}
+
+/* ---- scrubber ---- */
+.nib {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.scrubLine {
+  position: absolute;
+  left: -1px;
+  width: 2px;
+  background: var(--ink);
+  opacity: 0.55;
+  pointer-events: none;
+  transition: transform var(--d-instant) linear, opacity var(--d-quick) var(--ease-standard);
+}
+.scrubLine[data-mode='keys'] {
+  transition: transform var(--d-quick) var(--ease-standard), opacity var(--d-quick) var(--ease-standard);
+}
+.scrubLine[data-active] {
+  opacity: 1;
+}
+.scrubLine i {
+  position: absolute;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--porcelain);
+  box-sizing: border-box;
+}
 .tip {
   position: absolute;
-  top: 18px;
+  top: 24px;
   width: 180px;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-2);
   box-shadow: var(--shadow-pop);
   padding: 10px 12px;
@@ -62,6 +184,13 @@
   gap: 4px;
   font-size: var(--t-micro);
   pointer-events: none;
+  animation: tip-in var(--d-quick) var(--ease-evaporate);
+}
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 .tip strong {
   font-size: var(--t-small);
@@ -75,24 +204,75 @@
   align-items: center;
   gap: 6px;
 }
-.tipRow i {
+.tipRow i,
+.readoutDim i {
   width: 10px;
   height: 10px;
-  border-radius: 2px;
+  flex: none;
+  box-shadow: inset 0 0 0 1px rgb(28 26 23 / 0.2);
 }
 .tipRow b {
   margin-left: auto;
   font-variant-numeric: tabular-nums;
 }
+
+/* The fixed readout for touch: time, projection word, top three, always there. */
+.readout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  margin: 2px 0 0;
+  padding: 0 2px;
+  border-top: 1px solid var(--line);
+  font-size: var(--t-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.readout > b {
+  color: var(--ink);
+  font-weight: 650;
+}
+.readoutDim {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.readoutDim b {
+  color: var(--ink);
+}
+
 .slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 6px;
   min-height: 28px;
   border-radius: var(--r-1);
+  font-size: var(--t-small);
+  color: var(--fg-3);
+}
+.glyph {
+  width: 20px;
+  height: 8px;
+  color: var(--ink);
+  flex: none;
+}
+.sliderWord {
+  font-weight: 650;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.sliderHint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 @media (pointer: coarse) {
   .slider {
     min-height: 44px;
-    display: flex;
-    align-items: center;
   }
 }

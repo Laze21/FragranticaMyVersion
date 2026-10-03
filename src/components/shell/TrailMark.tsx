@@ -1,9 +1,32 @@
-/** The logo mark is a Trail in miniature: a nib, a swell, a long taper. */
-export function TrailMark({ className }: { className?: string }) {
+import { markGeometry } from '@/lib/scent/trail';
+import styles from './TrailMark.module.css';
+
+/**
+ * The logo mark is a Trail in miniature, generated from the same geometry as every chart
+ * (see `markGeometry` in trail.ts). It is the favicon, the glyph before the word "Trail" in
+ * chart captions, the wordmark's companion and, with `drawing`, the loading indicator.
+ */
+const MARK = markGeometry(40, 16);
+
+/**
+ * `drawing` makes it the loading indicator: the mark draws on from the nose, once per second,
+ * the same clip reveal the full chart uses. Reduced motion shows it complete.
+ */
+export function TrailMark({ className, drawing = false, label }: { className?: string; drawing?: boolean; label?: string }) {
   return (
-    <svg className={className} viewBox="0 0 40 16" aria-hidden="true" focusable="false">
-      <path d="M1 8C4 8 6 2.6 11 2.4 17 2.2 22 5 39 7.6 22 10.6 17 13.8 11 13.6 6 13.4 4 8 1 8Z" fill="currentColor" />
-      <path d="M11 2.4C17 2.2 22 5 39 7.6 26 7 18 6.4 11 2.4Z" fill="var(--porcelain)" opacity="0.38" />
+    <svg
+      className={[styles.mark, drawing ? styles.drawing : '', className ?? ''].join(' ').trim()}
+      viewBox="0 0 40 16"
+      aria-hidden={label ? undefined : 'true'}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      focusable="false"
+    >
+      <g className={styles.bands}>
+        {MARK.bands.map((b) => (
+          <path key={b.dim} d={b.path} fill="currentColor" opacity={b.opacity} />
+        ))}
+      </g>
     </svg>
   );
 }

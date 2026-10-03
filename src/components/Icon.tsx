@@ -31,6 +31,12 @@ const PATHS: Record<string, string> = {
   moon: 'M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10Z',
   snow: 'M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5',
   leaf: 'M5 19c0-8 5-13 14-14 0 9-5 14-13 14H5Zm0 0 8-8',
+  // spring: a seedling, two leaves off one stem
+  sprout: 'M12 21v-9M12 12c0-4 3-7 8-7 0 5-3 7-8 7ZM12 15c0-3-2.5-5-6-5 0 4 2.5 5 6 5Z',
+  // autumn: a leaf let go, falling on a short arc
+  'falling-leaf': 'M14 4c-6 1-10 5-10 11l10-10M4 15c6 1 10-3 10-11M4 15l-1 2M17 12c1.5 2 1.5 5 0 8',
+  // the browse sheet: an open book, spine in the middle
+  book: 'M12 6c-2-1.5-5-2-8-2v13c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2Zm0 0v13',
   rain: 'M7 15a4 4 0 0 1-.3-8 5.5 5.5 0 0 1 10.6 1.5A3.3 3.3 0 0 1 17 15H7ZM8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5',
   menu: 'M4 7h16M4 12h16M4 17h16',
   rotate: 'M20 12a8 8 0 1 1-2.3-5.7M20 4v4.5h-4.5',

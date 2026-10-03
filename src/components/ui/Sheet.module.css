@@ -1,5 +1,16 @@
+/*
+ * One overlay vocabulary (design plan, section 4): the sheet enters with a short rise on desktop
+ * and slides up from the bottom edge on phones, and it leaves faster than it came. The exit runs
+ * on the native close through `transition-behavior: allow-discrete`; browsers without it keep
+ * the old instant behaviour. The two phone durations are the plan's (360 in, 200 out) and go to
+ * zero with the rest of the ladder under reduced motion.
+ */
 .sheet {
-  border: 0;
+  --sheet-in: var(--d-standard);
+  --sheet-out: var(--d-exit);
+  --sheet-rise: 16px;
+  --sheet-drop: 8px;
+  border: 1px solid var(--line);
   padding: 0;
   background: var(--paper);
   color: var(--ink);
@@ -8,20 +19,45 @@
   border-radius: var(--r-3);
   box-shadow: var(--shadow-pop);
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(var(--sheet-drop));
+  transition:
+    opacity var(--sheet-out) var(--ease-exit),
+    transform var(--sheet-out) var(--ease-exit),
+    overlay var(--sheet-out) allow-discrete,
+    display var(--sheet-out) allow-discrete;
 }
 .sheet[data-wide] {
   width: min(880px, calc(100vw - 32px));
 }
+.sheet[open] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--sheet-in) var(--ease-evaporate),
+    transform var(--sheet-in) var(--ease-evaporate),
+    overlay var(--sheet-in) allow-discrete,
+    display var(--sheet-in) allow-discrete;
+}
+@starting-style {
+  .sheet[open] {
+    opacity: 0;
+    transform: translateY(var(--sheet-rise));
+  }
+}
 .sheet::backdrop {
+  background: rgb(28 26 23 / 0);
+  transition:
+    background var(--d-standard) var(--ease-standard),
+    overlay var(--d-standard) allow-discrete,
+    display var(--d-standard) allow-discrete;
+}
+.sheet[open]::backdrop {
   background: rgb(28 26 23 / 0.42);
 }
-.sheet[open] {
-  animation: up var(--d-slow) var(--ease-evaporate);
-}
-@keyframes up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
+@starting-style {
+  .sheet[open]::backdrop {
+    background: rgb(28 26 23 / 0);
   }
 }
 .inner {
@@ -37,11 +73,11 @@
   padding: 20px 20px 12px 24px;
 }
 .title {
-  font-size: var(--t-head);
-  font-weight: 640;
-  font-stretch: 112%;
-  letter-spacing: -0.012em;
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  font-weight: 500;
   line-height: 1.2;
+  text-wrap: balance;
 }
 .desc {
   margin-top: 4px;
@@ -66,6 +102,7 @@
   padding: 4px 24px 20px;
   overflow: auto;
   overscroll-behavior: contain;
+  outline: none;
 }
 .foot {
   display: flex;
@@ -77,11 +114,17 @@
 }
 @media (max-width: 719px) {
   .sheet {
+    --sheet-in: 360ms;
+    --sheet-out: 200ms;
+    --sheet-rise: 100%;
+    --sheet-drop: 100%;
     width: 100vw;
     max-width: 100vw;
     margin: auto 0 0;
     max-height: 90vh;
+    border: 0;
     border-radius: var(--r-3) var(--r-3) 0 0;
+    box-shadow: var(--shadow-sheet);
   }
   .sheet[data-wide] {
     width: 100vw;
@@ -102,5 +145,11 @@
   }
   .body {
     padding: 4px 16px 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sheet {
+    --sheet-in: 0ms;
+    --sheet-out: 0ms;
   }
 }

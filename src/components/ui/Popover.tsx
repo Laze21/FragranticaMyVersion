@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { usePresence } from './usePresence';
 import styles from './Popover.module.css';
 
 /**
  * Small non-modal popover anchored to a trigger. Opens on click/tap (and on hover for fine
- * pointers), closes on Escape or outside click, keeps focus on the trigger, and flips to stay
- * inside the viewport.
+ * pointers), closes on Escape or outside click, and flips to stay inside the viewport. Opened
+ * from the keyboard it moves focus to its first link or button and hands it back on Escape, so
+ * the content is never silently next in the Tab order.
  */
 export function Popover({
   trigger,
@@ -28,8 +30,10 @@ export function Popover({
   const btn = useRef<HTMLButtonElement>(null);
   const pop = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const viaKeyboard = useRef(false);
   const id = useId();
   const Wrap = as;
+  const present = usePresence(open);
 
   useLayoutEffect(() => {
     if (!open || !btn.current || !pop.current) return;
@@ -39,6 +43,9 @@ export function Popover({
     const above = b.bottom + p.height + 12 > window.innerHeight && b.top > p.height + 12;
     const left = Math.min(Math.max(8, b.left + b.width / 2 - p.width / 2), vw - p.width - 8);
     setPos({ left, top: above ? b.top - p.height - 8 : b.bottom + 8, above });
+    if (viaKeyboard.current) {
+      pop.current.querySelector<HTMLElement>('a, button, [tabindex="0"]')?.focus();
+    }
   }, [open]);
 
   useEffect(() => {
@@ -85,17 +92,22 @@ export function Popover({
         className={triggerClassName}
         aria-expanded={open}
         aria-controls={open ? id : undefined}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          // A click that arrives with a visible focus ring came from Enter or Space.
+          viaKeyboard.current = Boolean(btn.current?.matches(':focus-visible'));
+          setOpen((o) => !o);
+        }}
       >
         {trigger}
       </button>
-      {open && (
+      {present && (
         <div
           ref={pop}
           id={id}
           role="dialog"
           aria-label={label}
           className={styles.pop}
+          data-open={open || undefined}
           data-above={pos?.above || undefined}
           style={pos ? { left: pos.left, top: pos.top } : { visibility: 'hidden', left: 0, top: 0 }}
           onMouseEnter={enter}

@@ -1,0 +1,98 @@
+/* In-section: no box, a hairline on top, the mark, the sentence, the rule, the action. */
+.section {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+  max-width: var(--measure-read);
+}
+.mark {
+  color: var(--fg-3);
+  margin-bottom: 4px;
+}
+.serif {
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+.sans {
+  font-size: var(--t-small);
+  color: var(--fg-2);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+.action {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Discover: the sentence, the chips to loosen, and the three nearest cards. */
+.nothing {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.nearest {
+  width: 100%;
+  margin-top: var(--s-7);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+.nearestHead {
+  font-size: var(--t-h3);
+  font-weight: 600;
+  margin-bottom: var(--s-4);
+}
+
+/* Yours: the shelf plank with nothing on it but a dotted outline, and the action on the plank. */
+.yours {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding-top: var(--s-4);
+}
+.plank {
+  position: relative;
+  width: 100%;
+  height: 156px;
+  margin-bottom: var(--s-4);
+  color: var(--stone);
+}
+.outline {
+  position: absolute;
+  left: 24px;
+  bottom: 16px;
+  overflow: visible;
+}
+.top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 10px;
+  background: var(--ledge-top);
+}
+.front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: var(--ledge-front);
+  box-shadow: 0 10px 14px -10px rgb(28 26 23 / 0.5);
+}
+@media (max-width: 719px) {
+  .plank {
+    height: 132px;
+  }
+}

@@ -1,23 +1,39 @@
 .mark {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  z-index: 1;
-  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--t-micro);
   font-weight: 650;
   font-stretch: 88%;
-  padding: 3px 8px;
+  line-height: 1;
+  padding: 5px 8px 5px 6px;
   border-radius: var(--r-pill);
   background: var(--ink);
   color: var(--porcelain);
+  border: 1px solid var(--ink);
   pointer-events: none;
+  white-space: nowrap;
 }
 .mark[data-status='own'] {
   background: var(--juniper-ink);
+  border-color: var(--juniper-ink);
 }
-.mark[data-status='want'],
-.mark[data-status='want_sample'] {
-  background: var(--paper);
+/* Wanted, not owned: the outline, the way the shelf draws a bottle you do not have yet. */
+.mark[data-outline] {
+  background: transparent;
   color: var(--ink);
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+  border-color: var(--line-strong);
+}
+.mark[data-inline] {
+  padding: 3px 6px 3px 5px;
+}
+/* Shelf placement: the mark drops from above and settles, once, when the viewer puts it there. */
+.mark[data-settle] {
+  animation: settle 520ms var(--ease-settle) both;
+}
+@keyframes settle {
+  from {
+    transform: translateY(-9px);
+    opacity: 0.2;
+  }
 }

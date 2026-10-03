@@ -1,0 +1,47 @@
+.ledge {
+  position: relative;
+  display: grid;
+  gap: 0;
+  /* the plank bleeds a little past the bottles so the row reads as standing on it, not in it */
+  padding: 0 0 16px;
+}
+.label {
+  margin: 0 0 8px;
+  font-size: var(--t-label);
+  font-weight: 650;
+  color: var(--fg-2);
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--slot-min), 1fr));
+  align-items: end;
+  column-gap: var(--s-4, 16px);
+  padding: 0 6px;
+}
+.ledge[data-fixed] .row {
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+}
+.plank {
+  position: relative;
+  display: grid;
+  margin: 0 -6px;
+}
+.top {
+  display: block;
+  height: 10px;
+  background: var(--ledge-top);
+}
+.front {
+  display: block;
+  height: 6px;
+  background: var(--ledge-front);
+  box-shadow: 0 10px 14px -10px rgb(28 26 23 / 0.5);
+}
+@media (max-width: 719px) {
+  .row {
+    column-gap: var(--s-3, 12px);
+  }
+  .plank {
+    margin: 0 -16px;
+  }
+}

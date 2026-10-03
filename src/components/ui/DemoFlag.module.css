@@ -1,0 +1,33 @@
+/* The global .demo-flag draws the mark; this only strips the button chrome and gives it a hit area. */
+.flag {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+.flag:hover {
+  text-decoration-color: currentColor;
+}
+.head {
+  display: block;
+  font-weight: 650;
+  font-size: var(--t-small);
+  margin-bottom: 4px;
+}
+.body {
+  display: block;
+  color: var(--fg-2);
+}
+.more {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  min-height: 32px;
+  font-weight: 600;
+  font-size: var(--t-label);
+}

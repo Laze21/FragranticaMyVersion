@@ -15,30 +15,87 @@
     background: var(--porcelain);
     border-top: 1px solid var(--line);
   }
+  /* Each slot holds its place tab and its page action stacked; the labels crossfade. */
+  .slot {
+    position: relative;
+    display: grid;
+  }
+  .slot > * {
+    grid-area: 1 / 1;
+  }
   .tab {
     display: grid;
     justify-items: center;
     align-content: center;
-    gap: 2px;
+    gap: 3px;
+    width: 100%;
+    min-height: 44px;
+    height: var(--tabbar-h);
+    padding: 0;
+    border: 0;
+    background: none;
     text-decoration: none;
     color: var(--fg-3);
-    font-size: 11px;
+    font-size: var(--t-micro);
     font-weight: 560;
-    min-height: 44px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity var(--d-quick) var(--ease-standard);
   }
-  .tab[aria-current='page'] {
-    color: var(--ink);
+  .tab[aria-hidden='true'] {
+    opacity: 0;
+    pointer-events: none;
   }
-  .tab[data-primary] .icon {
+  .icon,
+  .slot[data-primary] .tab > span:first-child {
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 30px;
-    border-radius: var(--r-pill);
-    background: var(--ink);
-    color: var(--porcelain);
+    height: 24px;
   }
-  .tab[data-primary] {
+  /* Active: a 2px ink bar at the top and an ink label, never colour alone. */
+  .slot[data-active]::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: -1px;
+    height: 2px;
+    background: var(--ink);
+  }
+  .tab[aria-current='page'],
+  .slot[data-primary] .tab {
     color: var(--ink);
+  }
+  .bar[data-contextual] .tab {
+    color: var(--ink);
+  }
+  .sections {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sections a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 4px;
+    text-decoration: none;
+    font-size: var(--t-body);
+    font-weight: 500;
+    border-radius: var(--r-1);
+  }
+  .sections a[aria-current='location'] {
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--ink);
+    padding-left: 12px;
+  }
+  .sections a:hover {
+    background: color-mix(in oklab, var(--ink) 5%, transparent);
+  }
+  .sectionsMore {
+    margin-top: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
   }
 }

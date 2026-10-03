@@ -1,0 +1,25 @@
+.mark {
+  display: inline-block;
+  width: 40px;
+  height: 16px;
+  overflow: visible;
+}
+/* The loading indicator: the same reveal the chart uses, from the nose, over and over. */
+.drawing .bands {
+  animation: mark-draw 1.2s var(--ease-evaporate) infinite;
+}
+@keyframes mark-draw {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  70%,
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawing .bands {
+    animation: none;
+    clip-path: none;
+  }
+}

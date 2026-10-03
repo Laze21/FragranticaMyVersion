@@ -4,40 +4,39 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   min-height: 32px;
-  padding: 0 26px 0 10px;
+  padding: 4px 10px 4px 7px;
   background: var(--paper);
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
-  font-size: var(--t-small);
-  line-height: 1.1;
+  border: 1px solid var(--line);
+  border-radius: var(--r-1);
+  font-size: var(--t-label);
+  font-weight: 540;
+  line-height: 1.15;
+  overflow-wrap: normal;
+  hyphens: manual;
   cursor: pointer;
   color: var(--ink);
-  transition: background var(--d-quick) var(--ease-standard);
+  transition: border-color var(--d-quick) var(--ease-standard);
 }
 @media (pointer: coarse) {
   .tag {
-    min-height: 40px;
+    min-height: 44px;
   }
 }
 .tag:hover {
-  background: var(--white);
+  border-color: var(--line-strong);
+}
+.tag:hover .name {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 .tag:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 0;
-  clip-path: none;
+  box-shadow: inset 0 0 0 2px var(--focus);
 }
-.tip {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 22px;
-  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--note) 85%, transparent) 70%);
-}
-.name {
-  font-weight: 500;
+.tag:focus-visible .name {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 .name[data-emphasis] {
   font-weight: 650;
@@ -49,7 +48,7 @@
   font-weight: 600;
 }
 .flag {
-  font-size: 10.5px;
+  font-size: var(--t-micro);
   font-weight: 650;
   font-stretch: 88%;
   color: var(--oxblood);
@@ -63,7 +62,7 @@
 .popName {
   display: block;
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: var(--t-h3);
   margin: 2px 0 6px;
 }
 .popBody {

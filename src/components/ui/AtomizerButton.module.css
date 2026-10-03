@@ -1,0 +1,86 @@
+.btn {
+  position: relative;
+}
+.btn[data-spraying] {
+  animation: flash 300ms var(--ease-standard);
+}
+@keyframes flash {
+  0%,
+  60% {
+    background-color: var(--scent-wash);
+  }
+}
+.head {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.icon {
+  transform-origin: 50% 100%;
+  transition: transform 120ms var(--ease-standard);
+}
+/* The press: the head dips 1.5px and squashes, 140ms down, 120ms back. */
+[data-spraying] .icon {
+  animation: press 260ms var(--ease-standard);
+}
+@keyframes press {
+  0% {
+    transform: none;
+  }
+  54% {
+    transform: translateY(1.5px) scaleY(0.94);
+  }
+  100% {
+    transform: none;
+  }
+}
+.tab[data-spraying] .icon {
+  animation-name: dip;
+}
+@keyframes dip {
+  54% {
+    transform: translateY(1px);
+  }
+}
+/* The mist: droplets leave the nozzle, swell and fade, in the fragrance's accent. */
+.mist {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.mist i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: var(--scent, var(--ink-3));
+  opacity: 0;
+}
+[data-spraying] .mist i {
+  animation: mist 560ms var(--ease-evaporate) var(--delay) both;
+}
+@keyframes mist {
+  0% {
+    opacity: 0.55;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(2.2);
+  }
+}
+/* The tab-bar variant inherits the tab's own layout; it only brings the glyph and the droplet. */
+.tab {
+  all: unset;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-spraying] .icon,
+  [data-spraying] .mist i {
+    animation: none;
+  }
+}
