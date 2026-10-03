@@ -1,0 +1,61 @@
+.head {
+  display: flex;
+  gap: var(--s-5);
+  align-items: flex-start;
+  padding-bottom: var(--s-7);
+  border-bottom: 1px solid var(--line);
+}
+.id {
+  min-width: 0;
+  flex: 1;
+}
+.name {
+  font-size: var(--t-title-l);
+  overflow-wrap: anywhere;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 4px;
+  margin-top: 8px;
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.lock {
+  margin-right: 4px;
+  color: var(--fg-2);
+}
+.social {
+  color: var(--fg-3);
+}
+/* The shelf in one sentence: the serif subtitle, the one line a profile is really about. */
+.identity {
+  margin-top: var(--s-3);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif-l);
+  line-height: 1.3;
+  max-width: 44ch;
+  text-wrap: pretty;
+}
+.bio {
+  margin-top: var(--s-2);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.45;
+  color: var(--fg-2);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: var(--s-4);
+}
+@media (max-width: 719px) {
+  .head {
+    gap: var(--s-4);
+    padding-bottom: var(--s-6);
+  }
+}

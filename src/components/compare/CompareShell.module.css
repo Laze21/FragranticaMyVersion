@@ -1,0 +1,187 @@
+/*
+ * The frame around the compare rows. --cols is how many fragrances the URL holds; --vis is how
+ * many are on screen: the same, except under 1100px with four, where the pair control shows two.
+ * Rows in page.module.css lay out on --vis, so hiding a pair is one attribute, not a re-render.
+ */
+.table {
+  --label-w: 170px;
+  --vis: var(--cols);
+  position: relative;
+}
+
+/* Desktop and tablet: the column heads stick under the header on a 2px ink rule. */
+.sticky {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  display: grid;
+  grid-template-columns: var(--label-w) repeat(var(--vis), minmax(0, 1fr));
+  gap: var(--s-4);
+  padding: 10px 0;
+  background: var(--porcelain);
+  border-bottom: 2px solid var(--ink);
+}
+.corner {
+  align-self: center;
+}
+
+/* The × in a column head: a 32px mark with a 44px target on touch (.hit). */
+.remove {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-1);
+  color: var(--fg-3);
+  text-decoration: none;
+}
+.remove:hover {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+}
+
+/* A·B | C·D: two radios in one outlined pill, ink-filled when on. */
+.seg {
+  display: inline-flex;
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.seg button {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  font-size: var(--t-label);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--fg-2);
+}
+.seg button + button {
+  border-left: 1px solid var(--line-strong);
+}
+.seg button[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--porcelain);
+}
+
+/* Phone: the sticky pill row, 48px, under the header; it follows the header up when it hides. */
+.pillRow {
+  display: none;
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  background: var(--porcelain);
+  border-bottom: 1px solid var(--line);
+  transition: top var(--d-standard) var(--ease-evaporate);
+}
+.pillRow[data-header-hidden] {
+  top: 0;
+}
+.pills {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pills::-webkit-scrollbar {
+  display: none;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 11px 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: none;
+  font-size: var(--t-label);
+  white-space: nowrap;
+}
+.pillLetter {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.pillName {
+  display: block;
+  max-width: 10ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-small);
+}
+.addPill {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: none;
+}
+
+/* The pill's sheet: three 44px rows, or the picker with room for its list. */
+.sheetList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sheetRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+  text-decoration: none;
+  font-size: var(--t-body);
+}
+.sheetList li:last-child .sheetRow {
+  border-bottom: 0;
+}
+.sheetPicker {
+  min-height: 340px;
+  padding-top: 4px;
+}
+
+@media (max-width: 1099px) {
+  .table[data-cols='4'][data-pair] {
+    --vis: 2;
+  }
+  .table[data-pair='ab'] [data-col='2'],
+  .table[data-pair='ab'] [data-col='3'],
+  .table[data-pair='cd'] [data-col='0'],
+  .table[data-pair='cd'] [data-col='1'] {
+    display: none;
+  }
+}
+@media (min-width: 840px) and (max-width: 1099px) {
+  .table {
+    --label-w: 150px;
+  }
+}
+@media (max-width: 839px) {
+  .sticky {
+    display: none;
+  }
+  .pillRow {
+    display: flex;
+  }
+}

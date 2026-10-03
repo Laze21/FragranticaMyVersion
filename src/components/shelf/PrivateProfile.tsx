@@ -1,11 +1,29 @@
-import { Icon } from '@/components/Icon';
+import Link from 'next/link';
+import { FollowButton } from './FollowButton';
+import { ProfileHeader, type ProfileHeadData } from './ProfileHeader';
+import styles from './PrivateProfile.module.css';
 
-export function PrivateProfile({ name }: { name: string }) {
+/**
+ * A private profile keeps the header (the person is still a person) and says plainly what is
+ * kept back. Nothing on the page pretends there is more to see: one sentence, Follow when the
+ * viewer is signed in, and the way to the lists that are public anyway.
+ */
+export function PrivateProfile({ p, signedIn, following }: { p: ProfileHeadData; signedIn: boolean; following: boolean }) {
   return (
-    <div className="page" style={{ paddingTop: 'var(--s-10)', maxWidth: 560 }}>
-      <Icon name="lock" size={28} />
-      <h1 style={{ fontSize: 'var(--t-title-m)', fontWeight: 650, marginTop: 12 }}>{name} keeps their profile private</h1>
-      <p style={{ marginTop: 8, color: 'var(--fg-2)' }}>Their shelf, diary and lists are only visible to them.</p>
+    <div className={`page ${styles.page}`}>
+      <ProfileHeader
+        p={{ ...p, bio: null }}
+        locked
+        identity="Keeps their shelf, diary and lists private."
+        action={
+          <>
+            {signedIn && <FollowButton handle={p.handle} name={p.displayName} initial={following} />}
+            <Link href="/lists" className="btn btn--quiet">
+              Browse public lists
+            </Link>
+          </>
+        }
+      />
     </div>
   );
 }

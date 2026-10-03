@@ -1,41 +1,112 @@
 .page {
   padding-top: var(--s-7);
+  padding-bottom: var(--s-11);
+}
+/* Signed out: a reading-width introduction, then four bottles on a plank as the first shelf. */
+.intro {
+  max-width: var(--measure-read);
 }
 .title {
   font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
 }
 .lede {
-  margin-top: 12px;
-  max-width: 60ch;
+  margin-top: var(--s-4);
   font-family: var(--font-serif);
-  font-size: 1.2rem;
-  line-height: 1.5;
+  font-size: var(--t-serif-l);
+  line-height: 1.45;
   color: var(--fg-2);
+  text-wrap: pretty;
 }
-.h2 {
-  margin: var(--s-10) 0 var(--s-4);
-  font-size: var(--t-head);
-  font-weight: 650;
-  font-stretch: 112%;
+.actions {
+  margin-top: var(--s-6);
+  --cluster: var(--s-3);
 }
-.grid {
+.starters {
+  margin-top: var(--s-10);
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--s-6) var(--s-4);
-  margin: 0;
+  gap: var(--s-5);
 }
-@media (min-width: 720px) {
-  .grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+.ledge {
+  --card-name-lines: 2;
 }
 .welcome {
-  padding: 12px 16px;
-  background: color-mix(in oklab, var(--juniper) 18%, var(--paper));
   margin-bottom: var(--s-5);
+  padding: 10px 0 10px 14px;
+  border-left: 2px solid var(--juniper-ink);
   font-size: var(--t-small);
+  color: var(--fg-2);
+}
+
+/* Loading: the page's own proportions, so nothing jumps when the shelf arrives. */
+.skelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: 44px;
+}
+.skelTabs {
+  display: flex;
+  gap: 6px;
+  margin-top: var(--s-4);
+}
+.skelLayout {
+  display: grid;
+  gap: var(--s-9);
+  margin-top: var(--s-6);
+}
+.skelPlank {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  align-items: end;
+  padding: 0 6px;
+  height: 168px;
+  border-bottom: 10px solid var(--ledge-top);
+  box-shadow: 0 6px 0 var(--ledge-front);
+  margin-bottom: 30px;
+}
+.skelBottle {
+  width: 56px;
+  height: 128px;
+  justify-self: center;
+  border-radius: 3px 3px 0 0;
+}
+.skelCaps {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  padding: 0 6px;
+  margin-top: 14px;
+}
+.skelRail {
+  display: grid;
+  gap: var(--s-4);
+  align-content: start;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 719px) {
+  .skelPlank {
+    --slots: 3;
+  }
+  .skelCaps {
+    --slots: 3;
+  }
+  .skelPlank > :nth-child(n + 4),
+  .skelCaps > :nth-child(n + 4) {
+    display: none;
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .skelPlank > :nth-child(n + 7),
+  .skelCaps > :nth-child(n + 7) {
+    display: none;
+  }
+}
+@media (min-width: 1100px) {
+  .skelLayout {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    column-gap: var(--s-10);
+  }
 }

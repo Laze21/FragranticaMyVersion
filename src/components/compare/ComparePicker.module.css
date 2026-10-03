@@ -1,11 +1,26 @@
+/* The chip is the resting state at the heading's right edge; pressed, it becomes the field in place. */
+.chip {
+  min-height: 32px;
+  padding-inline: 10px 12px;
+  font-weight: 560;
+}
 .wrap {
   position: relative;
+  min-width: 0;
+}
+.wrap[data-variant='chip'] {
+  width: min(320px, 100%);
 }
 .label {
   display: block;
   font-weight: 600;
   font-size: var(--t-small);
   margin-bottom: 6px;
+}
+/* A chip-born field is shallow so the heading line does not grow when it opens. */
+.wrap[data-variant='chip'] .input {
+  min-height: 36px;
+  padding-block: 6px;
 }
 .list {
   position: absolute;
@@ -16,25 +31,43 @@
   top: calc(100% + 4px);
   margin: 0;
   padding: 4px;
+  list-style: none;
   background: var(--paper);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-2);
   box-shadow: var(--shadow-pop);
+  transition: opacity var(--d-exit) var(--ease-exit);
+}
+@starting-style {
+  .list {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.list[hidden] {
+  display: none;
 }
 .list button {
   display: grid;
   width: 100%;
+  min-height: 44px;
   text-align: left;
   border: 0;
   background: none;
-  padding: 8px 10px;
+  padding: 6px 10px;
   border-radius: var(--r-1);
 }
-.list button:hover {
+.list button:hover,
+.list button[data-active] {
   background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
 .name {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.05rem;
+  font-size: var(--t-name-s);
+  line-height: 1.2;
+}
+.sub {
+  font-size: var(--t-label);
+  color: var(--fg-3);
 }

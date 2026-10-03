@@ -1,80 +1,114 @@
+/*
+ * Compare: a database page. The title shares its line with the controls; the table is a grid
+ * of rows on --vis columns (CompareShell.module.css owns the frame and the column heads).
+ * Desktop: label column + N cells. Phone (≤839): short-value rows go side by side under a
+ * full-width row header with the letter as a 20px caption; only prose rows stack; the Trails
+ * stack on one shared axis. Nothing here renders under 12px.
+ */
 .page {
-  padding-top: var(--s-7);
+  padding-top: var(--s-6);
+  padding-bottom: var(--s-10);
 }
 .headRow {
   display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: var(--s-5);
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  min-height: 44px;
 }
 .title {
-  font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  margin: 0;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
 }
 .lede {
   margin-top: 12px;
-  max-width: 60ch;
+  max-width: var(--measure-read);
   color: var(--fg-2);
   font-size: var(--t-sub);
 }
 .startPicker {
   margin-top: var(--s-6);
-  max-width: 520px;
+  max-width: var(--measure-form);
 }
 .try {
   margin-top: var(--s-5);
   font-size: var(--t-small);
 }
-.table {
-  --label-w: 170px;
+
+/* The table's meta line: count, the bold rule, the demo mark. Middle dots between, never a third flag. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 0;
+  margin: 6px 0 10px;
+  font-size: var(--t-label);
+  color: var(--fg-2);
 }
-.sticky {
-  position: sticky;
-  top: var(--header-h);
-  z-index: 10;
-  background: var(--porcelain);
-  display: grid;
-  grid-template-columns: var(--label-w) repeat(var(--cols), minmax(0, 1fr));
-  gap: var(--s-4);
-  padding: 12px 0;
-  border-bottom: 2px solid var(--ink);
+.meta > * + *::before {
+  content: '·';
+  margin: 0 8px;
+  color: var(--fg-3);
 }
-.corner {
-  align-self: center;
-}
+
+/* Column heads: letter, the bottle at real scale on a hairline floor, italic name, house, ×. */
 .colHead {
   position: relative;
   display: grid;
-  grid-template-columns: auto 52px minmax(0, 1fr);
+  grid-template-columns: auto 56px minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
   min-width: 0;
-  padding-right: 28px;
 }
-.letter,
-.cellLetter {
+.letter {
   display: inline-grid;
   place-items: center;
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--scent-ink);
   color: var(--porcelain);
-  font-size: 11px;
+  font-size: var(--t-micro);
   font-weight: 700;
-  flex: none;
+  font-variant-numeric: tabular-nums;
 }
 .thumb {
   position: relative;
-  width: 52px;
-  height: 64px;
-  background: var(--scent-wash);
+  width: 56px;
+  height: 70px;
 }
-.thumb img {
+.thumb::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+.ghost {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  translate: -50% 0;
+  color: var(--stone-2);
+}
+.thumbObject {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  z-index: 1;
+}
+.thumbImg {
   object-fit: contain;
+  object-position: center bottom;
 }
 .colName {
   display: grid;
@@ -83,151 +117,399 @@
 .nameLink {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.12rem;
+  font-size: var(--t-name-s);
   line-height: 1.15;
   overflow-wrap: anywhere;
-}
-.remove {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
   text-decoration: none;
-  font-size: 1.2rem;
+}
+.nameLink:hover {
+  text-decoration: underline;
+}
+.brand {
+  font-size: var(--t-label);
   color: var(--fg-3);
 }
-.remove:hover {
-  color: var(--ink);
-}
+
+/* Rows */
 .row {
   display: grid;
-  grid-template-columns: var(--label-w) repeat(var(--cols), minmax(0, 1fr));
-  gap: var(--s-4);
+  grid-template-columns: var(--label-w) repeat(var(--vis), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  align-items: start;
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
 }
 .label {
   font-size: var(--t-small);
   font-weight: 650;
+  line-height: 1.3;
 }
 .labelNote {
   display: block;
-  font-weight: 400;
-  color: var(--fg-3);
-  font-size: var(--t-micro);
   margin-top: 4px;
+  font-weight: 400;
+  font-size: var(--t-micro);
+  line-height: 1.35;
+  color: var(--fg-3);
 }
 .cell {
   min-width: 0;
   font-size: var(--t-small);
-  display: flex;
-  gap: 8px;
 }
 .cellLetter {
   display: none;
+  font-size: var(--t-micro);
+  font-weight: 650;
+  line-height: 20px;
+  color: var(--scent-ink);
+  font-variant-numeric: tabular-nums;
 }
 .cellBody {
   min-width: 0;
-  flex: 1;
 }
+.merged {
+  grid-column: 2 / -1;
+  font-size: var(--t-small);
+  font-style: italic;
+  color: var(--fg-3);
+}
+
+/* Values */
 .summary {
   font-family: var(--font-serif);
-  font-size: 1.02rem;
+  font-size: var(--t-serif);
   line-height: 1.4;
+  font-variation-settings: 'opsz' 18;
 }
-.trail {
-  width: 100%;
-  height: auto;
+.value {
+  display: block;
+  font-size: var(--t-small);
+  font-weight: 500;
+  line-height: 1.35;
 }
-.dims {
-  display: grid;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
+.sub {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--t-label);
+  font-weight: 400;
+  color: var(--fg-3);
 }
-.dims li {
-  display: grid;
-  grid-template-columns: 10px 6.5em 1fr;
-  align-items: center;
-  gap: 8px;
+.null {
+  font-size: var(--t-small);
+  font-style: italic;
+  color: var(--fg-3);
 }
-.dims i {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+.phrase {
+  display: block;
+  font-size: var(--t-small);
+  line-height: 1.35;
 }
-.dimBar {
-  height: 6px;
-  background: var(--bg-sunk);
-  position: relative;
+.dash {
+  color: var(--fg-3);
 }
-.dimBar span {
-  position: absolute;
-  inset: 0 auto 0 0;
-  background: var(--ink);
+.notes {
+  font-size: var(--t-small);
+  line-height: 1.5;
 }
 .notes b {
   font-weight: 700;
   background: color-mix(in oklab, var(--bergamot) 28%, transparent);
 }
-.seasons {
-  display: flex;
-  gap: 6px;
-  align-items: flex-end;
-  height: 52px;
-}
-.seasons span {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: end;
-  width: 36px;
-  height: 100%;
-}
-.seasons i {
-  display: block;
-  background: var(--ink);
-  opacity: 0.75;
-}
-.seasons small {
-  font-size: 10px;
+.pct {
+  font-size: var(--t-micro);
+  font-variant-numeric: tabular-nums;
   color: var(--fg-3);
-  white-space: nowrap;
+}
+.notes .n {
+  display: block;
+  margin-top: 4px;
+}
+
+/* A figure, its sample size, and the leader's mark. The n is the brightest small text in the cell. */
+.figure {
+  display: grid;
+  gap: 3px;
+  justify-items: start;
+}
+.figureMain {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.figure[data-lead] .figureMain {
+  border-bottom-color: var(--bergamot);
+}
+.figureMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  font-size: var(--t-micro);
+  line-height: 1.3;
+}
+.leadCap {
+  font-weight: 650;
+  color: var(--bergamot-ink);
+}
+.n {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
 }
 .big {
-  font-size: 1.15rem;
+  font-size: var(--t-h3);
 }
-/* Phones: one attribute at a time, each fragrance on its own line, keyed by letter. */
+.outOf {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* Trail row: 300×64 thumbs scale with their column; one ruler per column on the same scale. */
+.trailCell {
+  display: grid;
+  gap: 2px;
+  max-width: 420px;
+}
+.trailCaption {
+  display: none;
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  line-height: 20px;
+}
+.trail {
+  width: 100%;
+  height: auto;
+}
+.axis {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.axisLine {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.axisText {
+  font: 500 var(--t-micro) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--fg-3);
+}
+.axisMedian line {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.axisMedian text {
+  font: 650 var(--t-micro) var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  fill: var(--ink);
+}
+.axisShared {
+  display: none;
+}
+
+/* Character: one sub-row per dimension, N bars in the dimension's hue, the number beside each. */
+.group {
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0 12px;
+}
+.groupHead {
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr);
+  column-gap: var(--s-4);
+  margin-bottom: 6px;
+}
+.groupLetters {
+  display: none;
+}
+.subRow {
+  display: grid;
+  grid-template-columns: var(--label-w) repeat(var(--vis), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  align-items: center;
+  min-height: 24px;
+}
+.subLabel {
+  font-size: var(--t-label);
+  font-weight: 600;
+  color: var(--fg-2);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.track {
+  position: relative;
+  display: block;
+  flex: 1;
+  height: 6px;
+  background: var(--linen);
+  overflow: hidden;
+}
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--bar-hue, var(--scent-ink));
+  transition: width var(--d-slow) var(--ease-evaporate);
+}
+.fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: color-mix(in oklab, var(--bar-hue, var(--scent-ink)) 60%, var(--ink));
+}
+.barValue {
+  flex: none;
+  width: 3.4ch;
+  text-align: right;
+  font-size: var(--t-label);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-2);
+}
+
+/* Seasons: the shared glyph, with the leading season written under it. */
+.seasons {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+.seasonCaption {
+  font-size: var(--t-label);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tablet and below: the Trails stack on one axis, drawn once under the last of them. */
+@media (max-width: 1099px) {
+  .row[data-kind='trail'] {
+    row-gap: 10px;
+  }
+  .row[data-kind='trail'] .cell {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    column-gap: 8px;
+  }
+  .row[data-kind='trail'] .cellLetter {
+    display: block;
+  }
+  .trailCaption {
+    display: block;
+  }
+  .trailCell .axis {
+    display: none;
+  }
+  .axisShared {
+    display: block;
+    grid-column: 2;
+    max-width: 448px;
+    padding-left: 28px;
+  }
+}
+
+/* Phone: side by side under a full-width row header; letters as 20px captions. */
 @media (max-width: 839px) {
-  .sticky {
-    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-    gap: 8px;
+  .page {
+    padding-top: var(--s-4);
   }
-  .corner {
-    grid-column: 1 / -1;
-    order: 2;
-  }
-  .colHead {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding-right: 24px;
-  }
-  .thumb {
-    display: none;
-  }
-  .nameLink {
-    font-size: 0.98rem;
-  }
-  .colName :global(.t-meta) {
-    display: none;
+  .meta {
+    margin: 8px 0 4px;
+    font-size: var(--t-micro);
   }
   .row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(var(--vis), minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 6px;
+    padding: 12px 0;
+  }
+  .label {
+    grid-column: 1 / -1;
+  }
+  .labelNote {
+    display: inline;
+    margin: 0 0 0 6px;
+  }
+  .cell {
+    display: grid;
+    grid-template-rows: 20px auto;
+    gap: 2px;
   }
   .cellLetter {
-    display: inline-grid;
+    display: block;
+  }
+  .row[data-kind='prose'],
+  .row[data-kind='wide'],
+  .row[data-kind='trail'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .row[data-kind='prose'] .cell,
+  .row[data-kind='wide'] .cell,
+  .row[data-kind='trail'] .cell {
+    grid-column: auto;
+    grid-template-rows: none;
+    grid-template-columns: 20px minmax(0, 1fr);
+    column-gap: 8px;
+    align-items: start;
+  }
+  .row[data-kind='wide'] .cell {
+    align-items: center;
+  }
+  .row[data-kind='wide'] .cellBody {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+  }
+  .row[data-kind='wide'] .seasons {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+  }
+  .row[data-kind='wide'] .seasonCaption {
+    padding-bottom: 2px;
+  }
+  .axisShared {
+    grid-column: auto;
+  }
+  .merged {
+    grid-column: 1 / -1;
+  }
+  .summary {
+    font-size: var(--t-serif-s);
+  }
+  .group {
+    padding: 12px 0 10px;
+  }
+  .groupHead {
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: 2px;
+  }
+  .groupLetters {
+    display: grid;
+    grid-template-columns: 6.5em repeat(var(--vis), minmax(0, 1fr));
+    column-gap: 10px;
+    font-size: var(--t-micro);
+    font-weight: 650;
+    color: var(--fg-2);
+    line-height: 20px;
+  }
+  .subRow {
+    grid-template-columns: 6.5em repeat(var(--vis), minmax(0, 1fr));
+    column-gap: 10px;
+  }
+  /* Bars are keyed by the letters line above the group; each cell keeps its hidden name for readers. */
+  .subRow .cell {
+    display: block;
+  }
+  .subRow .cellLetter > [aria-hidden] {
+    display: none;
+  }
+  .barValue {
+    width: 3.2ch;
   }
 }

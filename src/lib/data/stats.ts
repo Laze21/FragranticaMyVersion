@@ -1,5 +1,6 @@
-import type { Queryable } from '@/lib/db';
+import { sql, type Queryable } from '@/lib/db';
 import { DIMENSIONS, LONGEVITY_BUCKETS, type Dimension } from '@/lib/scent/vocab';
+import { formatCount } from '@/lib/scent/read';
 import type { BaselinePayload } from './baseline';
 
 /**
@@ -228,3 +229,53 @@ export function medianHours(hist: number[]): number {
 
 const round = (v: number, d: number) => Math.round(v * 10 ** d) / 10 ** d;
 const nullableRound = (v: number | null) => (v === null ? null : round(v, 2));
+
+/* ---- Compare: who leads a row, and how many votes stand behind a figure ---- */
+
+/**
+ * The index of the cell that leads a compare row, or null when there is nothing to point at:
+ * fewer than two real values, or a tie for first. A tie is not a leader; marking one of two
+ * equal cells would be a lie, so the row simply carries no mark.
+ */
+export function leaderIndex(values: Array<number | null | undefined>, prefer: 'max' | 'min' = 'max'): number | null {
+  const real = values.map((v, i) => ({ v, i })).filter((x): x is { v: number; i: number } => typeof x.v === 'number' && Number.isFinite(x.v));
+  if (real.length < 2) return null;
+  const best = real.reduce((a, b) => (prefer === 'max' ? (b.v > a.v ? b : a) : b.v < a.v ? b : a));
+  return real.filter((x) => x.v === best.v).length > 1 ? null : best.i;
+}
+
+/**
+ * "n=1.2k": the sample size as the brightest small text in a cell. Below five votes the figure
+ * itself is withheld elsewhere, so the label says why instead of printing a tiny n.
+ */
+export function sampleLabel(n: number, min = 5): string {
+  return n >= min ? `n=${formatCount(n)}` : n === 0 ? 'no votes yet' : `${n} ${n === 1 ? 'vote' : 'votes'}`;
+}
+
+/**
+ * Of the people who own the first fragrance (`own` or `had`), the share who also own each of
+ * the others. Keyed by fragrance id; the base is absent (it would be 100%).
+ */
+export async function shelfOverlap(ids: string[]): Promise<Map<string, number>> {
+  const [base, ...others] = ids;
+  if (!base || !others.length) return new Map();
+  const rows = await sql<{ fragrance_id: string; n: string; total: string }>(
+    `with owners as (
+       select c.user_id from public.collection_items i join public.collections c on c.id = i.collection_id
+        where i.fragrance_id = $1 and i.status in ('own', 'had'))
+     select i.fragrance_id, count(distinct c.user_id) n, (select count(*) from owners) total
+       from public.collection_items i join public.collections c on c.id = i.collection_id
+      where i.fragrance_id = any($2::uuid[]) and i.status in ('own', 'had') and c.user_id in (select user_id from owners)
+      group by i.fragrance_id`,
+    [base, others],
+  );
+  return new Map(rows.map((r) => [r.fragrance_id, Number(r.total) ? Number(r.n) / Number(r.total) : 0]));
+}
+
+/** "1 in 10 Sauvage owners also own this": a share as a ratio people can picture. */
+export function overlapPhrase(share: number, baseName: string): string {
+  if (share <= 0) return `No ${baseName} owners also own this yet`;
+  if (share >= 0.95) return `Nearly every ${baseName} owner also owns this`;
+  const denom = Math.max(2, Math.round(1 / share));
+  return `1 in ${denom} ${baseName} owners also own this`;
+}

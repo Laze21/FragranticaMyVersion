@@ -1,0 +1,86 @@
+.page {
+  --label-w: 170px;
+  padding-top: var(--s-6);
+}
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+}
+.controls {
+  display: flex;
+  gap: 8px;
+}
+.heads,
+.row {
+  display: grid;
+  grid-template-columns: var(--label-w) repeat(3, minmax(0, 1fr));
+  column-gap: var(--s-4);
+  align-items: start;
+}
+.heads {
+  padding: 10px 0;
+  border-bottom: 2px solid var(--ink);
+}
+.head {
+  display: grid;
+  grid-template-columns: auto 56px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+.bottle {
+  width: 34px;
+  height: 56px;
+  margin: 0 auto;
+  align-self: end;
+  border-radius: 3px 3px 1px 1px;
+}
+.lines {
+  display: grid;
+  gap: 6px;
+}
+.row {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+/* The Trail's shape, so the row that carries the signature loads as itself. */
+.spindle {
+  height: 64px;
+  max-width: 420px;
+  clip-path: polygon(0 50%, 12% 10%, 70% 22%, 100% 44%, 100% 56%, 70% 78%, 12% 90%);
+}
+@media (max-width: 1099px) {
+  .page {
+    --label-w: 150px;
+  }
+}
+@media (max-width: 839px) {
+  .page {
+    padding-top: var(--s-4);
+  }
+  .controls > :first-child {
+    display: none;
+  }
+  .heads {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom-width: 1px;
+  }
+  .heads > :first-child,
+  .bottle {
+    display: none;
+  }
+  .head {
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 40px;
+  }
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 8px;
+    padding: 12px 0;
+  }
+  .row > :first-child {
+    grid-column: 1 / -1;
+  }
+}

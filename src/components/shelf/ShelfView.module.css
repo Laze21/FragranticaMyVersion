@@ -1,3 +1,8 @@
+/*
+ * The shelf is a cabinet: planks across the main column with 112px slots, bottles standing on
+ * them at real scale, captions beneath the plank the way labels sit under a record shelf. The
+ * rail reads the shelf back as a typographic aside: rules and type, no box.
+ */
 .wrap {
   display: grid;
   gap: var(--s-4);
@@ -6,24 +11,28 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: var(--s-4);
+  align-items: center;
+  gap: var(--s-3) var(--s-4);
+  min-height: 44px;
+}
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--s-4);
+  min-width: 0;
 }
 .title {
-  font-size: var(--t-title-l);
-  font-weight: 680;
-  font-stretch: 118%;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  margin: 0;
 }
 .sub {
-  margin-top: 8px;
-  color: var(--fg-2);
+  margin: 0;
+  color: var(--fg-3);
   font-size: var(--t-small);
 }
 .tools {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 .views {
@@ -36,10 +45,11 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
+  min-height: 36px;
   padding: 0 12px;
   border: 0;
-  background: var(--paper);
+  background: transparent;
+  color: var(--ink);
   font-size: var(--t-small);
   font-weight: 560;
 }
@@ -50,6 +60,33 @@
   background: var(--ink);
   color: var(--porcelain);
 }
+/* Three dots as a word, not an icon from a kit: the one overflow control on the page. */
+.more {
+  min-width: 36px;
+  padding-inline: 10px;
+  font-size: var(--t-sub);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.menu {
+  display: grid;
+  margin: -6px -8px;
+  padding: 0;
+}
+.menu a {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 8px;
+  font-weight: 560;
+  text-decoration: none;
+  border-radius: var(--r-1);
+}
+.menu a:hover {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  text-decoration: underline;
+}
+
 .tabs {
   display: flex;
   gap: 6px;
@@ -57,128 +94,249 @@
   scrollbar-width: none;
   padding-bottom: 4px;
 }
-.count {
-  font-size: 11px;
-  opacity: 0.7;
-  font-variant-numeric: tabular-nums;
+/* An empty section is still a place, just a quiet one: no badge, lower opacity, same target. */
+.tabs [data-empty] {
+  opacity: 0.55;
 }
+.count {
+  font-size: var(--t-micro);
+  opacity: 0.75;
+}
+
 .layout {
   display: grid;
-  gap: var(--s-8);
-  margin-top: var(--s-4);
+  gap: var(--s-9);
+  margin-top: var(--s-2);
 }
 .main {
   min-width: 0;
 }
-/* Shelf view: bottles stand on a ledge, the way a real collection lives. */
-.ledges {
-  padding: var(--s-4) 0;
+
+/* ---------- The cabinet ---------- */
+.cabinet {
+  display: grid;
+  gap: var(--s-8);
+  padding-top: var(--s-3);
+}
+.plankBlock {
+  display: grid;
 }
 .ledge {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--s-5) var(--s-3);
-  margin: 0;
-  padding: 0 4px;
-  background: linear-gradient(to bottom, transparent calc(100% - 0px), transparent);
+  padding-bottom: 0;
 }
-.bottle {
+/* The slot: 168px of standing room, bottle on the floor, edit in the corner, heart on the plank. */
+.slot {
   position: relative;
-  width: 118px;
-  animation: settle var(--d-slow) var(--ease-settle) both;
-  animation-delay: calc(var(--i) * 30ms);
+  z-index: 1; /* above the plank that follows it, so the heart can sit on the wood */
+  height: 168px;
+  min-width: 0;
 }
-.bottle::after {
-  content: '';
-  position: absolute;
-  left: -8px;
-  right: -8px;
-  top: 164px;
-  height: 10px;
-  background: linear-gradient(to bottom, #b9ab93, #9c8e77);
-  box-shadow: 0 6px 10px -6px rgb(28 26 23 / 0.45);
+.slot[data-settle] {
+  animation: settle var(--d-slow) var(--ease-settle) both;
+  animation-delay: calc(min(var(--i), 12) * 30ms);
 }
 @keyframes settle {
   from {
-    transform: translateY(-10px);
+    transform: translateY(-9px);
     opacity: 0;
   }
 }
 .bottleLink {
-  display: grid;
+  position: absolute;
+  inset: 0;
+  display: block;
   text-decoration: none;
 }
-.bottleImg {
-  position: relative;
-  display: block;
-  height: 164px;
-}
-.bottleImg img {
-  object-fit: contain;
-  object-position: bottom;
-}
-.noImg {
+/*
+ * The bottle stands at its real height. The box is the poster's 3:4; the poster leaves ~15% of
+ * air above the cap, so the tallest box runs 198px to put a 168px bottle on the plank, and it
+ * overflows a narrow slot sideways on purpose.
+ */
+.object {
   position: absolute;
-  inset: 30% 25% 0;
-  border: 1px dashed var(--line-strong);
+  bottom: 0;
+  left: 50%;
+  width: 126px;
+  translate: -50% 0;
 }
-.bottleName {
-  margin-top: 18px;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.98rem;
-  line-height: 1.15;
-  overflow-wrap: anywhere;
+.img {
+  object-fit: contain;
+  object-position: center bottom;
 }
-.bottleLink:hover .bottleName {
-  text-decoration: underline;
+.ghost {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  translate: -50% 0;
+  color: var(--stone-2);
 }
-.bottleHouse {
-  font-size: 11px;
+/* Contact ellipse in the fragrance's wash, under the base where it meets the plank. */
+.base {
+  position: absolute;
+  left: 30%;
+  right: 30%;
+  bottom: -2px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--scent-wash-2);
+}
+.heart {
+  position: absolute;
+  right: 4px;
+  bottom: -12px;
+  z-index: 2;
+  color: var(--oxblood);
+  fill: var(--oxblood);
+}
+.editBtn {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  z-index: 2;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--r-1);
+  background: transparent;
   color: var(--fg-3);
 }
-.fav {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  color: var(--oxblood);
+.editBtn:hover,
+.editBtn:focus-visible {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
 }
-.format {
-  position: absolute;
-  top: 4px;
-  left: 0;
-  font-size: 10px;
-  font-weight: 650;
-  padding: 2px 6px;
-  border-radius: var(--r-pill);
-  background: var(--paper);
+/* On a mouse the pencils stay out of the picture until the slot is hovered or focused; touch always sees them. */
+@media (hover: hover) and (pointer: fine) {
+  .slot .editBtn {
+    opacity: 0;
+    transition: opacity var(--d-quick) var(--ease-standard);
+  }
+  .slot:hover .editBtn,
+  .slot:focus-within .editBtn,
+  .slot .editBtn:focus-visible {
+    opacity: 1;
+  }
 }
+/* An empty slot is a tick on the plank: a place where a bottle could stand. */
+.tick {
+  align-self: end;
+  justify-self: center;
+  width: 1px;
+  height: 8px;
+  margin-bottom: 0;
+  background: color-mix(in oklab, var(--ink) 30%, transparent);
+}
+.add {
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  gap: 8px;
+  height: 168px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--stone);
+  font-size: var(--t-label);
+  font-weight: 600;
+}
+.add span {
+  color: var(--fg-2);
+  padding-bottom: 6px;
+}
+.add:hover,
+.add:focus-visible {
+  color: var(--ink);
+}
+.add:hover span,
+.add:focus-visible span {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+/* Captions under the plank, on the same columns as the slots above. */
+.captions {
+  display: grid;
+  grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
+  column-gap: var(--s-4);
+  margin: 14px 0 0;
+  padding: 0 6px;
+  list-style: none;
+}
+.caption {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  min-width: 0;
+}
+.name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-name-s);
+  line-height: 1.15;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.name:hover {
+  text-decoration: underline;
+}
+.house {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+.fmt {
+  margin-top: 2px;
+  font-size: var(--t-label);
+  color: var(--fg-2);
+}
+.worn {
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+  line-height: 1.3;
+}
+.fill {
+  display: block;
+  margin-top: 4px;
+}
+.fillBar {
+  display: block;
+  width: 36px;
+  height: 2px;
+  background: var(--stone-2);
+}
+.fillBar span {
+  display: block;
+  height: 100%;
+  background: var(--scent-ink);
+  transition: width var(--d-slow) var(--ease-evaporate);
+}
+
+/* ---------- Grid view ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-6) var(--s-4);
   margin: 0;
+  padding-top: var(--s-3);
 }
-.editBtn {
-  margin-top: 6px;
-  border: 0;
-  background: none;
-  font-size: var(--t-micro);
-  font-weight: 600;
-  text-decoration: underline;
-  min-height: 36px;
+.gridItem {
   position: relative;
-  z-index: 1;
 }
+.gridItem .editBtn {
+  top: 4px;
+  right: 4px;
+}
+
+/* ---------- List view ---------- */
 .tableWrap {
-  overflow-x: auto;
+  padding-top: var(--s-3);
 }
 .table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--t-small);
-  min-width: 720px;
 }
 .table th,
 .table td {
@@ -191,6 +349,7 @@
   font-size: var(--t-micro);
   color: var(--fg-3);
   font-weight: 600;
+  padding-top: 0;
 }
 .num {
   text-align: right !important;
@@ -200,84 +359,175 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  font-size: 1.02rem;
+  font-size: var(--t-name-s);
 }
 .tHouse {
   display: block;
-  font-size: 11px;
+  font-size: var(--t-micro);
   color: var(--fg-3);
   font-weight: 400;
 }
-.insights {
-  background: var(--paper);
-  padding: var(--s-5);
+.tHeart {
+  color: var(--oxblood);
+  fill: var(--oxblood);
+  vertical-align: -2px;
+}
+.tEdit {
+  width: 44px;
+}
+.tEdit .editBtn {
+  position: static;
+}
+.stack {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+.stackItem {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.stackHead {
+  position: relative;
   display: grid;
-  gap: 10px;
+  padding-right: 44px;
+}
+.stackHead .editBtn {
+  top: -6px;
+  right: 0;
+}
+.stackGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  margin: 10px 0 0;
+}
+.stackGrid div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--t-small);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+}
+.stackGrid dt {
+  color: var(--fg-3);
+}
+.stackGrid dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.stackMeta {
+  margin-top: 8px;
+  font-size: var(--t-micro);
+  color: var(--fg-3);
+}
+
+/* ---------- Your shelf, read back ---------- */
+.insights {
+  display: grid;
+  gap: var(--s-4);
   align-content: start;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--ink);
 }
 .iTitle {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-weight: 400;
+  font-size: var(--t-serif-l);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  margin: 0;
 }
-.iHead {
+.trail {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  max-width: 100%;
+  overflow: hidden;
+}
+.trail svg {
+  max-width: 100%;
+  height: auto;
+}
+.trailCap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: var(--t-micro);
-  font-weight: 650;
   color: var(--fg-3);
-  margin-top: 8px;
+}
+.trailMark {
+  width: 18px;
+  height: 7px;
+  color: var(--ink);
 }
 .sentences {
   display: grid;
   gap: 6px;
   margin: 0;
   padding: 0;
-  font-size: var(--t-small);
+  font-family: var(--font-serif);
+  font-size: var(--t-serif);
+  line-height: 1.35;
 }
-.sentences li::before {
-  content: '';
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--bergamot);
-  margin-right: 8px;
-  vertical-align: 2px;
-}
-.seasons {
+.iSection {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  height: 80px;
-  align-items: end;
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--line);
 }
-.seasons span {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  align-items: end;
-  height: 100%;
-}
-.seasons i {
-  background: var(--ink);
-}
-.seasons small {
-  font-size: 11px;
+.iHead {
+  font-size: var(--t-label);
+  font-weight: 650;
+  font-stretch: 88%;
+  letter-spacing: 0.02em;
   color: var(--fg-3);
-  margin-top: 4px;
+  margin: 0;
 }
-.small {
+.iLine {
+  margin: 0;
   font-size: var(--t-small);
+  color: var(--fg-2);
+}
+.iText {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+.iCount {
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--fg-3);
+}
+.iName {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--t-serif-s);
+}
+.iMuted {
+  font-weight: 400;
+  color: var(--fg-3);
 }
 .stats {
   display: grid;
-  gap: 6px;
-  margin: 8px 0 0;
+  gap: 0;
+  margin: 0;
+  padding-top: var(--s-2);
+  border-top: 1px solid var(--line);
 }
 .stats div {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 12px;
   font-size: var(--t-small);
+  padding: 7px 0;
+}
+.stats div + div {
   border-top: 1px solid var(--line);
-  padding-top: 6px;
 }
 .stats dt {
   color: var(--fg-3);
@@ -287,15 +537,16 @@
   font-weight: 600;
   text-align: right;
 }
-.empty {
-  padding: var(--s-8) var(--s-6);
-  background: var(--paper);
+/* The money line is long: label above the figure instead of beside it. */
+.stat {
+  display: grid !important;
+  gap: 2px;
 }
-.emptyTitle {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  margin-bottom: 6px;
+.stat dd {
+  text-align: left;
 }
+
+/* ---------- Sheets ---------- */
 .form {
   display: grid;
   gap: var(--s-4);
@@ -304,29 +555,89 @@
   accent-color: var(--ink);
   min-height: 32px;
 }
-@media (min-width: 720px) {
-  .grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .bottle {
-    width: 132px;
-  }
+.found {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
 }
-@media (min-width: 1100px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr) 320px;
-  }
+.foundBtn {
+  display: grid;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
 }
+.foundBtn:hover,
+.foundBtn:focus-visible {
+  background: color-mix(in oklab, var(--ink) 5%, transparent);
+}
+.foundName {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-name-s);
+}
+.foundSub {
+  font-size: var(--t-label);
+  color: var(--fg-3);
+}
+
+/* ---------- Breakpoints ---------- */
 @media (max-width: 719px) {
   .views span {
     display: none;
   }
-  .bottle {
-    width: calc(33.3% - 10px);
+  .views button {
+    padding: 0 10px;
+  }
+  .tabs {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+  .captions {
+    column-gap: var(--s-3);
+  }
+  .tableWrap {
+    display: none;
+  }
+  .stack {
+    display: block;
+  }
+  .trail {
+    justify-self: start;
+  }
+}
+@media (min-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 720px) and (max-width: 1099px) {
+  .insights {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--s-8);
+  }
+  .iTitle,
+  .trail,
+  .sentences {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .layout[data-rail] {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    column-gap: var(--s-10);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .bottle {
+  .slot[data-settle] {
     animation: none;
   }
 }

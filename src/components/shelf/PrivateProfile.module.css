@@ -1,0 +1,8 @@
+.page {
+  padding-top: var(--s-8);
+  padding-bottom: var(--s-11);
+}
+/* No rule under the header: there is nothing beneath it to divide from. */
+.page > header {
+  border-bottom: 0;
+}
