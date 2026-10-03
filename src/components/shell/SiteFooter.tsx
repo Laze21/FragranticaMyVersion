@@ -40,8 +40,7 @@ export function SiteFooter() {
       </div>
       <div className={`page ${styles.base}`}>
         <p>
-          Prototype. Fragrance facts are editorial research still being verified against house sources. Ratings, votes and member accounts are
-          demo data. Bottle images are original illustrations, not product photos; brand names belong to their owners.
+          Prototype. Facts are editorial and still being checked against house pages. Brand names belong to their owners.
         </p>
       </div>
     </footer>

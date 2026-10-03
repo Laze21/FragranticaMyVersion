@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { allPerfumerSlugs, averageCharacter, getPerfumer } from '@/lib/data/people';
+import { averageCharacter, getPerfumer } from '@/lib/data/people';
+import { perfumerSlugs } from '@/lib/data/static-params';
 import { FragranceCard } from '@/components/cards/FragranceCard';
 import { CharacterBars } from '@/components/scent/CharacterBars';
 import { Icon } from '@/components/Icon';
@@ -10,7 +11,7 @@ import styles from '../../profile.module.css';
 
 export const revalidate = 600;
 export async function generateStaticParams() {
-  return (await allPerfumerSlugs()).map((slug) => ({ slug }));
+  return (await perfumerSlugs()).map((slug) => ({ slug }));
 }
 const COUNTRY = new Intl.DisplayNames(['en'], { type: 'region' });
 

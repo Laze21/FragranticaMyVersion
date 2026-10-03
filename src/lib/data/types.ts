@@ -10,6 +10,14 @@ export interface Character {
 }
 
 /** Everything needed to draw a fragrance anywhere small: cards, lists, shelves, search results. */
+export interface StageLayers {
+  nozzle: { x: number; y: number };
+  cap: { x: number; y: number; w: number; h: number } | null;
+  shadow: string | null;
+  body: string | null;
+  capUrl: string | null;
+}
+
 export interface FragranceCard {
   id: string;
   slug: string;
@@ -29,7 +37,8 @@ export interface FragranceCard {
   posterCredit: string | null;
   posterLicense: string | null;
   posterSource: string | null;
-  posterNozzle: { x: number; y: number } | null;
+  /** Where the nozzle is and, for layered illustrations, the separate shadow / body / cap renders. */
+  posterLayers: StageLayers | null;
   ratingAvg: number | null;
   ratingCount: number;
   reviewCount: number;

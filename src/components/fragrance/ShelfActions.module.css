@@ -51,7 +51,7 @@
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  z-index: 30;
+  z-index: 36; /* above the sticky section nav (30), below the site header (40) */
   min-width: 220px;
   padding: 6px;
   display: grid;

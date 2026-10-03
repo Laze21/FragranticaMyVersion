@@ -2,7 +2,7 @@
  * Natural-language discovery without an LLM (yet).
  *
  * Turns "vanilla fragrance without tobacco", "fresh fragrance that lasts 8+ hours",
- * "something similar to Albedo Uomo but less common" or "woody date-night under $100" into
+ * "something similar to Bleu de Chanel but less common" or "woody date-night under $100" into
  * structured filters, and returns what it understood as editable chips so people can see and
  * correct the interpretation. The interface (text in -> Filters + explanation out) is the same
  * one a model-backed interpreter would implement later.

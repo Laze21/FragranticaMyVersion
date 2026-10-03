@@ -46,12 +46,16 @@ export default async function DataPage() {
         </ul>
         <h2>The state of this prototype</h2>
         <p>
-          The fragrances are real. The facts about them (launch years, perfumers, official notes, typical prices) were compiled by our editors
-          from widely published house information. During this build the research environment could not open house websites, so{' '}
+          The fragrances are real. Launch years, perfumers, official notes and typical prices were compiled by our editors from widely
+          published house information.{' '}
           <b>
-            {v ? `${Number(v.withUrl)} of ${Number(v.total)}` : 'most'} factual claims don’t have a source link yet
+            {v
+              ? Number(v.total) - Number(v.withUrl) === Number(v.total)
+                ? `None of the ${Number(v.total)} factual claims has a source link yet`
+                : `${Number(v.total) - Number(v.withUrl)} of the ${Number(v.total)} factual claims still have no source link`
+              : 'Most factual claims have no source link yet'}
           </b>
-          . Each one is marked “editorial, not yet verified” with a confidence level, and each will be checked against the house’s own page
+          . Each is marked “editorial, not yet verified” with a confidence level, and each will be checked against the house’s own page
           before launch.
         </p>
         <p>

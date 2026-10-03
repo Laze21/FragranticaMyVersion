@@ -110,7 +110,7 @@ export function FragranceCard({
             </span>
           ) : (
             <span className={styles.rating}>
-              <small>New</small>
+              <small>{card.ratingCount ? `${card.ratingCount} ${card.ratingCount === 1 ? 'rating' : 'ratings'}` : 'Unrated'}</small>
             </span>
           )}
         </p>

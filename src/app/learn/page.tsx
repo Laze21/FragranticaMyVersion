@@ -25,13 +25,13 @@ export default function LearnPage() {
           tap it.
         </p>
       </header>
-      <dl className={styles.glossary}>
+      <div className={styles.glossary}>
         {[...groups.entries()].map(([letter, ts]) => (
-          <div key={letter} className={styles.letter}>
+          <section key={letter} className={styles.letter} aria-label={`Terms starting with ${letter}`}>
             <p className={styles.letterMark} aria-hidden>
               {letter}
             </p>
-            <div>
+            <dl>
               {ts.map((t) => (
                 <div key={t.slug} className={styles.term}>
                   <dt>
@@ -40,10 +40,10 @@ export default function LearnPage() {
                   <dd>{t.short}</dd>
                 </div>
               ))}
-            </div>
-          </div>
+            </dl>
+          </section>
         ))}
-      </dl>
+      </div>
     </div>
   );
 }

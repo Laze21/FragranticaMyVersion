@@ -66,12 +66,30 @@ export function confidence(n: number): { label: string; level: 0 | 1 | 2 | 3 } {
   return { label: 'Settled', level: 3 };
 }
 
-/** Rating spread -> plain words. Helps blind buyers more than another decimal. */
-export function divisiveness(spread: number | null, count: number): { label: string; detail: string } | null {
-  if (spread === null || count < 20) return null;
-  if (spread < 1.25) return { label: 'Broad agreement', detail: 'Most people land within a point of the average.' };
-  if (spread < 1.75) return { label: 'Some disagreement', detail: 'Opinions spread out. Worth sampling first.' };
-  return { label: 'Divisive', detail: 'People love it or really don’t. Sample before buying a bottle.' };
+/**
+ * Rating spread -> plain words. Helps blind buyers more than another decimal.
+ * Calibrated against the catalogue (standard deviations run 1.5 to 2.5 on a 1-10 scale), so the
+ * labels only appear at the edges: the middle gets no label at all. "Divisive" also needs the
+ * histogram to actually have two humps, not just a wide one.
+ */
+export function divisiveness(spread: number | null, count: number, hist?: number[] | null): { label: string; detail: string } | null {
+  if (spread === null || count < 50) return null;
+  if (spread <= 1.6) return { label: 'Broad agreement', detail: 'Most people land within a point of the average.' };
+  if (spread >= 2.1 && (!hist || isBimodal(hist))) return { label: 'Divisive', detail: 'People love it or really don’t. Sample before buying a bottle.' };
+  return null;
+}
+
+/** Two local peaks at least three points apart, each a real share of the votes. */
+export function isBimodal(hist: number[]): boolean {
+  const max = Math.max(...hist, 1);
+  const peaks: number[] = [];
+  for (let i = 0; i < hist.length; i++) {
+    const l = hist[i - 1] ?? 0;
+    const r = hist[i + 1] ?? 0;
+    if (hist[i] >= l && hist[i] >= r && hist[i] >= max * 0.25 && (hist[i] > l || hist[i] > r)) peaks.push(i);
+  }
+  for (let a = 0; a < peaks.length; a++) for (let b = a + 1; b < peaks.length; b++) if (peaks[b] - peaks[a] >= 3) return true;
+  return false;
 }
 
 export function seasonsLine(wear: Record<string, number>): string | null {

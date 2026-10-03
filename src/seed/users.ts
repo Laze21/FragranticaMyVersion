@@ -1,7 +1,7 @@
 import type { SeedUser } from './types';
 
 /**
- * Demo community members. All people, handles and bios are fictional.
+ * Demo community members. All people, handles and bios are fictional; the bottles they own are real.
  * Collections reference fragrance slugs from ROSTER.md.
  */
 export const USERS: SeedUser[] = [

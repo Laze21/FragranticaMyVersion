@@ -30,11 +30,15 @@ describe('plain-language readers', () => {
     expect(confidence(3000).level).toBe(3);
     expect(confidence(3000).level).toBeGreaterThan(confidence(12).level);
   });
-  it('calls out divisive ratings only with enough votes', () => {
+  it('labels only the edges of the spread, and "Divisive" only with two humps', () => {
     expect(divisiveness(2.8, 4)).toBeNull();
-    expect(divisiveness(2.8, 400)).not.toBeNull();
-    expect(divisiveness(0.4, 400)?.label).toMatch(/agreement/i);
-    expect(divisiveness(2.8, 400)?.label).not.toMatch(/agreement/i);
+    expect(divisiveness(1.9, 400)).toBeNull();
+    expect(divisiveness(1.4, 400)?.label).toMatch(/agreement/i);
+    expect(divisiveness(2.4, 400)?.label).toMatch(/divisive/i);
+    const twoHumps = [28, 137, 391, 513, 394, 336, 976, 1761, 1776, 1303];
+    const oneHump = [1, 2, 19, 47, 65, 65, 177, 561, 764, 568];
+    expect(divisiveness(2.4, 400, twoHumps)?.label).toMatch(/divisive/i);
+    expect(divisiveness(2.4, 400, oneHump)).toBeNull();
   });
   it('summarises seasons', () => {
     expect(seasonsLine({ spring: 0.8, summer: 0.9, autumn: 0.2, winter: 0.1 })).toMatch(/summer/i);

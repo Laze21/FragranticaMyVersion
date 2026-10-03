@@ -4,6 +4,7 @@
  *   npm run bottles                         # all catalogue bottles
  *   npm run bottles -- dior-sauvage chanel-no-5
  *   npm run bottles -- --specs <dir> --out <dir> [--png]   # every <slug>.json spec in a directory
+ *   --no-layers   skip the shadow/body/cap layer renders
  *
  * Output: public/bottles/<slug>.webp (transparent, 900x1200), public/models/<slug>.glb
  */
@@ -23,6 +24,7 @@ const flag = (name: string) => {
 const specsDir = flag('--specs');
 const outDir = flag('--out') ?? (specsDir ? path.join(specsDir, 'renders') : path.join(ROOT, 'public/bottles'));
 const asPng = argv.includes('--png');
+const noLayers = argv.includes('--no-layers');
 const only = argv.filter((a, i) => !a.startsWith('-') && argv[i - 1] !== '--specs' && argv[i - 1] !== '--out');
 const brandName = Object.fromEntries(CATALOG.brands.map((b) => [b.slug, b.name]));
 interface Job { slug: string; bottle: unknown; brand: string; name: string; has3d?: boolean; noImage?: boolean }
@@ -82,7 +84,24 @@ for (const f of all) {
       );
       const png = Buffer.from(dataUrl.split(',')[1], 'base64');
       if (asPng) await sharp(png).resize(600, 800).png().toFile(path.join(outDir, `${f.slug}.png`));
-      else await sharp(png).resize(900, 1200).webp({ quality: 84, alphaQuality: 90, effort: 5 }).toFile(path.join(outDir, `${f.slug}.webp`));
+      else {
+        await sharp(png).resize(900, 1200).webp({ quality: 84, alphaQuality: 90, effort: 5 }).toFile(path.join(outDir, `${f.slug}.webp`));
+        // Layers for the 2D stage: shadow, body and cap in the same frame, plus the nozzle and cap box.
+        if (!noLayers) {
+          const layers = await page.evaluate(
+            ([spec]) => (window as unknown as { renderLayers: (...a: unknown[]) => Promise<{ shadow: string; body: string; cap: string; nozzle: unknown; cap_box: unknown }> }).renderLayers(spec, 900, 1200),
+            [f.bottle] as const,
+          );
+          for (const key of ['shadow', 'body', 'cap'] as const) {
+            const buf = Buffer.from(layers[key].split(',')[1], 'base64');
+            await sharp(buf).webp({ quality: 84, alphaQuality: 90, effort: 5 }).toFile(path.join(outDir, `${f.slug}.${key}.webp`));
+          }
+          writeFileSync(
+            path.join(outDir, `${f.slug}.layers.json`),
+            JSON.stringify({ nozzle: layers.nozzle, cap: layers.cap_box, shadow: `/bottles/${f.slug}.shadow.webp`, body: `/bottles/${f.slug}.body.webp`, capUrl: `/bottles/${f.slug}.cap.webp` }),
+          );
+        }
+      }
     } catch (e) {
       console.error(`[${f.slug}] render failed: ${(e as Error).message.split('\n')[0]}`);
       continue;

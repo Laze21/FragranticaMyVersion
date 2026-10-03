@@ -22,7 +22,7 @@ const HREF: Record<Suggestion['type'], (s: string) => string> = {
   perfumer: (s) => `/perfumer/${s}`,
 };
 const GROUP: Record<Suggestion['type'], string> = { fragrance: 'Fragrances', brand: 'Houses', note: 'Notes', perfumer: 'Perfumers' };
-const EXAMPLES = ['vanilla without tobacco', 'fresh that lasts 8 hours', 'rainy day', 'similar to Albedo Uomo but less common'];
+const EXAMPLES = ['vanilla without tobacco', 'fresh that lasts 8 hours', 'rainy day', 'similar to Sauvage but less common'];
 
 /**
  * Header search: an ARIA 1.2 combobox. Typing shows instant matches across fragrances, houses,

@@ -20,7 +20,7 @@ export function DemoBanner() {
     <div className={styles.banner} role="note">
       <p className="page">
         <span>
-          Prototype: real fragrances, but community figures are demo data and bottle images are illustrations. <Link href="/about/data">How the data works</Link>
+          Prototype: real fragrances, demo votes, illustrated bottles. <Link href="/about/data">How the data works</Link>
         </span>
         <button
           type="button"

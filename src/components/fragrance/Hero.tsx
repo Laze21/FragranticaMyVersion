@@ -26,7 +26,7 @@ export function Hero({ f, similar }: { f: FragranceDetail; similar: SimilarGroup
   const pLater = histAvg(s.projectionLaterHist);
   const seasons = seasonsLine(s.wear);
   const time = timeLine(s.wear);
-  const div = divisiveness(s.ratingSpread, s.ratingCount);
+  const div = divisiveness(s.ratingSpread, s.ratingCount, s.ratingHist);
   const band = f.priceBand ? PRICE_BANDS[f.priceBand as PriceBand] : null;
   const comparable = similar.similar.slice(0, 2);
   const thin = s.ratingCount < 30;
@@ -39,7 +39,7 @@ export function Hero({ f, similar }: { f: FragranceDetail; similar: SimilarGroup
           <BottleStage
             name={f.name}
             accent={f.accent}
-            image={f.poster ? { url: f.poster, alt: f.posterAlt, kind: f.posterKind, credit: f.posterCredit, license: f.posterLicense, sourceUrl: f.posterSource, nozzle: f.posterNozzle } : null}
+            image={f.poster ? { url: f.poster, alt: f.posterAlt, kind: f.posterKind, credit: f.posterCredit, license: f.posterLicense, sourceUrl: f.posterSource, layers: f.posterLayers } : null}
             model={f.model ? { url: f.model.url, animations: { spray: f.model.animations.spray, open: f.model.animations.open } } : null}
           />
         </div>

@@ -77,28 +77,74 @@ async function connectPglite(): Promise<Db> {
     process.env.LOCAL_DB_DIR ?? (!isBuild && process.env.NODE_ENV !== 'production' ? path.join(ROOT, '.data', 'pglite') : undefined);
   if (persistDir) mkdirSync(persistDir, { recursive: true });
 
-  const pg = await PGlite.create({ dataDir: persistDir, extensions: { pg_trgm, unaccent } });
+  const boot = async () => {
+    const pg = await PGlite.create({ dataDir: persistDir, extensions: { pg_trgm, unaccent } });
+    await migrateLocal(pg);
+    return pg;
+  };
+  let pg = await boot();
+  let reviving: Promise<void> | null = null;
+
+  /**
+   * PGlite is Postgres compiled to WASM: a backend FATAL (or a failed memory grow) aborts the whole
+   * instance, and every later call throws "Aborted()". Instead of serving 500s until the process
+   * restarts, we reopen the data directory (committed state survives) and retry the call once.
+   */
+  // The WASM RuntimeError may come from another realm, so do not rely on instanceof.
+  const isDead = (e: unknown) => {
+    if (!e || typeof e !== 'object') return false;
+    const { name, message } = e as { name?: unknown; message?: unknown };
+    return String(name) === 'RuntimeError' || /Aborted\(\)|unreachable|memory access out of bounds/i.test(String(message ?? e));
+  };
+  const revive = async () => {
+    if (!reviving) {
+      reviving = (async () => {
+        console.error('[db] embedded Postgres aborted; reopening the local database');
+        try {
+          await pg.close();
+        } catch {
+          /* already gone */
+        }
+        pg = await boot();
+      })().finally(() => {
+        reviving = null;
+      });
+    }
+    return reviving;
+  };
+  const guarded = async <T,>(run: () => Promise<T>, label: string): Promise<T> => {
+    try {
+      return await run();
+    } catch (e) {
+      if (!isDead(e)) throw e;
+      console.error(`[db] statement that hit the abort: ${label.replace(/\s+/g, ' ').slice(0, 220)}`);
+      await revive();
+      return run();
+    }
+  };
+
   const q: Queryable = {
     async query<T>(text: string, params: unknown[] = []) {
-      const res = await pg.query<T>(text, params);
-      return res.rows;
+      return guarded(async () => (await pg.query<T>(text, params)).rows, text);
     },
   };
   const db: Db = {
     driver: 'pglite',
     ...q,
     async tx<T>(fn: (q: Queryable) => Promise<T>) {
-      return pg.transaction(async (t) =>
-        fn({
-          async query<R>(text: string, params: unknown[] = []) {
-            return (await t.query<R>(text, params)).rows;
-          },
-        }),
+      return guarded(
+        () =>
+          pg.transaction(async (t) =>
+            fn({
+              async query<R>(text: string, params: unknown[] = []) {
+                return (await t.query<R>(text, params)).rows;
+              },
+            }),
+          ),
+        'transaction',
       );
     },
   };
-
-  await migrateLocal(pg);
   return db;
 }
 

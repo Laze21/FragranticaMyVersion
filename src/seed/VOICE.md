@@ -6,4 +6,4 @@ VOICE RULES for all seed copy (strict):
 - Avoid em dashes (use commas, periods, colons, parentheses). At most one em dash per 500 words.
 - Avoid rule-of-three slogans. Vary sentence length. No exclamation marks except in a few casual reviews.
 - No emoji.
-- Everything is fictional demo content: never mention real brands, real perfumes, real perfumers or real people.
+- The catalogue is real (real houses, perfumes and perfumers, written from editorial research with provenance). People, shelves, diaries and community figures are demo data and are always flagged as such. Never write fake reviews of real products.

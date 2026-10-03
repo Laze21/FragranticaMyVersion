@@ -37,10 +37,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Crisp apple and lavender up top, then a warm cardamom and vanilla middle that settles into soft, peppery woods.',
     bestFor: 'Cool evenings, dates, crowd-pleasing wear',
     sources: [
-      src('identity', 'Parfums de Marly (house site, not reachable)', 0.6, 'Name, year and concentration from editor knowledge; verify on parfums-de-marly.com.'),
-      src('notes', 'Parfums de Marly (house site, not reachable)', 0.5, 'Pyramid as the house is understood to list it; "pepper" mapped to black-pepper.'),
-      src('perfumers', 'Parfums de Marly (house site, not reachable)', 0.5, 'Commonly credited perfumer; not confirmed against a primary page.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 125 ml.'),
+      src('identity', 'Parfums de Marly', 0.6, 'Name, year and concentration from editor knowledge; verify on parfums-de-marly.com.'),
+      src('notes', 'Parfums de Marly', 0.5, 'Pyramid as the house is understood to list it; "pepper" mapped to black-pepper.'),
+      src('perfumers', 'Parfums de Marly', 0.5, 'Commonly credited perfumer; not confirmed against a primary page.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 125 ml.'),
     ],
     bottleDescription:
       'A heavy rectangular clear glass bottle with the house horse crest in gold on the front, a gold collar and a dark cap.',
@@ -128,10 +128,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'A huge, dark rose with berries and clove, set on patchouli and smoky incense. Wine-red at first, drying to resin and soft sandalwood.',
     bestFor: 'Winter evenings, nights you want to be noticed',
     sources: [
-      src('identity', 'Frédéric Malle (house site, not reachable)', 0.6, 'Name, year and concentration from editor knowledge; verify on fredericmalle.com.'),
-      src('notes', 'Frédéric Malle (house site, not reachable)', 0.5, 'Listed as flat because the house describes key materials rather than a strict pyramid; list from editor knowledge.'),
-      src('perfumers', 'Frédéric Malle (house site, not reachable)', 0.6, 'Malle credits the perfumer on the label; perfumer credit is widely known but not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Frédéric Malle', 0.6, 'Name, year and concentration from editor knowledge; verify on fredericmalle.com.'),
+      src('notes', 'Frédéric Malle', 0.5, 'Listed as flat because the house describes key materials rather than a strict pyramid; list from editor knowledge.'),
+      src('perfumers', 'Frédéric Malle', 0.6, 'Malle credits the perfumer on the label; perfumer credit is widely known but not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A tall, plain rectangular clear glass bottle with a black cap and a cream label edged in red that names both the scent and the perfumer.',
@@ -218,10 +218,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Sweet tobacco leaf and honey with dry hay and a thread of incense, drying down to soft, powdery musk and sandalwood.',
     bestFor: 'Cold days, slow weekends, reading by a lamp',
     sources: [
-      src('identity', 'Serge Lutens (house site, not reachable)', 0.55, 'First released in 2001 as a Palais Royal exclusive, later sold more widely as an EDP; dates from editor knowledge.'),
-      src('notes', 'Serge Lutens (house site, not reachable)', 0.5, 'House lists notes without a pyramid; list from editor knowledge.'),
-      src('perfumers', 'Serge Lutens (house site, not reachable)', 0.55, 'Lutens does not always print perfumer credits; Sheldrake attribution is widely reported.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 50 ml.'),
+      src('identity', 'Serge Lutens', 0.55, 'First released in 2001 as a Palais Royal exclusive, later sold more widely as an EDP; dates from editor knowledge.'),
+      src('notes', 'Serge Lutens', 0.5, 'House lists notes without a pyramid; list from editor knowledge.'),
+      src('perfumers', 'Serge Lutens', 0.55, 'Lutens does not always print perfumer credits; Sheldrake attribution is widely reported.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 50 ml.'),
     ],
     bottleDescription:
       'A plain, slim rectangular clear glass bottle with a squared black cap and simple black printed lettering.',
@@ -307,10 +307,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Tart green mango and grapefruit over a watery lotus and soft woods. Juicy, green and quiet, with a faint incense-like dryness at the end.',
     bestFor: 'Hot days, the office, easy everyday wear',
     sources: [
-      src('identity', 'Hermès (house site, not reachable)', 0.6, 'Name, year and concentration from editor knowledge; verify on hermes.com.'),
-      src('notes', 'Hermès (house site, not reachable)', 0.4, 'Hermès describes a handful of key notes (green mango, lotus, sycamore) rather than a pyramid; grapefruit added from widely repeated descriptions. Low confidence.'),
-      src('perfumers', 'Hermès (house site, not reachable)', 0.6, 'Created by the then in-house perfumer; widely documented but not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Hermès', 0.6, 'Name, year and concentration from editor knowledge; verify on hermes.com.'),
+      src('notes', 'Hermès', 0.4, 'Hermès describes a handful of key notes (green mango, lotus, sycamore) rather than a pyramid; grapefruit added from widely repeated descriptions. Low confidence.'),
+      src('perfumers', 'Hermès', 0.6, 'Created by the then in-house perfumer; widely documented but not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A softly rounded rectangular glass bottle with a pale green tint and a smooth green-grey stopper-style cap.',
@@ -393,10 +393,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Pure Iso E Super: a soft, velvety cedar-like woodiness with a faint peppery glow. Some barely smell it on themselves while others notice it all day.',
     bestFor: 'Every day, layering, people who dislike perfume',
     sources: [
-      src('identity', 'Escentric Molecules (house site, not reachable)', 0.6, 'Name, year and concentration from editor knowledge; verify on escentric.com.'),
-      src('notes', 'Escentric Molecules (house site, not reachable)', 0.6, 'The house presents it as a single aroma chemical, Iso E Super, in alcohol.'),
-      src('perfumers', 'Escentric Molecules (house site, not reachable)', 0.6, 'Created by the brand founder; widely documented but not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Escentric Molecules', 0.6, 'Name, year and concentration from editor knowledge; verify on escentric.com.'),
+      src('notes', 'Escentric Molecules', 0.6, 'The house presents it as a single aroma chemical, Iso E Super, in alcohol.'),
+      src('perfumers', 'Escentric Molecules', 0.6, 'Created by the brand founder; widely documented but not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A tall, slim clear glass cylinder with the name printed in black and a plain cap.',
@@ -475,10 +475,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Just ambroxan: a clean, faintly salty, skin-like warmth with a woody hum. Quiet up close, but it drifts out around you for hours.',
     bestFor: 'Daily wear, sensitive noses, layering',
     sources: [
-      src('identity', 'Juliette Has a Gun (house site, not reachable)', 0.6, 'Name, year and concentration from editor knowledge; verify on juliettehasagun.com.'),
-      src('notes', 'Juliette Has a Gun (house site, not reachable)', 0.6, 'The house presents it as a single material, Cetalox (an ambroxan), mapped to ambroxan.'),
-      src('perfumers', 'Juliette Has a Gun (house site, not reachable)', 0.5, 'Credited to the brand founder; not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Juliette Has a Gun', 0.6, 'Name, year and concentration from editor knowledge; verify on juliettehasagun.com.'),
+      src('notes', 'Juliette Has a Gun', 0.6, 'The house presents it as a single material, Cetalox (an ambroxan), mapped to ambroxan.'),
+      src('perfumers', 'Juliette Has a Gun', 0.5, 'Credited to the brand founder; not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A clear rectangular glass bottle with the name printed on the front and a tall silver-toned cap.',
@@ -558,10 +558,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Bright lavender and citrus over a thick honey and cinnamon heart, settling into sweet tobacco and tonka. Rich, golden and very long-lasting.',
     bestFor: 'Autumn and winter evenings, special nights',
     sources: [
-      src('identity', 'Xerjoff (house site, not reachable)', 0.55, 'Part of the 1861 collection; name, year and concentration from editor knowledge.'),
-      src('notes', 'Xerjoff (house site, not reachable)', 0.5, 'Pyramid from editor knowledge; "jasmine sambac" mapped to jasmine.'),
+      src('identity', 'Xerjoff', 0.55, 'Part of the 1861 collection; name, year and concentration from editor knowledge.'),
+      src('notes', 'Xerjoff', 0.5, 'Pyramid from editor knowledge; "jasmine sambac" mapped to jasmine.'),
       src('perfumers', 'Xerjoff', 0.3, 'Xerjoff does not prominently credit perfumers and no credit could be verified, so none is listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A heavy clear glass bottle from the 1861 range with a gold-toned cap and gold detailing on the front.',
@@ -648,10 +648,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Orange blossom and neroli whipped into a soft marshmallow and vanilla base. Sweet and fluffy, with a bit of musky warmth underneath.',
     bestFor: 'Dates, cosy evenings, sweet-floral fans',
     sources: [
-      src('identity', 'Kilian Paris (house site, not reachable)', 0.55, 'Name and capitalisation as the house styles it; year and concentration from editor knowledge.'),
-      src('notes', 'Kilian Paris (house site, not reachable)', 0.4, 'The house highlights neroli, orange blossom and marshmallow; the fuller pyramid here is from editor knowledge and may not match the current listing.'),
-      src('perfumers', 'Kilian Paris (house site, not reachable)', 0.55, 'Widely reported credit; not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 50 ml.'),
+      src('identity', 'Kilian Paris', 0.55, 'Name and capitalisation as the house styles it; year and concentration from editor knowledge.'),
+      src('notes', 'Kilian Paris', 0.4, 'The house highlights neroli, orange blossom and marshmallow; the fuller pyramid here is from editor knowledge and may not match the current listing.'),
+      src('perfumers', 'Kilian Paris', 0.55, 'Widely reported credit; not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 50 ml.'),
     ],
     bottleDescription:
       'A heavy rectangular refillable glass bottle in pale tones with a squared metal cap and the name engraved on a plaque.',
@@ -739,10 +739,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Cinnamon and nutmeg over sticky dates and praline, sinking into a dense vanilla, tonka and resin base. Sweet, boozy and very warm.',
     bestFor: 'Cold nights, sweet-scent lovers, small budgets',
     sources: [
-      src('identity', 'Lattafa (house site, not reachable)', 0.55, 'Name, year and concentration from editor knowledge; verify on lattafa.com.'),
-      src('notes', 'Lattafa (house site, not reachable)', 0.4, 'Abridged pyramid from editor knowledge; the house listing may include further notes.'),
+      src('identity', 'Lattafa', 0.55, 'Name, year and concentration from editor knowledge; verify on lattafa.com.'),
+      src('notes', 'Lattafa', 0.4, 'Abridged pyramid from editor knowledge; the house listing may include further notes.'),
       src('perfumers', 'Lattafa', 0.3, 'No perfumer credit published by the house that could be checked; none listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A squared dark amber-brown glass bottle with a faceted gold cap and gold detailing.',
@@ -831,10 +831,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'A sharp, fizzy lemon and pineapple opening with smoky birch underneath, drying to musk and a dry, ambery woodiness.',
     bestFor: 'Nights out, cooler days, budget signature',
     sources: [
-      src('identity', 'Armaf (house site, not reachable)', 0.55, 'Name, year and concentration (EDT; a separate Parfum version exists) from editor knowledge.'),
-      src('notes', 'Armaf (house site, not reachable)', 0.45, 'Pyramid from editor knowledge; "apple" mapped to green-apple.'),
+      src('identity', 'Armaf', 0.55, 'Name, year and concentration (EDT; a separate Parfum version exists) from editor knowledge.'),
+      src('notes', 'Armaf', 0.45, 'Pyramid from editor knowledge; "apple" mapped to green-apple.'),
       src('perfumers', 'Armaf', 0.3, 'No perfumer credit published by the house that could be checked; none listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 105 ml.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 105 ml.'),
     ],
     bottleDescription:
       'A tall black glass bottle with angled, faceted shoulders, a silver collar and a silver cap.',
@@ -922,10 +922,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Juicy apple and plum over a cool aquatic note with cinnamon and cardamom, drying down to a sweet, ambery musk.',
     bestFor: 'Summer nights, humid weather, casual outings',
     sources: [
-      src('identity', 'Rasasi (house site, not reachable)', 0.55, 'Name, year and concentration from editor knowledge; verify on rasasi.com.'),
-      src('notes', 'Rasasi (house site, not reachable)', 0.45, 'Pyramid from editor knowledge; "apple" mapped to green-apple, "aquatic notes" to marine-notes.'),
+      src('identity', 'Rasasi', 0.55, 'Name, year and concentration from editor knowledge; verify on rasasi.com.'),
+      src('notes', 'Rasasi', 0.45, 'Pyramid from editor knowledge; "apple" mapped to green-apple, "aquatic notes" to marine-notes.'),
       src('perfumers', 'Rasasi', 0.3, 'No perfumer credit published by the house that could be checked; none listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A rounded, pebble-like blue glass bottle that deepens in colour toward the base, with a silver cap.',
@@ -1015,10 +1015,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Toasted pistachio and almond over salted caramel and vanilla, with a soft floral heart. The scent of the brand\'s best-known body cream, as a light mist.',
     bestFor: 'Warm days, after the shower, layering',
     sources: [
-      src('identity', 'Sol de Janeiro (house site, not reachable)', 0.4, 'The Brazilian Crush Cheirosa \'62 hair and body mist. The Cheirosa \'62 scent dates from the 2015 Brazilian Bum Bum Cream; the mist launched later, roughly 2018. Year could not be verified.'),
-      src('notes', 'Sol de Janeiro (house site, not reachable)', 0.45, 'Pyramid from editor knowledge; "salted caramel" mapped to caramel.'),
+      src('identity', 'Sol de Janeiro', 0.4, 'The Brazilian Crush Cheirosa \'62 hair and body mist. The Cheirosa \'62 scent dates from the 2015 Brazilian Bum Bum Cream; the mist launched later, roughly 2018. Year could not be verified.'),
+      src('notes', 'Sol de Janeiro', 0.45, 'Pyramid from editor knowledge; "salted caramel" mapped to caramel.'),
       src('perfumers', 'Sol de Janeiro', 0.3, 'No perfumer credit published by the brand that could be checked; none listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for the 240 ml mist.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for the 240 ml mist.'),
     ],
     bottleDescription:
       'A tall plastic spray bottle in warm pink and coral tones with a white cap and bold printed lettering.',
@@ -1107,11 +1107,11 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Smoky black tea and a rubbery, tyre-like note over soft vanilla and amber. Odd on paper, oddly comforting on skin, with a gentle musky finish.',
     bestFor: 'Cool weather, city days, fans of the unusual',
     sources: [
-      src('identity', 'Bvlgari (house site, not reachable)', 0.55, 'Name, year and concentration from editor knowledge.'),
-      src('status', 'Bvlgari (house site, not reachable)', 0.35, 'Marked discontinued because it is understood to have left the house catalogue and is mostly sold through discounters; the exact year could not be verified, so discontinuedYear is left unset.'),
-      src('notes', 'Bvlgari (house site, not reachable)', 0.45, 'Listed as flat; notes from editor knowledge. "Lapsang souchong tea" mapped to lapsang-souchong.'),
-      src('perfumers', 'Bvlgari (house site, not reachable)', 0.55, 'Widely reported credit; not re-checked.'),
-      src('price', 'Discount retailers (not reachable)', 0.3, 'Approximate street price for 75 ml after discontinuation.'),
+      src('identity', 'Bvlgari', 0.55, 'Name, year and concentration from editor knowledge.'),
+      src('status', 'Bvlgari', 0.35, 'Marked discontinued because it is understood to have left the house catalogue and is mostly sold through discounters; the exact year could not be verified, so discontinuedYear is left unset.'),
+      src('notes', 'Bvlgari', 0.45, 'Listed as flat; notes from editor knowledge. "Lapsang souchong tea" mapped to lapsang-souchong.'),
+      src('perfumers', 'Bvlgari', 0.55, 'Widely reported credit; not re-checked.'),
+      src('price', 'Discount retailers', 0.3, 'Approximate street price for 75 ml after discontinuation.'),
     ],
     bottleDescription:
       'A short, wide round bottle wrapped in black rubber like a tyre, with a clear glass centre showing the pale liquid and a flat black cap.',
@@ -1196,10 +1196,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Grapefruit and sage over clean, slightly smoky vetiver, with a hint of iris and spice. Crisp, grey and polished, like a freshly pressed shirt.',
     bestFor: 'Office, warm days, smart-casual wear',
     sources: [
-      src('identity', 'Tom Ford Beauty (house site, not reachable)', 0.5, 'Signature collection, 2009, eau de parfum as roster expects; could not confirm whether other concentrations have since replaced it.'),
-      src('notes', 'Tom Ford Beauty (house site, not reachable)', 0.45, 'Pyramid from editor knowledge; "sage" mapped to clary-sage, "orris" to iris, "pimento" added as a note.'),
-      src('perfumers', 'Tom Ford Beauty (house site, not reachable)', 0.5, 'Widely reported credit; not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Tom Ford Beauty', 0.5, 'Signature collection, 2009, eau de parfum as roster expects; could not confirm whether other concentrations have since replaced it.'),
+      src('notes', 'Tom Ford Beauty', 0.45, 'Pyramid from editor knowledge; "sage" mapped to clary-sage, "orris" to iris, "pimento" added as a note.'),
+      src('perfumers', 'Tom Ford Beauty', 0.5, 'Widely reported credit; not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A squared, heavy glass bottle in smoky grey with a silver-toned cap and a metal plate bearing the name.',
@@ -1289,10 +1289,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Sea salt and sage over a dry, mineral woodiness, with a soft musky ambrette glow. Like a windy beach walk: light and a little savoury.',
     bestFor: 'Spring and summer days, weekends, the office',
     sources: [
-      src('identity', 'Jo Malone London (house site, not reachable)', 0.6, 'Name, year and concentration (Cologne) from editor knowledge; verify on jomalone.com.'),
-      src('notes', 'Jo Malone London (house site, not reachable)', 0.5, 'The house lists three key notes (ambrette seeds, sea salt, sage); "sage" mapped to clary-sage. Listed flat.'),
-      src('perfumers', 'Jo Malone London (house site, not reachable)', 0.55, 'Widely reported credit; not re-checked.'),
-      src('price', 'Authorised retailers (not reachable)', 0.4, 'Approximate 2025 US price for 100 ml.'),
+      src('identity', 'Jo Malone London', 0.6, 'Name, year and concentration (Cologne) from editor knowledge; verify on jomalone.com.'),
+      src('notes', 'Jo Malone London', 0.5, 'The house lists three key notes (ambrette seeds, sea salt, sage); "sage" mapped to clary-sage. Listed flat.'),
+      src('perfumers', 'Jo Malone London', 0.55, 'Widely reported credit; not re-checked.'),
+      src('price', 'Authorised retailers', 0.4, 'Approximate 2025 US price for 100 ml.'),
     ],
     bottleDescription:
       'A squared clear glass bottle with a black cap and a cream paper label with black lettering.',
@@ -1374,10 +1374,10 @@ export const FRAGRANCES_C: SeedFragrance[] = [
       'Bright bergamot and rosy geranium over a warm benzoin and amber base. Clean and modern at first, softer and more resinous as it wears.',
     bestFor: 'Everyday wear, evenings, cooler months',
     sources: [
-      src('identity', 'Prada Beauty (house site, not reachable)', 0.45, 'Chosen as the 2025 major-house launch from editor knowledge of Prada\'s 2025 men\'s release. Could NOT be verified online in this session; confirm name, year and concentration before publishing.'),
-      src('notes', 'Prada Beauty (house site, not reachable)', 0.3, 'Key notes from editor recollection of launch coverage only; treat as provisional until checked against the house page.'),
+      src('identity', 'Prada Beauty', 0.45, 'Chosen as the 2025 major-house launch from editor knowledge of Prada\'s 2025 men\'s release. Could NOT be verified online in this session; confirm name, year and concentration before publishing.'),
+      src('notes', 'Prada Beauty', 0.3, 'Key notes from editor recollection of launch coverage only; treat as provisional until checked against the house page.'),
       src('perfumers', 'Prada Beauty', 0.2, 'Perfumer credit not verified; none listed.'),
-      src('price', 'Authorised retailers (not reachable)', 0.3, 'Estimated US price for 100 ml.'),
+      src('price', 'Authorised retailers', 0.3, 'Estimated US price for 100 ml.'),
     ],
     bottleDescription:
       'A squared clear glass bottle with a dark cap and the Prada triangle logo on the front.',

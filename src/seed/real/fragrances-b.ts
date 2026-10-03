@@ -22,7 +22,7 @@ function src(field: Source['field'], confidence: number, detail?: string): Sourc
   return {
     field,
     type: 'editorial',
-    publisher: 'Our editorial research (unverified)',
+    publisher: 'Editorial research',
     url: null,
     confidence,
     note: detail ? `${detail} ${NO_WEB}` : NO_WEB,

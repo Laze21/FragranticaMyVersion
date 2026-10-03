@@ -2,7 +2,7 @@ import 'server-only';
 import { cache } from 'react';
 import { sql, sqlOne } from '@/lib/db';
 import type { BottleSpec } from '@/seed/types';
-import type { Character, FragranceCard, FragranceDetail, FragranceStats, NoteRef, SourceClaim } from './types';
+import type { Character, FragranceCard, FragranceDetail, FragranceStats, NoteRef, SourceClaim, StageLayers } from './types';
 
 const n = (v: unknown): number | null => (v === null || v === undefined ? null : Number(v));
 const avgFromHist = (h: number[] | null | undefined) => {
@@ -11,12 +11,15 @@ const avgFromHist = (h: number[] | null | undefined) => {
   return total ? h.reduce((s, c, i) => s + c * (i + 1), 0) / total : null;
 };
 const emptyCharacter = (): Character => ({ overall: {}, opening: {}, heart: {}, drydown: {} });
-/** Photo assets keep the nozzle point (fractions of the image) in poster_url as JSON. */
-const parseNozzle = (v: unknown): { x: number; y: number } | null => {
+/** Stage layers stored with the asset (see scripts/bottles/render.ts and src/seed/images.ts). */
+const parseLayers = (v: unknown): StageLayers | null => {
   if (!v) return null;
   try {
-    const o = typeof v === 'string' ? JSON.parse(v) : v;
-    return o && typeof o.x === 'number' && typeof o.y === 'number' ? { x: o.x, y: o.y } : null;
+    const o = (typeof v === 'string' ? JSON.parse(v) : v) as Partial<StageLayers>;
+    if (!o || typeof o !== 'object') return null;
+    const nozzle = o.nozzle && typeof o.nozzle.x === 'number' && typeof o.nozzle.y === 'number' ? { x: o.nozzle.x, y: o.nozzle.y } : { x: 0.5, y: 0.03 };
+    const cap = o.cap && typeof o.cap.x === 'number' ? { x: o.cap.x, y: o.cap.y, w: o.cap.w, h: o.cap.h } : null;
+    return { nozzle, cap, shadow: typeof o.shadow === 'string' ? o.shadow : null, body: typeof o.body === 'string' ? o.body : null, capUrl: typeof o.capUrl === 'string' ? o.capUrl : null };
   } catch {
     return null;
   }
@@ -26,7 +29,7 @@ const parseNozzle = (v: unknown): { x: number; y: number } | null => {
 export const CARD_COLUMNS = `
   f.id, f.slug, f.name, b.slug as brand_slug, b.name as brand_name, f.concentration, f.release_year, f.status, f.style,
   f.price_band, f.accent_hex, f.phase_heart_min, f.phase_drydown_min, p.url as poster, p.alt as poster_alt, p.kind as poster_kind,
-  p.credit as poster_credit, p.license as poster_license, p.source_url as poster_source, p.nozzle as poster_nozzle,
+  p.credit as poster_credit, p.license as poster_license, p.source_url as poster_source, p.layers as poster_layers,
   s.rating_avg, coalesce(s.rating_count, 0) as rating_count, coalesce(s.review_count, 0) as review_count, s.character,
   s.longevity_median_hrs, s.projection_opening_hist, s.projection_later_hist, coalesce(s.own_count, 0) as own_count,
   coalesce(s.trending, 0) as trending, coalesce(s.includes_baseline, false) as includes_baseline`;
@@ -59,7 +62,7 @@ export function mapCard(r: CardRow): FragranceCard {
     posterCredit: (r.poster_credit as string) ?? null,
     posterLicense: (r.poster_license as string) ?? null,
     posterSource: (r.poster_source as string) ?? null,
-    posterNozzle: parseNozzle(r.poster_nozzle),
+    posterLayers: parseLayers(r.poster_layers),
     ratingAvg: n(r.rating_avg),
     ratingCount: Number(r.rating_count ?? 0),
     reviewCount: Number(r.review_count ?? 0),

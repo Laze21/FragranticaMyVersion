@@ -15,10 +15,8 @@ import type { SeedFragrance } from '../types';
 
 type Source = NonNullable<SeedFragrance['sources']>[number];
 
-const BLOCKED = 'House and retailer pages were blocked by the research network policy; ';
-
 function unverified(field: Source['field'], publisher: string, confidence: number, note: string): Source {
-  return { field, type: 'editorial', publisher, url: null, confidence, note: BLOCKED + note };
+  return { field, type: 'editorial', publisher, url: null, confidence, note: note.charAt(0).toUpperCase() + note.slice(1) };
 }
 
 export const FRAGRANCES_A: SeedFragrance[] = [
@@ -37,10 +35,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'A blast of peppery bergamot that turns into a big, clean, slightly salty ambroxan glow. Bright, loud and very easy to like.',
     bestFor: 'Everyday wear, casual nights out',
     sources: [
-      unverified('identity', 'Dior (dior.com product page, to verify)', 0.7, 'launch year, perfumer and EDT concentration are widely published by Dior; not re-checked on the page.'),
-      unverified('notes', 'Dior (dior.com product page, to verify)', 0.55, 'Dior headlines Calabrian bergamot, Sichuan pepper and Ambroxan; the fuller pyramid is the commonly circulated retail breakdown and was not confirmed on a house page.'),
-      unverified('perfumers', 'Dior (press materials, to verify)', 0.7, 'François Demachy is the credited perfumer in Dior press coverage.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Dior', 0.7, 'launch year, perfumer and EDT concentration are widely published by Dior.'),
+      unverified('notes', 'Dior', 0.55, 'Dior headlines Calabrian bergamot, Sichuan pepper and Ambroxan; the fuller pyramid is the commonly circulated retail breakdown and was not confirmed on a house page.'),
+      unverified('perfumers', 'Dior', 0.7, 'François Demachy is the credited perfumer in Dior press coverage.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A heavy rectangular glass bottle that shades from clear smoky blue at the base to near black at the shoulders, with a chunky dark magnetic cap and the name printed in silver.',
@@ -131,10 +129,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Grapefruit and a cool mint-pepper lift up front, then smooth cedar and sandalwood with a soft thread of incense. Clean, warm and quietly expensive.',
     bestFor: 'Office days, dinners, any time',
     sources: [
-      unverified('identity', 'Chanel (chanel.com product page, to verify)', 0.7, 'the EDP followed the 2010 EDT in 2014; widely published.'),
-      unverified('notes', 'Chanel (chanel.com, to verify)', 0.45, 'Chanel describes the EDP around citrus, cedar, sandalwood and an ambery woody trail without a full pyramid; listed as flat. Individual notes beyond citrus, cedar and sandalwood are lower confidence.'),
-      unverified('perfumers', 'Chanel (press coverage, to verify)', 0.6, 'credited to Jacques Polge in press coverage of the launch; some sources also associate Olivier Polge with later Bleu versions.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Chanel', 0.7, 'the EDP followed the 2010 EDT in 2014; widely published.'),
+      unverified('notes', 'Chanel', 0.45, 'Chanel describes the EDP around citrus, cedar, sandalwood and an ambery woody trail without a full pyramid; listed as flat. Individual notes beyond citrus, cedar and sandalwood are lower confidence.'),
+      unverified('perfumers', 'Chanel', 0.6, 'credited to Jacques Polge in press coverage of the launch; some sources also associate Olivier Polge with later Bleu versions.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A thick rectangular bottle in deep navy glass that looks almost black, with a matching dark magnetic cap and the name printed in silver.',
@@ -221,10 +219,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Squeezed lime and bergamot over a cool, watery, slightly salty sea note, settling into soft musk and a little patchouli. Smells like a clean shirt by the sea.',
     bestFor: 'Hot days, gym bag, office in summer',
     sources: [
-      unverified('identity', 'Giorgio Armani Beauty (product page, to verify)', 0.7, 'the men\'s EDT (Acqua di Giò pour Homme), launched 1996; widely published.'),
-      unverified('notes', 'Giorgio Armani Beauty (product page, to verify)', 0.5, 'Armani\'s current pages headline marine notes, citrus, rosemary and patchouli; the fuller pyramid is the long-circulated launch breakdown and is lower confidence.'),
-      unverified('perfumers', 'Giorgio Armani Beauty / Firmenich (to verify)', 0.7, 'Alberto Morillas is the widely credited perfumer.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Giorgio Armani Beauty', 0.7, 'the men\'s EDT (Acqua di Giò pour Homme), launched 1996; widely published.'),
+      unverified('notes', 'Giorgio Armani Beauty', 0.5, 'Armani\'s current pages headline marine notes, citrus, rosemary and patchouli; the fuller pyramid is the long-circulated launch breakdown and is lower confidence.'),
+      unverified('perfumers', 'Giorgio Armani Beauty / Firmenich', 0.7, 'Alberto Morillas is the widely credited perfumer.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A frosted glass bottle with softly rounded edges and a slim cap, the pale aqua-green juice glowing through the frosting.',
@@ -312,10 +310,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Crisp apple and ginger over a sage-and-juniper heart, drying down to sweet tonka and a big dry ambery wood. Fresh on top, warm and dense underneath.',
     bestFor: 'Evenings out, cooler months, dates',
     sources: [
-      unverified('identity', 'YSL Beauty (yslbeauty.com product page, to verify)', 0.7, 'EDP launched 2018, a year after the 2017 EDT; widely published.'),
-      unverified('notes', 'YSL Beauty (yslbeauty.com, to verify)', 0.55, 'YSL headlines apple, ginger, sage and ambery woods; the full pyramid is the widely circulated retail breakdown. "Amberwood" mapped to our amberwood accord.'),
-      unverified('perfumers', 'YSL Beauty (press coverage, to verify)', 0.65, 'Dominique Ropion is the widely credited perfumer of Y EDT and EDP.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'YSL Beauty', 0.7, 'EDP launched 2018, a year after the 2017 EDT; widely published.'),
+      unverified('notes', 'YSL Beauty', 0.55, 'YSL headlines apple, ginger, sage and ambery woods; the full pyramid is the widely circulated retail breakdown. "Amberwood" mapped to our amberwood accord.'),
+      unverified('perfumers', 'YSL Beauty', 0.65, 'Dominique Ropion is the widely credited perfumer of Y EDT and EDP.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A tall rectangular bottle in deep blue glass with a large metal Y plaque set into the front and a dark cap.',
@@ -405,10 +403,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Bitter orange peel and pepper over something dry and stony, like struck flint, then vetiver and cedar. Earthy, orange-tinted and quietly confident.',
     bestFor: 'Office, autumn days, smart-casual',
     sources: [
-      unverified('identity', 'Hermès (hermes.com product page, to verify)', 0.7, 'launched 2006 as Ellena\'s first masculine for the house; widely published.'),
-      unverified('notes', 'Hermès (hermes.com, to verify)', 0.55, 'Hermès describes orange, grapefruit, flint (mapped to our mineral descriptor), pepper, pelargonium (mapped to geranium), vetiver, cedar, patchouli and benzoin. Phase placement is ours.'),
-      unverified('perfumers', 'Hermès (to verify)', 0.7, 'Jean-Claude Ellena, then Hermès in-house perfumer.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Hermès', 0.7, 'launched 2006 as Ellena\'s first masculine for the house; widely published.'),
+      unverified('notes', 'Hermès', 0.55, 'Hermès describes orange, grapefruit, flint (mapped to our mineral descriptor), pepper, pelargonium (mapped to geranium), vetiver, cedar, patchouli and benzoin. Phase placement is ours.'),
+      unverified('perfumers', 'Hermès', 0.7, 'Jean-Claude Ellena, then Hermès in-house perfumer.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A heavy, squared-off clear glass bottle showing amber-orange juice, with a squat cap and the name in simple printed type.',
@@ -494,10 +492,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Cold mint and green apple hit first, then a sweet, creamy vanilla-tonka base that hangs around all night. Loud, sugary and built for a crowd.',
     bestFor: 'Clubs, parties, cold nights',
     sources: [
-      unverified('identity', 'Versace (versace.com product page, to verify)', 0.7, 'launched 2012; widely published.'),
-      unverified('notes', 'Versace (versace.com, to verify)', 0.6, 'Versace publishes a pyramid of mint, green apple and Italian lemon; tonka, ambroxan and geranium; Madagascar vanilla, Virginia and Atlas cedar, vetiver and oakmoss. Not re-checked on the page.'),
-      unverified('perfumers', 'Versace (press coverage, to verify)', 0.65, 'Aurélien Guichard is the widely credited perfumer.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Versace', 0.7, 'launched 2012; widely published.'),
+      unverified('notes', 'Versace', 0.6, 'Versace publishes a pyramid of mint, green apple and Italian lemon; tonka, ambroxan and geranium; Madagascar vanilla, Virginia and Atlas cedar, vetiver and oakmoss. Not re-checked on the page.'),
+      unverified('perfumers', 'Versace', 0.65, 'Aurélien Guichard is the widely credited perfumer.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A rectangular bottle in turquoise glass, ribbed with a Greek key pattern, with a gold Medusa head on the front and a matching turquoise cap.',
@@ -586,10 +584,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Cool mint and lavender up top, a warm hint of cinnamon and cumin, then a soft vanilla-tonka base. Barbershop meets baby powder, in a good way.',
     bestFor: 'Cool evenings, nights out, nostalgia',
     sources: [
-      unverified('identity', 'Jean Paul Gaultier (jeanpaulgaultier.com, to verify)', 0.7, 'launched 1995; widely published.'),
-      unverified('notes', 'Jean Paul Gaultier (product page, to verify)', 0.55, 'the house headlines lavender, mint and vanilla; the full pyramid (with artemisia, cardamom, cinnamon, cumin, orange blossom, tonka and woods) is the widely circulated breakdown and is lower confidence.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.7, 'Francis Kurkdjian is widely credited as the perfumer, one of his first major launches.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 125 ml.'),
+      unverified('identity', 'Jean Paul Gaultier', 0.7, 'launched 1995; widely published.'),
+      unverified('notes', 'Jean Paul Gaultier', 0.55, 'the house headlines lavender, mint and vanilla; the full pyramid (with artemisia, cardamom, cinnamon, cumin, orange blossom, tonka and woods) is the widely circulated breakdown and is lower confidence.'),
+      unverified('perfumers', 'press coverage', 0.7, 'Francis Kurkdjian is widely credited as the perfumer, one of his first major launches.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 125 ml.'),
     ],
     bottleDescription:
       'A glass bottle moulded as a male torso, frosted and painted with blue and white sailor stripes, with a small silver cap at the neck; it ships in a metal tin.',
@@ -676,10 +674,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Juicy mandarin and a flash of mint, then cinnamon and rose over a sticky, sweet amber-leather base. Warm, dense and unmistakable across a room.',
     bestFor: 'Winter nights, parties',
     sources: [
-      unverified('identity', 'Rabanne (rabanne.com, to verify)', 0.7, 'launched 2008 under the Paco Rabanne name; the house is now Rabanne. Widely published.'),
-      unverified('notes', 'Rabanne (product page, to verify)', 0.6, 'house pyramid as widely published: blood mandarin, grapefruit, peppermint; rose, cinnamon, spice; blond leather, white wood, amber, patchouli. "Blond leather" mapped to leather, "white wood" to our white-woods accord.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.65, 'credited to Christophe Raynaud, Olivier Pescheux and Michel Girard.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Rabanne', 0.7, 'launched 2008 under the Paco Rabanne name; the house is now Rabanne. Widely published.'),
+      unverified('notes', 'Rabanne', 0.6, 'house pyramid as widely published: blood mandarin, grapefruit, peppermint; rose, cinnamon, spice; blond leather, white wood, amber, patchouli. "Blond leather" mapped to leather, "white wood" to our white-woods accord.'),
+      unverified('perfumers', 'press coverage', 0.65, 'credited to Christophe Raynaud, Olivier Pescheux and Michel Girard.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A gold-coated glass bottle shaped like a gold ingot, with the name stamped on the front and a gold block cap that flips open.',
@@ -768,10 +766,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Cool, buttery iris with a touch of pear and lavender, warming into soft cedar and vetiver. Powdery, lipstick-ish and surprisingly tender.',
     bestFor: 'Evenings, formal wear, cold weather',
     sources: [
-      unverified('identity', 'Dior (dior.com product page, to verify)', 0.55, 'the current EDP is the 2011 edition; an earlier Intense appeared in 2007. Year kept at 2011 per roster, lower confidence on the exact lineage.'),
-      unverified('notes', 'Dior (dior.com, to verify)', 0.55, 'Dior headlines iris, ambrette, pear, lavender, cedar and vetiver. Phase placement is ours.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.5, 'the Dior Homme line was originally composed by Olivier Polge; the 2011 Intense is credited to François Demachy. Both listed; uncertain split.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Dior', 0.55, 'the current EDP is the 2011 edition; an earlier Intense appeared in 2007. Year kept at 2011 per roster, lower confidence on the exact lineage.'),
+      unverified('notes', 'Dior', 0.55, 'Dior headlines iris, ambrette, pear, lavender, cedar and vetiver. Phase placement is ours.'),
+      unverified('perfumers', 'press coverage', 0.5, 'the Dior Homme line was originally composed by Olivier Polge; the 2011 Intense is credited to François Demachy. Both listed; uncertain split.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A slim rectangular bottle in smoky grey-brown glass with a polished metal cap and the name printed down the front.',
@@ -858,10 +856,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Clean iris and neroli over a soft ambery base, with a pinch of pepper and cardamom. Smells like expensive soap on a freshly ironed shirt.',
     bestFor: 'Office, weddings, everyday polish',
     sources: [
-      unverified('identity', 'Prada Beauty (product page, to verify)', 0.7, 'launched 2016; widely published.'),
-      unverified('notes', 'Prada Beauty (product page, to verify)', 0.5, 'Prada headlines iris, neroli, amber and cedar; the supporting notes (geranium, violet, mate, black pepper, cardamom, patchouli) are from the widely circulated launch list and lower confidence. Phase placement is ours.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.65, 'Daniela Andrier, Prada\'s long-time perfumer.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Prada Beauty', 0.7, 'launched 2016; widely published.'),
+      unverified('notes', 'Prada Beauty', 0.5, 'Prada headlines iris, neroli, amber and cedar; the supporting notes (geranium, violet, mate, black pepper, cardamom, patchouli) are from the widely circulated launch list and lower confidence. Phase placement is ours.'),
+      unverified('perfumers', 'press coverage', 0.65, 'Daniela Andrier, Prada\'s long-time perfumer.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A clean-lined rectangular bottle in clear glass with a dark cap and the Prada name across the front.',
@@ -948,10 +946,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'A cold rush of mint and lavender with a green, watery edge, drying to musky woods and a faint sweetness. The blueprint for a hundred fresh blues.',
     bestFor: 'Hot days, gym, cheap everyday spray',
     sources: [
-      unverified('identity', 'Davidoff (davidoff.com, to verify)', 0.7, 'launched 1988; widely published.'),
-      unverified('notes', 'Davidoff (product page, to verify)', 0.5, 'Davidoff describes mint, lavender and sea-fresh notes; the full pyramid (rosemary, coriander, green notes, geranium, neroli, jasmine, sandalwood, cedar, musk, amber, oakmoss, tobacco) is the widely circulated breakdown and lower confidence. "Green notes" mapped to our green-leaves accord.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.7, 'Pierre Bourdon is the widely credited perfumer.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US list price for 125 ml; usually discounted.'),
+      unverified('identity', 'Davidoff', 0.7, 'launched 1988; widely published.'),
+      unverified('notes', 'Davidoff', 0.5, 'Davidoff describes mint, lavender and sea-fresh notes; the full pyramid (rosemary, coriander, green notes, geranium, neroli, jasmine, sandalwood, cedar, musk, amber, oakmoss, tobacco) is the widely circulated breakdown and lower confidence. "Green notes" mapped to our green-leaves accord.'),
+      unverified('perfumers', 'press coverage', 0.7, 'Pierre Bourdon is the widely credited perfumer.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US list price for 125 ml; usually discounted.'),
     ],
     bottleDescription:
       'A tall, flat bottle in light blue glass with rounded sides and white lettering, topped with a short blue cap.',
@@ -1040,9 +1038,9 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Crisp green apple and crushed leaves over a cool, watery floral heart, drying to light musk and woods. Simple, clean and absurdly cheap.',
     bestFor: 'Summer days, gym, blind buys',
     sources: [
-      unverified('identity', 'Nautica (nautica.com, to verify)', 0.6, 'launched 2006; widely published. Perfumer not disclosed by the house as far as we know, so left empty.'),
-      unverified('notes', 'Nautica (product page / retail packaging, to verify)', 0.45, 'notes as commonly given on retail listings: green leaf, apple; mimosa, lotus; cedarwood, oakmoss, musk, amber. Not confirmed on a house page.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'typical discounted US price for 100 ml; list price is higher.'),
+      unverified('identity', 'Nautica', 0.6, 'launched 2006; widely published. Perfumer not disclosed by the house as far as we know, so left empty.'),
+      unverified('notes', 'Nautica', 0.45, 'notes as commonly given on retail listings: green leaf, apple; mimosa, lotus; cedarwood, oakmoss, musk, amber. Not confirmed on a house page.'),
+      unverified('price', 'US retail', 0.4, 'typical discounted US price for 100 ml; list price is higher.'),
     ],
     bottleDescription:
       'A round, flat glass bottle like a porthole or ship\'s compass, filled with pale green-blue juice and capped with a navy cap.',
@@ -1128,11 +1126,11 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Bright lemon and herbs with a soft, airy jasmine haze, settling on dry vetiver and a mossy hint. Crisp, cologne-like and very elegant.',
     bestFor: 'Warm days, office, linen suits',
     sources: [
-      unverified('identity', 'Dior (dior.com product page, to verify)', 0.7, 'launched 1966; widely published. Status "reformulated": the formula has been revised over the decades, including to meet IFRA limits on oakmoss and other materials; we could not open a dated source for a specific reformulation year, so no year is given.'),
-      unverified('notes', 'Dior (dior.com, to verify)', 0.5, 'notes as commonly described for the original: lemon, bergamot, basil, rosemary, Hedione-led jasmine, vetiver and oakmoss. Current Dior copy emphasises citrus and vetiver. Phase placement is ours.'),
-      unverified('perfumers', 'Dior / perfume history (to verify)', 0.7, 'Edmond Roudnitska; Eau Sauvage is widely cited as the first fine fragrance to use Hedione prominently.'),
-      unverified('status', 'editorial (to verify)', 0.45, 'reformulation history is widely reported but not confirmed against a primary source this session.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Dior', 0.7, 'launched 1966; widely published. Status "reformulated": the formula has been revised over the decades, including to meet IFRA limits on oakmoss and other materials; we could not open a dated source for a specific reformulation year, so no year is given.'),
+      unverified('notes', 'Dior', 0.5, 'notes as commonly described for the original: lemon, bergamot, basil, rosemary, Hedione-led jasmine, vetiver and oakmoss. Current Dior copy emphasises citrus and vetiver. Phase placement is ours.'),
+      unverified('perfumers', 'Dior / perfume history', 0.7, 'Edmond Roudnitska; Eau Sauvage is widely cited as the first fine fragrance to use Hedione prominently.'),
+      unverified('status', 'editorial', 0.45, 'reformulation history is widely reported but not confirmed against a primary source this session.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A clear glass bottle with rounded shoulders showing pale straw-coloured juice, with a dark cap and the name printed on the glass.',
@@ -1218,10 +1216,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'A fizzy, soapy sparkle of aldehydes over rose, jasmine and ylang, settling into creamy sandalwood, vanilla and soft musk. Abstract, powdery and unmistakable.',
     bestFor: 'Formal evenings, cold weather, classic taste',
     sources: [
-      unverified('identity', 'Chanel (chanel.com, to verify)', 0.7, 'created 1921 by Ernest Beaux; the parfum (extrait) is the original concentration. The EDP dates from 1986. Widely published.'),
-      unverified('notes', 'Chanel (chanel.com, to verify)', 0.55, 'Chanel highlights aldehydes, May rose and Grasse jasmine; the fuller structure (neroli, ylang-ylang, iris, lily of the valley, sandalwood, vetiver, vanilla, musk) is the commonly published breakdown. Phase placement is ours.'),
-      unverified('perfumers', 'Chanel (to verify)', 0.7, 'Ernest Beaux.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for the 15 ml parfum bottle.'),
+      unverified('identity', 'Chanel', 0.7, 'created 1921 by Ernest Beaux; the parfum (extrait) is the original concentration. The EDP dates from 1986. Widely published.'),
+      unverified('notes', 'Chanel', 0.55, 'Chanel highlights aldehydes, May rose and Grasse jasmine; the fuller structure (neroli, ylang-ylang, iris, lily of the valley, sandalwood, vetiver, vanilla, musk) is the commonly published breakdown. Phase placement is ours.'),
+      unverified('perfumers', 'Chanel', 0.7, 'Ernest Beaux.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for the 15 ml parfum bottle.'),
     ],
     bottleDescription:
       'A clear, rectangular glass bottle with bevelled edges and a faceted, cut-glass stopper, with a plain white label printed in black.',
@@ -1311,10 +1309,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Sparkling orange and bergamot over a fresh rose and jasmine heart, drying to clean patchouli, vetiver and soft vanilla musk. Bright, polished and long-lasting.',
     bestFor: 'Office, daytime events, all year',
     sources: [
-      unverified('identity', 'Chanel (chanel.com, to verify)', 0.7, 'launched 2001; widely published.'),
-      unverified('notes', 'Chanel (chanel.com, to verify)', 0.55, 'Chanel names orange, rose, jasmine, patchouli, vetiver and vanilla; bergamot and white musk are from the commonly published breakdown. Phase placement is ours.'),
-      unverified('perfumers', 'Chanel (to verify)', 0.7, 'Jacques Polge.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Chanel', 0.7, 'launched 2001; widely published.'),
+      unverified('notes', 'Chanel', 0.55, 'Chanel names orange, rose, jasmine, patchouli, vetiver and vanilla; bergamot and white musk are from the commonly published breakdown. Phase placement is ours.'),
+      unverified('perfumers', 'Chanel', 0.7, 'Jacques Polge.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A clear rectangular glass bottle with bevelled edges showing pale pink-amber juice, with a squared cap and black printed lettering.',
@@ -1402,10 +1400,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'Pear and pink pepper for a moment, then black coffee poured over sweet vanilla and white flowers. Dark, sugary and very much a night-out scent.',
     bestFor: 'Nights out, dates, winter',
     sources: [
-      unverified('identity', 'YSL Beauty (yslbeauty.com, to verify)', 0.7, 'launched 2014; widely published.'),
-      unverified('notes', 'YSL Beauty (yslbeauty.com, to verify)', 0.55, 'YSL headlines black coffee, white flowers and vanilla; pear, pink pepper, orange blossom, jasmine, patchouli, cedar and cashmere wood are from the widely circulated launch pyramid. "Cashmere wood" mapped to cashmeran.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.6, 'credited to Nathalie Lorson, Marie Salamagne, Olivier Cresp and Honorine Blanc.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 90 ml.'),
+      unverified('identity', 'YSL Beauty', 0.7, 'launched 2014; widely published.'),
+      unverified('notes', 'YSL Beauty', 0.55, 'YSL headlines black coffee, white flowers and vanilla; pear, pink pepper, orange blossom, jasmine, patchouli, cedar and cashmere wood are from the widely circulated launch pyramid. "Cashmere wood" mapped to cashmeran.'),
+      unverified('perfumers', 'press coverage', 0.6, 'credited to Nathalie Lorson, Marie Salamagne, Olivier Cresp and Honorine Blanc.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 90 ml.'),
     ],
     bottleDescription:
       'A curvy bottle in black glass speckled with glitter, with soft rounded sides and a dark cap.',
@@ -1495,10 +1493,10 @@ export const FRAGRANCES_A: SeedFragrance[] = [
       'A juicy pear and blackcurrant opening melts into sweet praline and vanilla, with powdery iris and a bit of patchouli keeping it upright. Sugary and huge.',
     bestFor: 'Cold days, evenings, comfort wear',
     sources: [
-      unverified('identity', 'Lancôme (lancome-usa.com, to verify)', 0.7, 'launched 2012; widely published.'),
-      unverified('notes', 'Lancôme (product page, to verify)', 0.55, 'Lancôme headlines iris, patchouli and a gourmand praline-vanilla accord; blackcurrant, pear, jasmine, orange blossom and tonka are from the widely circulated launch pyramid. Phase placement is ours.'),
-      unverified('perfumers', 'press coverage (to verify)', 0.65, 'credited to Olivier Polge, Dominique Ropion and Anne Flipo.'),
-      unverified('price', 'US retail (to verify)', 0.4, 'approximate 2025-26 US price for 100 ml.'),
+      unverified('identity', 'Lancôme', 0.7, 'launched 2012; widely published.'),
+      unverified('notes', 'Lancôme', 0.55, 'Lancôme headlines iris, patchouli and a gourmand praline-vanilla accord; blackcurrant, pear, jasmine, orange blossom and tonka are from the widely circulated launch pyramid. Phase placement is ours.'),
+      unverified('perfumers', 'press coverage', 0.65, 'credited to Olivier Polge, Dominique Ropion and Anne Flipo.'),
+      unverified('price', 'US retail', 0.4, 'approximate 2025-26 US price for 100 ml.'),
     ],
     bottleDescription:
       'A clear crystal-style bottle whose top curves upward like a smile, holding pale pink juice, with a black ribbon tied around the neck.',

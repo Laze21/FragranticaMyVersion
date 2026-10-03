@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { allBrandSlugs, averageCharacter, getBrand } from '@/lib/data/people';
+import { averageCharacter, getBrand } from '@/lib/data/people';
+import { brandSlugs } from '@/lib/data/static-params';
 import { FragranceCard } from '@/components/cards/FragranceCard';
 import { CharacterBars } from '@/components/scent/CharacterBars';
 import { Icon } from '@/components/Icon';
@@ -9,7 +10,7 @@ import styles from '../../profile.module.css';
 
 export const revalidate = 600;
 export async function generateStaticParams() {
-  return (await allBrandSlugs()).map((slug) => ({ slug }));
+  return (await brandSlugs()).map((slug) => ({ slug }));
 }
 
 const KIND: Record<string, React.ReactNode> = {

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { fragrancesListing, fragrancesPerceived, getNote, getNotesIndex, pairedNotes } from '@/lib/data/notes';
+import { fragrancesListing, fragrancesPerceived, getNote, pairedNotes } from '@/lib/data/notes';
+import { noteSlugs } from '@/lib/data/static-params';
 import { FragranceCard } from '@/components/cards/FragranceCard';
 import { Term } from '@/components/ui/Term';
 import { DemoFlag } from '@/components/ui/DemoFlag';
@@ -11,7 +12,7 @@ import styles from './page.module.css';
 export const revalidate = 600;
 
 export async function generateStaticParams() {
-  return (await getNotesIndex()).map((n) => ({ slug: n.slug }));
+  return (await noteSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata(props: PageProps<'/notes/[slug]'>): Promise<Metadata> {

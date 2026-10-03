@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllFragranceSlugs, getFragrance, getNoteIndex } from '@/lib/data/catalog';
+import { getFragrance, getNoteIndex } from '@/lib/data/catalog';
+import { fragranceSlugs } from '@/lib/data/static-params';
 import { listReviews } from '@/lib/data/reviews';
 import { getSimilar } from '@/lib/data/similar';
 import { APP_NAME, SITE_URL } from '@/lib/config';
@@ -27,7 +28,7 @@ import styles from './page.module.css';
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  return (await getAllFragranceSlugs()).map((slug) => ({ slug }));
+  return (await fragranceSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata(props: PageProps<'/fragrance/[slug]'>): Promise<Metadata> {

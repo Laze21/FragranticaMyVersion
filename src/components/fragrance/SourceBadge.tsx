@@ -12,7 +12,7 @@ export const SOURCE_TYPE_LABEL: Record<string, string> = {
   retailer_feed: 'Retailer',
 };
 
-const fmtDate = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : 'not yet');
+const fmtDate = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : null);
 
 /** Where a claim came from, one tap away. */
 export function SourceBadge({ claim }: { claim: SourceClaim }) {
@@ -25,7 +25,7 @@ export function SourceBadge({ claim }: { claim: SourceClaim }) {
           <Icon name="source" size={14} />
           {SOURCE_TYPE_LABEL[claim.sourceType] ?? claim.sourceType}
           {claim.isDemo && <span className={styles.demo}>demo</span>}
-          <span className={styles.date}>· checked {fmtDate(claim.verifiedAt)}</span>
+          <span className={styles.date}>{claim.verifiedAt ? `· checked ${fmtDate(claim.verifiedAt)}` : '· not yet checked'}</span>
         </>
       }
     >
@@ -36,8 +36,8 @@ export function SourceBadge({ claim }: { claim: SourceClaim }) {
           <dd>{SOURCE_TYPE_LABEL[claim.sourceType]}</dd>
         </div>
         <div>
-          <dt>Last verified</dt>
-          <dd>{fmtDate(claim.verifiedAt)}</dd>
+          <dt>Verified</dt>
+          <dd>{fmtDate(claim.verifiedAt) ?? 'Not yet'}</dd>
         </div>
         {claim.confidence !== null && (
           <div>
@@ -52,7 +52,7 @@ export function SourceBadge({ claim }: { claim: SourceClaim }) {
           Open source <Icon name="external" size={14} />
         </a>
       ) : claim.isDemo ? (
-        <span className={styles.note}>Demo source: the house is fictional, so there is no page to link to.</span>
+        <span className={styles.note}>No page to link to yet: this claim is editorial and still waiting to be checked against the house.</span>
       ) : null}
     </Popover>
   );

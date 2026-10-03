@@ -16,7 +16,7 @@ export function Ratings({ f }: { f: FragranceDetail }) {
   const st = f.stats;
   const total = st.ratingHist.reduce((a, b) => a + b, 0);
   const max = Math.max(1, ...st.ratingHist);
-  const div = divisiveness(st.ratingSpread, st.ratingCount);
+  const div = divisiveness(st.ratingSpread, st.ratingCount, st.ratingHist);
   const enough = st.ratingCount >= 5;
 
   return (

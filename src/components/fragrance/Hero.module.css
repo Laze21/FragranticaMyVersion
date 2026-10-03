@@ -20,11 +20,14 @@
   color: var(--fg-2);
 }
 .house a {
-  text-decoration: none;
   color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent);
 }
 .house a:hover {
-  text-decoration: underline;
+  text-decoration-color: var(--ink);
 }
 .houseKind {
   font-weight: 500;
